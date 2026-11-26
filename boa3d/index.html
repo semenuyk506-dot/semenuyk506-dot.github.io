@@ -7613,14 +7613,14 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       '<div class="rp" title="бронза"><i class="rbr"></i><b id="r-bronze">0</b></div>' +
       '<div class="rp dist"><b id="r-dist">0</b> м</div></div>' +
       '<div id="run-buffs" class="run-buffs"></div>' +
-      '<div id="run-say" class="run-say"></div><div id="run-th" class="run-th" hidden>💰 Хапуга <b id="run-thd">13</b> м<i id="run-thb"></i></div>' +
+      '<div id="run-tip" class="run-tip" hidden><b id="run-tipi">👆</b><span id="run-tipt"></span></div><div id="run-say" class="run-say"></div><div id="run-th" class="run-th" hidden>💰 Хапуга <b id="run-thd">13</b> м<i id="run-thb"></i></div>' +
       '<div id="run-start" class="run-ov"><div class="run-card"><div class="run-pick"><button id="run-pl" class="run-arr" type="button" aria-label="Предыдущий бегун">‹</button><div class="run-av" id="run-av"></div><button id="run-pr" class="run-arr" type="button" aria-label="Следующий бегун">›</button></div><h2 id="run-nm">Забег</h2><div id="run-team" class="run-team"></div><p id="run-sub"></p>' +
       '<p class="run-help">↔ — дорожка · ↑ — прыжок · ↓ — подкат<br>Монеты, камень, дерево и бронза идут на стройку. Из сундуков выпадают алмазы.</p>' +
       '<button id="run-go" class="ro-go" type="button">БЕЖАТЬ!</button></div></div>' +
       '<div id="run-over" class="run-ov ro" hidden><div class="ro-box"><div class="ro-av" id="ro-av"></div><div class="ro-t" id="ro-t">Забег окончен</div>' +
       '<div class="ro-card"><div class="ro-d"><b id="ro-d">0</b><i>🏆</i></div><div class="ro-best" id="ro-best"></div><div class="ro-c">+<b id="ro-c">0</b><i class="rcoin"></i></div>' +
       '<div class="ro-m"><span><i class="rst"></i><b id="ro-s">0</b></span><span><i class="rwd"></i><b id="ro-w">0</b></span><span><i class="rbr"></i><b id="ro-b">0</b></span><span>💎<b id="ro-dia">0</b></span><span>🧰<b id="ro-ch">0</b></span></div>' +
-      '<p id="ro-p"></p></div></div><div class="ro-bot"><button id="ro-back" class="ro-home" type="button">🏗️<small>Стройка</small></button><button id="ro-again" class="ro-go" type="button">БЕЖАТЬ!</button></div></div>';
+      '<div id="ro-q" class="ro-q" hidden></div><p id="ro-p"></p></div></div><div class="ro-bot"><button id="ro-back" class="ro-home" type="button">🏗️<small>Стройка</small></button><button id="ro-again" class="ro-go" type="button">БЕЖАТЬ!</button></div></div>';
     app.appendChild(root);
     this.cv = $('run-cv');
     this.biome = this.chooseBiome();
@@ -7769,6 +7769,27 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     t.S.ph += sp * dt; t.S.y = t.y; t.S.vy = t.vy; t.S.x = t.x; t.S.dashT = 0;
     t.hold.position.set(t.x, t.y, z); t.w.pose(t.S, dt, t.lane * LANE);
     $('run-thd').textContent = Math.max(0, Math.round(t.gap - 2.6)); $('run-thb').style.width = clamp((16 - t.gap) / 13.4, 0, 1) * 100 + '%';
+  };
+
+  /* ---------- обучение первого забега: подсказка, замедление перед препятствием, пока не сделаешь движение ---------- */
+  const TIPS = [['↔️', 'Смахни влево или вправо — смени дорожку'], ['⬆️', 'Смахни вверх — прыжок!'], ['⬇️', 'Смахни вниз — подкат!'], ['⚡', 'Хватай зелёную стрелку — рывком догонишь Хапугу!'], ['💪', 'Отлично! Дальше сам']];
+  P.tip = function (i) { const e = $('run-tip'); if (i == null) { e.hidden = true; return; } $('run-tipi').textContent = TIPS[i][0]; $('run-tipt').textContent = TIPS[i][1]; e.hidden = false; e.classList.remove('in'); void e.offsetWidth; e.classList.add('in'); e.dataset.k = i; };
+  P.tutStep = function (dt) {
+    const t = this.tut, S = this.S; S.inv = 99; t.t += dt / (this.slow || 1);
+    const go = (n) => { t.step = n; t.t = 0; t.ob = null; this.slow = 1; this.tip(n);
+      if (n === 1 || n === 2) { t.did[n === 1 ? 'u' : 'd'] = 0; for (const l of [-1, 0, 1]) { const m = this.spawn(n === 1 ? 'hurdle' : 'beam', l, -30); if (!l) t.ob = m; } }
+      if (n === 3) { for (const l of [-1, 0, 1]) this.spawn('dash', l, -24); if (this.th) this.th.gap = 7; }
+    };
+    if (t.step < 0) { if (t.t > 1.2) go(0); return; }
+    if (t.step === 0) { if (t.did.lr && t.t > 0.4) go(1); return; }
+    if (t.step === 1 || t.step === 2) {
+      const k = t.step === 1 ? 'u' : 'd', z = t.ob ? t.ob.position.z : 9;
+      this.slow = !t.did[k] && z > -6 && z < 0.5 ? 0.12 : 1;
+      if (z > 1.5 || !t.ob || !t.ob.parent) { if (t.did[k]) go(t.step + 1); else go(t.step); }
+      return;
+    }
+    if (t.step === 3) { if ((this.th && this.th.caught) || (S.dashT > 0 && t.t > 3.5) || t.t > 9) { go(4); } return; }
+    if (t.step === 4 && t.t > 2.2) { this.tip(null); this.tut = null; S.inv = 1; try { BOA.Hub.meta().seen.rtut = 1; this.g.save(); } catch (e) { /* ок */ } }
   };
 
   /* ---------- состояние забега ---------- */
@@ -7930,6 +7951,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
   };
   P.line = function (type, lane, z, n, gap) { for (let i = 0; i < n; i++) this.spawn(type, lane, z - i * (gap || 1.5)); };
   P.pattern = function (z) {
+    if (this.tut) { if (this.tut.step === 0 || this.tut.step >= 3) for (const l of [-1, 1]) this.line('coin', l, z, 5); return; }
     const S = this.S, L = () => ((Math.random() * 3) | 0) - 1, other = (l) => [-1, 0, 1].filter((x) => x !== l), mat = () => ['stone', 'wood', 'bronze'][(Math.random() * 3) | 0];
     const d = clamp(S.dist / 900, 0, 1), arc = (l, zz, n, h) => { for (let i = 0; i < n; i++) this.spawn('coin', l, zz - i * 1.1, 1.0 + Math.sin(i / (n - 1) * Math.PI) * h); };
     const P = [
@@ -7967,9 +7989,10 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
   /* ---------- управление ---------- */
   P.act = function (a) {
     const S = this.S; if (!S.on || S.dying) return;
+    if ((a === 'l' || a === 'r') && this.tut) this.tut.did.lr = 1;
     if (a === 'l' && S.lane > -1) { S.lane--; S.bobT = 0.18; try { BOA.Audio.whoosh(); } catch (e) { /* ок */ } } else if (a === 'r' && S.lane < 1) { S.lane++; S.bobT = 0.18; try { BOA.Audio.whoosh(); } catch (e) { /* ок */ } }
-    else if (a === 'u' && S.y <= 0.02) { S.vy = 10.6; S.slide = 0; try { BOA.Audio.jump(); } catch (e) { /* ок */ } this.spark(S.x, 0.1, 0, 6, 0xf3ead0); }
-    else if (a === 'd') { if (S.y > 0.02) S.vy = -18; else { S.slide = 0.75; try { BOA.Audio.slide(); } catch (e) { /* ок */ } } }
+    else if (a === 'u' && S.y <= 0.02) { S.vy = 10.6; S.slide = 0; S.jumps = (S.jumps || 0) + 1; if (this.tut) this.tut.did.u = 1; try { BOA.Audio.jump(); } catch (e) { /* ок */ } this.spark(S.x, 0.1, 0, 6, 0xf3ead0); }
+    else if (a === 'd') { if (S.y > 0.02) S.vy = -18; else { S.slide = 0.75; S.slides = (S.slides || 0) + 1; if (this.tut) this.tut.did.d = 1; try { BOA.Audio.slide(); } catch (e) { /* ок */ } } }
   };
   P.bind = function () {
     const g = this.g, root = this.root; let tx = null, ty = null, tt = 0;
@@ -7982,7 +8005,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     this.cv.addEventListener('pointerup', (e) => { if (mx === null || e.pointerType === 'touch') return; const dx = e.clientX - mx, dy = e.clientY - my; if (Math.abs(dx) > 24 || Math.abs(dy) > 24) { if (Math.abs(dx) > Math.abs(dy)) this.act(dx < 0 ? 'l' : 'r'); else this.act(dy < 0 ? 'u' : 'd'); } mx = null; });
     this._kd = (e) => { const k = e.key; if (k === 'ArrowLeft' || k === 'a') this.act('l'); else if (k === 'ArrowRight' || k === 'd') this.act('r'); else if (k === 'ArrowUp' || k === 'w' || k === ' ') this.act('u'); else if (k === 'ArrowDown' || k === 's') this.act('d'); else if (k === 'Escape') this.close(); };
     window.addEventListener('keydown', this._kd);
-    $('run-go').addEventListener('click', () => { try { BOA.Audio.init(); } catch (e) { /* без звука */ } $('run-start').hidden = true; this.reset(); this.S.on = true; try { BOA.Audio.mode('run'); BOA.Audio.surface = BIOMES[this.biome].step || ({ swamp: 'wood', egypt: 'sand', russia: 'snow' })[this.biome] || 'stone'; } catch (e) { /* ок */ } this.say(pick(LINES.start)); });
+    $('run-go').addEventListener('click', () => { try { BOA.Audio.init(); } catch (e) { /* без звука */ } $('run-start').hidden = true; this.reset(); this.S.on = true; try { if (!BOA.Hub.meta().seen.rtut) this.tut = { step: -1, did: {}, t: 0 }; } catch (e) { /* ок */ } try { BOA.Audio.mode('run'); BOA.Audio.surface = BIOMES[this.biome].step || ({ swamp: 'wood', egypt: 'sand', russia: 'snow' })[this.biome] || 'stone'; } catch (e) { /* ок */ } this.say(pick(LINES.start)); });
     { const crew = () => { try { const n = g.crew.nikita(), L = g.crew.list.slice(); return n ? [n].concat(L.filter((w) => w !== n)) : L; } catch (e) { return []; } };
       const swap = (d) => { const L = crew(); if (L.length < 2 || this.S.on) return; let i = L.indexOf(this.pickRec || L[0]); if (i < 0) i = 0; i = (i + d + L.length) % L.length; this.pickRec = L[i];
         if (this.heroG) this.scene.remove(this.heroG); this.makeHero(); try { localStorage.setItem('boa.runner', L[i].id); } catch (e) { /* ок */ } };
@@ -8008,20 +8031,23 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
   /* ---------- конец забега, награды ---------- */
   P.finish = function (title) {
     const S = this.S; if (S.ended) return; S.ended = true; S.on = false;
+    if (this.tut) { this.tut = null; this.slow = 1; this.tip(null); }
     const g = this.g, rs = BOA.Hub.meta(); rs.best = rs.best || 0; rs.runs = rs.runs || 0;
     const d = Math.floor(S.dist), rec = d > rs.best; if (rec) { rs.best = d; this.say(pick(LINES.record), 3000); } rs.runs++; rs.chests = (rs.chests || 0) + S.chests;
+    S.rawCoins = S.coins; let QD = []; try { QD = BOA.Quests.onRun(S, this.th ? this.th.caught : 0); } catch (e) { /* ок */ }
     const R = BOA.Hub.reward(S); let note = 'Бонус построек: +' + Math.round((R.bonus - 1) * 100) + '% к наградам.';
     S.coins = R.coins; S.stone = R.stone; S.wood = R.wood; S.bronze = R.bronze;
     $('ro-dia').textContent = R.dia;
     $('ro-t').textContent = rec ? 'НОВЫЙ РЕКОРД!' : title.toUpperCase(); $('ro-t').classList.toggle('rec', rec); $('ro-d').textContent = d.toLocaleString('ru-RU') + ' м'; $('ro-best').textContent = rec ? '' : 'Рекорд: ' + rs.best.toLocaleString('ru-RU') + ' м'; try { $('ro-av').style.backgroundImage = $('run-av').style.backgroundImage; } catch (e) { /* ок */ } if (this.th && this.th.caught) note = 'Хапуга пойман: ' + this.th.caught + ' × · ' + note; try { BOA.Audio.fanfare(); } catch (e) { /* ок */ } $('ro-c').textContent = S.coins; $('ro-ch').textContent = S.chests;
     $('ro-s').textContent = S.stone; $('ro-w').textContent = S.wood; $('ro-b').textContent = S.bronze; $('ro-p').textContent = note;
+    $('ro-q').innerHTML = QD.map((x) => '<span>✅ ' + x.t.replace('{n}', x.need) + '</span>').join(''); $('ro-q').hidden = !QD.length;
     $('run-over').hidden = false; if (this.th) $('run-th').hidden = true; clearTimeout(this._st); $('run-say').classList.remove('on');
   };
   P.close = function () {
     if (this.dead) return; this.dead = true; cancelAnimationFrame(this.raf);
     window.removeEventListener('resize', this.onResize); window.removeEventListener('keydown', this._kd);
     try { this.scene.traverse((o) => { if (o.geometry) o.geometry.dispose(); }); this.r.dispose(); const ext = this.r.getContext().getExtension('WEBGL_lose_context'); if (ext) ext.loseContext(); } catch (e) { /* ок */ }
-    try { BOA.Audio.mode('hub'); BOA.Audio.intensity = 0; } catch (e) { /* ок */ } this.root.remove(); this.g.screen = this.prevScreen || 'menu'; this.g.ui.refresh && this.g.ui.refresh(); BOA.Runner._cur = null; try { BOA.Hub.render(); } catch (e) { /* ок */ }
+    try { BOA.Audio.mode('hub'); BOA.Audio.intensity = 0; } catch (e) { /* ок */ } setTimeout(() => { try { BOA.Quests.check(); } catch (e) { /* ок */ } }, 300); this.root.remove(); this.g.screen = this.prevScreen || 'menu'; this.g.ui.refresh && this.g.ui.refresh(); BOA.Runner._cur = null; try { BOA.Hub.render(); } catch (e) { /* ок */ }
   };
 
   /* ---------- анимация героя по скелету ---------- */
@@ -8043,7 +8069,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
   /* ---------- кадр ---------- */
   P.frame = function (now) {
     if (this.dead) return; this.raf = requestAnimationFrame((t) => this.frame(t));
-    const dt = Math.min(0.05, (now - this.last) / 1000); this.last = now;
+    const dt = Math.min(0.05, (now - this.last) / 1000) * (this.slow || 1); this.last = now;
     const S = this.S;
     if (S.on || S.dying > 0) {
       if (S.dying > 0) { S.dying -= dt; if (S.dying <= 0) this.finish('Споткнулся'); }
@@ -8053,7 +8079,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
         S.x += (S.lane * LANE - S.x) * Math.min(1, dt * 15); S.vy -= 30 * dt; const wasAir = S.y > 0.05; S.y = Math.max(0, S.y + S.vy * dt); if (S.y === 0 && S.vy < 0) { S.vy = 0; if (wasAir) { S.land = 0.2; try { BOA.Audio.land(); } catch (e) { /* ок */ } this.spark(S.x, 0.1, 0.3, 8, 0xe9dcc0); } }
         S.slide = Math.max(0, S.slide - dt); if (S.slide > 0 && S.y > 0.05) S.slide = 0;
         S.mag = Math.max(0, S.mag - dt); S.x2 = Math.max(0, (S.x2 || 0) - dt); S.dashT = Math.max(0, S.dashT - dt);
-        this.world_move(d, dt); this.thiefStep(dt, sp);
+        this.world_move(d, dt); this.thiefStep(dt, sp); if (this.tut) this.tutStep(dt);
         if (S.dist >= (S.mile || 100)) { this.spawn('arch', 0, -64, S.mile || 100); S.mile = (S.mile || 100) + 100; }
         S.nextZ += d; if (S.nextZ > -34) { this.pattern(-66); S.nextZ -= 12 + Math.random() * 5 - Math.min(4, S.dist / 400); }
         this.collide(dt);
@@ -8136,6 +8162,8 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     '#run-back.chip{position:absolute;right:10px;top:max(10px,env(safe-area-inset-top));width:46px;height:46px;border-radius:50%;border:0;font-size:20px;font-weight:900;color:#7a2a00;background:radial-gradient(circle at 35% 30%,#ffd27a,#ff8a1a 70%);box-shadow:0 4px 0 #a83a00}' +
     '.run-hud{flex-direction:column;align-items:flex-start;gap:4px}.run-hud .rp{padding:4px 9px;font-size:13px}.run-hud .rp:nth-child(2){font-size:17px;padding:6px 12px}.run-th{top:calc(max(10px,env(safe-area-inset-top)) + 50px)}.run-buffs{top:170px}' +
     '.run-team{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none;justify-content:flex-start}.run-team::-webkit-scrollbar{display:none}.rt{flex:none;display:grid;justify-items:center;gap:2px;width:58px;border:0;background:none;color:var(--ink);font:800 10px var(--font);padding:0}.rt i{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:#cfe3f7 center 20%/cover;border:3px solid #fff;box-shadow:0 2px 0 rgba(0,0,0,.2);font-size:22px;font-style:normal}.rt.on i{border-color:#ff8a1a;box-shadow:0 0 0 3px #ffd04a}.rt.lock i{background:#5a6478;filter:grayscale(1) brightness(.8)}.rt.lock span{opacity:.55}' +
+    '.ro-q{display:grid;gap:4px;width:100%}.ro-q[hidden]{display:none}.ro-q span{padding:6px 10px;border-radius:12px;background:#d8f5c8;font:900 12px var(--font);text-align:left;animation:hbpop .5s cubic-bezier(.2,1.7,.4,1) both}' +
+    '.run-tip{position:absolute;left:50%;top:30%;transform:translateX(-50%);z-index:4;width:min(86vw,340px);display:grid;justify-items:center;gap:6px;padding:14px 16px;border-radius:22px;background:rgba(255,246,220,.95);color:#2a3a5a;font:900 18px/1.25 var(--font);text-align:center;box-shadow:0 6px 0 #e0c88a,0 12px 24px rgba(0,0,0,.3);pointer-events:none}.run-tip[hidden]{display:none}.run-tip b{font-size:44px;line-height:1;animation:tipb 0.8s ease-in-out infinite}.run-tip.in{animation:hbpop .45s cubic-bezier(.2,1.7,.4,1)}@keyframes tipb{50%{transform:scale(1.2)}}' +
     '.run-ov{position:absolute;inset:0;display:grid;place-items:center;padding:16px;background:rgba(30,50,80,.5)}.run-ov[hidden]{display:none}' +
     '.run-card{width:min(360px,100%);display:grid;gap:10px;text-align:center;background:var(--card);color:var(--ink);border-radius:24px;padding:18px;box-shadow:0 6px 0 rgba(0,0,0,.25)}.run-card h2{margin:0;font-size:26px}.run-card p{margin:0;font-size:14px;line-height:1.35}.run-help{opacity:.85}' +
     '.run-av{width:96px;height:112px;margin:-48px auto 0;border-radius:20px;background:#cfe3f7 center/cover;border:3px solid #f2a93b}.run-rows{display:flex;justify-content:space-around;font-weight:800;font-size:12px}.run-rows span{display:grid;gap:2px;justify-items:center}.run-rows b{font-size:22px}';
@@ -8625,13 +8653,13 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     init(g) {
       this.g = g; if (this._ui) return; this._ui = true;
       const app = $('app'), root = this.root = document.createElement('div'); root.id = 'hub'; root.hidden = true;
-      root.innerHTML = '<div class="hb-top"><button id="hb-menu" class="chip" type="button">☰</button><div class="rp"><i class="rcoin"></i><b id="hb-coins">0</b></div><div class="rp">💎<b id="hb-dia">0</b></div>' +
+      root.innerHTML = '<div class="hb-top"><button id="hb-menu" class="chip" type="button">☰</button><button id="hb-q" class="chip hb-q" type="button" aria-label="Задания">📋<i id="hb-qb" hidden></i></button><div class="rp"><i class="rcoin"></i><b id="hb-coins">0</b></div><div class="rp">💎<b id="hb-dia">0</b></div>' +
         '<div class="rp"><i class="rst"></i><b id="hb-stone">0</b></div><div class="rp"><i class="rwd"></i><b id="hb-wood">0</b></div><div class="rp"><i class="rbr"></i><b id="hb-bronze">0</b></div></div>' +
         '<div id="hb-bio" class="hb-bio"></div><div id="hb-story" class="hb-story"></div>' +
         '<div class="hb-bot"><div id="hb-rows" class="hb-rows"></div><button id="hb-run" class="hb-go" type="button">БЕЖАТЬ!<small>за материалами</small></button></div><div id="hb-cele" class="hb-cele" hidden></div>' +
         '<div id="hb-sl" class="hb-sl" hidden><div class="hb-slc"><div id="hb-av" class="run-av"></div><b id="hb-slw">Грязимир</b><p id="hb-slt"></p><button id="hb-sln" class="btn primary" type="button">Дальше</button></div></div>';
       app.appendChild(root);
-      $('hb-menu').addEventListener('click', () => g.openMenu());
+      $('hb-menu').addEventListener('click', () => g.openMenu()); $('hb-q').addEventListener('click', () => { try { BOA.Quests.open(); } catch (e) { /* ок */ } });
       $('hb-run').addEventListener('click', () => { if (!this.meta().seen.run) { this.meta().seen.run = 1; } BOA.Runner.open(g, BIOMES[this.bi()].id); });
       setInterval(() => this.tick(), 500);
     },
@@ -8641,6 +8669,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       $('app').classList.add('hub'); this.root.hidden = false; BOA.Dio.init(this.root); BOA.Dio.onPick = (i) => { const B = BIOMES[this.bi()]; this.select(B.b[i]); };
       g.ui.show('game'); g.screen = 'hub'; this.syncSites(); this.render(); this.last = performance.now(); this.loopOn();
       if (!m.seen.pro) { m.seen.pro = 1; this.slides('Грязимир', BIOMES[0].intro, () => { g.save(); }); }
+      setTimeout(() => { try { if (!$('hb-sl').hidden) return; BOA.Quests.check(); } catch (e) { /* ок */ } }, 500);
     },
     loopOn() { if (this._lp) return; this._lp = true; const f = (t) => { const dt = Math.min(0.05, (t - this.last) / 1000); this.last = t; if (this.on && !BOA.Runner._cur) { try { BOA.Dio.frame(dt); } catch (e) { console.warn(e); } } requestAnimationFrame(f); }; requestAnimationFrame(f); },
     hide() { if (!this.root) return; this.on = false; this.root.hidden = true; $('app').classList.remove('hub'); },
@@ -8669,7 +8698,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       if (!this.can(c)) { g.ui.toast('Не хватает материалов или монет. Бегите!'); return; }
       g.economy.spend(c.coins); ['stone', 'wood', 'bronze'].forEach((k) => { m.mat[k] -= c[k]; });
       m.up = { id, to: L + 1, end: Date.now() + MINS[L] * 60000, dur: MINS[L] * 60000, ad: 0 }; { const k = this.vkey(id); if (k && L === 0 && !m.seen['vi_' + k] && BOA.lang === 'ru') { m.seen['vi_' + k] = 1; setTimeout(() => this.slides('Грязимир', [BOA.GRYAZ_ST[k][0]], () => g.save(), null, 's_' + k + '_i'), 400); } }
-      try { BOA.Audio.buy(); } catch (e) { /* без звука */ } this.syncSites(); this.render(); g.save();
+      try { BOA.Audio.buy(); } catch (e) { /* без звука */ } try { BOA.Quests.add('builds', 1); } catch (e) { /* ок */ } this.syncSites(); this.render(); g.save();
     },
     speedCost() { const u = this.meta().up; return u ? Math.max(1, Math.ceil((u.end - Date.now()) / 300000)) : 0; },
     speedDia() { const m = this.meta(); if (!m.up) return; const c = this.speedCost(); if (m.dia < c) { this.g.ui.toast('Алмазов не хватает. Они выпадают из сундуков.'); return; } m.dia -= c; m.up.end = Date.now(); this.tick(); },
@@ -8734,7 +8763,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
         if (L >= MAXL) bt = '<button class="hr-b max" disabled>★ Готово</button>';
         else if (mine) { const left = u.end - Date.now(), pr = clamp(1 - left / u.dur, 0, 1); bt = '<button class="hr-b time" data-a="dia"><span class="hr-bar" style="width:' + (pr * 100).toFixed(1) + '%"></span>⏳ ' + fmtT(left) + '<small>💎 ' + this.speedCost() + ' — сразу</small></button>' + (u.ad ? '' : '<button class="hr-ad" data-a="ad" title="Ускорить за рекламу">📺</button>'); }
         else if (u) bt = '<button class="hr-b busy" disabled>Бригада занята</button>';
-        else { const ch = (k, cl) => c[k] ? '<span class="' + (m.mat[k] >= c[k] ? '' : 'no') + '"><i class="' + cl + '"></i>' + c[k] + '</span>' : ''; bt = '<button class="hr-b' + (ok ? ' go' : ' no') + '" data-a="go"><span class="hr-c' + (g.economy.coins >= c.coins ? '' : ' no') + '"><i class="rcoin"></i>' + c.coins + '</span><small>' + ch('stone', 'rst') + ch('wood', 'rwd') + ch('bronze', 'rbr') + '</small></button>'; }
+        else { const ch = (k, cl) => c[k] ? '<span class="' + (m.mat[k] >= c[k] ? '' : 'no') + '"><i class="' + cl + '"></i>' + c[k] + '</span>' : ''; bt = '<button class="hr-b' + (ok ? ' go' : ' no') + (ok && BIOMES.every((x, j) => !this.total(j)) ? ' pulse' : '') + '" data-a="go"><span class="hr-c' + (g.economy.coins >= c.coins ? '' : ' no') + '"><i class="rcoin"></i>' + c.coins + '</span><small>' + ch('stone', 'rst') + ch('wood', 'rwd') + ch('bronze', 'rbr') + '</small></button>'; }
         r.innerHTML = '<div class="hr-n">' + H.name(id) + '<small> · ' + L + '/' + MAXL + (L < MAXL && !mine ? ' · ' + MINS[L] + ' мин' : '') + '</small></div><div class="hr-l"><div class="hr-st">' + st + '</div>' + bt + '</div>';
         r.querySelectorAll('[data-a]').forEach((b) => { b.onclick = () => { const a = b.dataset.a; if (a === 'go') { if (!ok) { g.ui.toast('Не хватает материалов или монет. Бегите за Хапугой!'); return; } m.sel = id; this.start(id); } else if (a === 'dia') this.speedDia(); else this.speedAd(); this._rk = {}; this.paint(); }; });
       });
@@ -8765,10 +8794,109 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     '.hr-ad{flex:none;border:0;border-radius:12px;padding:8px;font-size:18px;background:var(--card-2);box-shadow:0 3px 0 rgba(0,0,0,.25)}' +
     '.hb-go{display:grid;justify-items:center;padding:12px;border:0;border-radius:22px;font:900 28px/1 var(--font);letter-spacing:.04em;color:#fff;background:linear-gradient(180deg,#ffb84a,#ff7a1a 60%,#e85a10);box-shadow:0 6px 0 #a83a00,0 10px 18px rgba(0,0,0,.3);text-shadow:0 3px 0 #a83a00,0 0 2px #7a2a00;pointer-events:auto}.hb-go small{font:900 12px var(--font);letter-spacing:0;opacity:.9;text-shadow:0 1px 0 #a83a00}.hb-go:active{transform:translateY(4px);box-shadow:0 2px 0 #a83a00}' +
     '.hb-cele{position:absolute;left:50%;top:24%;transform:translateX(-50%);z-index:4;display:grid;justify-items:center;gap:2px;pointer-events:none;text-align:center}.hb-cele[hidden]{display:none}.hb-cele b{font:900 44px/1 var(--font);color:#ffe27a;-webkit-text-stroke:3px #5a2a00;paint-order:stroke;text-shadow:0 5px 0 #5a2a00,0 10px 20px rgba(0,0,0,.35)}.hb-cele span{font:900 16px var(--font);color:#fff;text-shadow:0 2px 3px rgba(0,0,0,.7)}' +
-    '.hb-cele.in{animation:hbpop .5s cubic-bezier(.2,1.7,.4,1)}@keyframes hbpop{from{transform:translateX(-50%) scale(.3);opacity:0}}.hb-bc.home span{filter:drop-shadow(0 0 4px #ffd04a)}.hb-bot{gap:8px}';
+    '.hb-cele.in{animation:hbpop .5s cubic-bezier(.2,1.7,.4,1)}@keyframes hbpop{from{transform:translateX(-50%) scale(.3);opacity:0}}.hb-bc.home span{filter:drop-shadow(0 0 4px #ffd04a)}.hr-b.pulse{animation:qzp 0.9s ease-in-out infinite}.hr-b.pulse::after{content:"👆";position:absolute;right:-4px;bottom:-6px;font-size:22px;animation:hbtap .9s infinite}@keyframes hbtap{50%{transform:translate(-4px,-4px)}}.hb-bot{gap:8px}';
   document.head.appendChild(css);
 })(window.BOA = window.BOA || {});
 
+</script><script>/* Ежедневные задания (3 в день) и сундук за вход с серией дней. Хранится в g.meta (сохранение игры). */
+(function (BOA) {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+  const day = () => { const d = new Date(); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); };
+  const MATN = { stone: 'камня', wood: 'дерева', bronze: 'бронзы' };
+  // k — счётчик, t — текст, n — базовая цель (растёт с главой), r — награда
+  const POOL = [
+    { id: 'best', k: 'best', t: 'Пробеги {n} м за один забег', n: 300, s: 60, r: { coins: 80 } },
+    { id: 'dist', k: 'dist', t: 'Пробеги всего {n} м', n: 1200, s: 200, r: { coins: 100 } },
+    { id: 'coins', k: 'coins', t: 'Собери {n} монет в забегах', n: 120, s: 25, r: { coins: 60, wood: 8 } },
+    { id: 'stone', k: 'stone', t: 'Собери {n} камня', n: 20, s: 4, r: { coins: 50, stone: 10 } },
+    { id: 'wood', k: 'wood', t: 'Собери {n} дерева', n: 20, s: 4, r: { coins: 50, wood: 10 } },
+    { id: 'bronze', k: 'bronze', t: 'Собери {n} бронзы', n: 15, s: 3, r: { coins: 50, bronze: 8 } },
+    { id: 'catch', k: 'caught', t: 'Поймай Хапугу {n} раз', n: 1, s: 0.3, r: { dia: 1, coins: 60 } },
+    { id: 'jump', k: 'jumps', t: 'Прыгни {n} раз', n: 25, s: 4, r: { coins: 60 } },
+    { id: 'slide', k: 'slides', t: 'Подкатись {n} раз', n: 15, s: 3, r: { coins: 60 } },
+    { id: 'chest', k: 'chests', t: 'Найди {n} сундука', n: 2, s: 0.4, r: { dia: 1 } },
+    { id: 'runs', k: 'runs', t: 'Сделай {n} забега', n: 3, s: 0.3, r: { coins: 70, stone: 6 } },
+    { id: 'build', k: 'builds', t: 'Начни {n} стройки', n: 2, s: 0.25, r: { coins: 80, bronze: 4 } }
+  ];
+  const LOGIN = [{ coins: 60 }, { stone: 12, wood: 12 }, { coins: 120 }, { dia: 1, coins: 40 }, { bronze: 15, coins: 100 }, { dia: 2 }, { dia: 3, coins: 300, stone: 20, wood: 20, bronze: 15 }];
+  const ICO = { coins: '<i class="rcoin"></i>', stone: '<i class="rst"></i>', wood: '<i class="rwd"></i>', bronze: '<i class="rbr"></i>', dia: '💎' };
+  const rtxt = (r) => Object.keys(r).map((k) => '<span>' + ICO[k] + '<b>' + r[k] + '</b></span>').join('');
+
+  const Q = BOA.Quests = {
+    m() { const H = BOA.Hub, m = H.meta(); m.q = m.q || {}; return m; },
+    // новый день — новые 3 задания
+    ensure() {
+      const m = this.m(), q = m.q, today = day(); if (q.day === today && q.list) return q;
+      const bi = BOA.Hub.bi(), pool = POOL.slice().sort(() => Math.random() - 0.5), pick = [];
+      for (const p of pool) { if (pick.length >= 3) break; if (p.id === 'catch' && !BOA.MDL) continue; pick.push(p); }
+      q.day = today; q.bonus = 0; q.list = pick.map((p) => ({ id: p.id, k: p.k, t: p.t, need: Math.max(1, Math.round(p.n + p.s * bi * (p.n > 5 ? 1 : 1))), have: 0, got: 0, r: Object.assign({}, p.r) }));
+      q.list.forEach((x) => { const f = 1 + bi * 0.12; Object.keys(x.r).forEach((k) => { if (k !== 'dia') x.r[k] = Math.round(x.r[k] * f); }); });
+      return q;
+    },
+    add(k, v, max) { const q = this.ensure(); let done = []; q.list.forEach((x) => { if (x.k !== k || x.have >= x.need) return; x.have = max ? Math.max(x.have, v) : x.have + v; if (x.have >= x.need) { x.have = x.need; done.push(x); } }); this.badge(); return done; },
+    // после забега: возвращает выполненные задания для экрана итогов
+    onRun(S, caught) {
+      let d = [];
+      d = d.concat(this.add('best', Math.floor(S.dist), true), this.add('dist', Math.floor(S.dist)), this.add('coins', S.rawCoins || S.coins), this.add('stone', S.stone), this.add('wood', S.wood), this.add('bronze', S.bronze),
+        this.add('caught', caught || 0), this.add('jumps', S.jumps || 0), this.add('slides', S.slides || 0), this.add('chests', S.chests || 0), this.add('runs', 1));
+      try { BOA.game.save(); } catch (e) { /* ок */ } return d;
+    },
+    ready() { const q = this.ensure(); return q.list.filter((x) => x.have >= x.need && !x.got).length + (this.allDone() && !q.bonus ? 1 : 0); },
+    allDone() { const q = this.ensure(); return q.list.every((x) => x.got); },
+    give(r) { const m = this.m(), g = BOA.game; Object.keys(r).forEach((k) => { if (k === 'coins') g.economy.add(r[k]); else if (k === 'dia') m.dia += r[k]; else m.mat[k] += r[k]; }); try { BOA.Audio.chest(); } catch (e) { /* ок */ } g.save(); try { BOA.Hub.paint(); } catch (e) { /* ок */ } },
+    badge() { const b = $('hb-qb'); if (!b) return; const n = this.ready(); b.hidden = !n; b.textContent = n; },
+
+    /* ---------- окно заданий ---------- */
+    open() {
+      const q = this.ensure(), box = this.box(); let h = '<div class="qz-c"><button class="qz-x" data-a="x">✕</button><h2>Задания на сегодня</h2><p class="qz-s">Новые — каждый день. Выполни все три — получишь сундук.</p>';
+      q.list.forEach((x, i) => { const ok = x.have >= x.need, p = Math.min(1, x.have / x.need);
+        h += '<div class="qz-q' + (x.got ? ' got' : ok ? ' ok' : '') + '"><div class="qz-t">' + x.t.replace('{n}', x.need) + '</div><div class="qz-bar"><i style="width:' + (p * 100).toFixed(0) + '%"></i><b>' + x.have + ' / ' + x.need + '</b></div><div class="qz-r">' + rtxt(x.r) + '</div>' +
+          (x.got ? '<button class="qz-b" disabled>✓ Получено</button>' : ok ? '<button class="qz-b go" data-a="q' + i + '">Забрать</button>' : '<button class="qz-b" data-a="run">Бежать</button>') + '</div>'; });
+      const all = this.allDone(); h += '<div class="qz-big' + (all && !q.bonus ? ' ok' : '') + '"><span class="qz-ch">🧰</span><div><b>Сундук за все задания</b><div class="qz-r">' + rtxt({ dia: 2, coins: 150 }) + '</div></div>' + (q.bonus ? '<button class="qz-b" disabled>✓</button>' : '<button class="qz-b' + (all ? ' go' : '') + '" data-a="big"' + (all ? '' : ' disabled') + '>' + (all ? 'Открыть' : '🔒') + '</button>') + '</div></div>';
+      box.innerHTML = h; box.hidden = false;
+      box.querySelectorAll('[data-a]').forEach((b) => { b.onclick = () => { const a = b.dataset.a;
+        if (a === 'x') { box.hidden = true; return; }
+        if (a === 'run') { box.hidden = true; try { BOA.Runner.open(BOA.game, BOA.Hub.BIOMES[BOA.Hub.bi()].id); } catch (e) { /* ок */ } return; }
+        if (a === 'big') { q.bonus = 1; this.give({ dia: 2, coins: 150 }); this.pop('Сундук открыт!', { dia: 2, coins: 150 }); }
+        else { const x = q.list[+a.slice(1)]; if (x && !x.got && x.have >= x.need) { x.got = 1; this.give(x.r); } }
+        this.badge(); this.open(); }; });
+    },
+    box() { let b = $('qz'); if (!b) { b = document.createElement('div'); b.id = 'qz'; b.className = 'qz'; b.hidden = true; (BOA.Hub.root || document.body).appendChild(b); } return b; },
+
+    /* ---------- сундук за вход ---------- */
+    login() {
+      const m = this.m(), d = m.daily = m.daily || { last: '', streak: 0 }, today = day(); if (d.last === today) return false;
+      const y = new Date(); y.setDate(y.getDate() - 1); const yest = y.getFullYear() + '-' + (y.getMonth() + 1) + '-' + y.getDate();
+      const streak = d.last === yest ? d.streak + 1 : 1, idx = (streak - 1) % 7, r = LOGIN[idx];
+      const box = this.box(); let strip = ''; for (let i = 0; i < 7; i++) strip += '<i class="' + (i < idx ? 'p' : i === idx ? 'c' : '') + '"><small>День ' + (i + 1) + '</small>' + (i === 6 ? '🧰' : i < idx ? '✓' : '🎁') + '</i>';
+      box.innerHTML = '<div class="qz-c lg"><h2>Подарок за вход</h2><p class="qz-s">Заходи каждый день — подарки растут. На 7-й день большой сундук!</p><div class="lg-days">' + strip + '</div>' +
+        '<button class="lg-chest" data-a="open"><span>🧰</span></button><p class="qz-s lg-tap">Нажми на сундук</p><div class="lg-r" hidden>' + rtxt(r) + '</div><button class="hb-go lg-ok" data-a="ok" hidden>ЗАБРАТЬ</button></div>';
+      box.hidden = false;
+      box.querySelector('[data-a="open"]').onclick = (e) => { const c = e.currentTarget; if (c.classList.contains('op')) return; c.classList.add('op'); try { BOA.Audio.chest(); } catch (er) { /* ок */ } setTimeout(() => { box.querySelector('.lg-r').hidden = false; box.querySelector('.lg-ok').hidden = false; box.querySelector('.lg-tap').hidden = true; }, 650); };
+      box.querySelector('[data-a="ok"]').onclick = () => { d.last = today; d.streak = streak; this.give(r); box.hidden = true; this.badge(); };
+      return true;
+    },
+    pop(t, r) { try { BOA.game.ui.toast(t); } catch (e) { /* ок */ } },
+    // зайти в стройку: сначала подарок за вход, потом подсветка заданий
+    check() { if (BOA.Runner && BOA.Runner._cur) return; if (!this.login()) this.badge(); else this.badge(); }
+  };
+
+  const css = document.createElement('style'); css.textContent =
+    '.hb-q{position:relative}.hb-q i{position:absolute;right:-4px;top:-4px;min-width:18px;height:18px;border-radius:9px;background:#e8402a;color:#fff;font:900 11px/18px var(--font);font-style:normal;text-align:center;box-shadow:0 0 0 2px #fff}.hb-q i[hidden]{display:none}' +
+    '.qz{position:absolute;inset:0;z-index:6;display:grid;place-items:center;padding:14px;background:rgba(20,40,60,.6);pointer-events:auto}.qz[hidden]{display:none}' +
+    '.qz-c{position:relative;width:min(380px,100%);max-height:92%;overflow:auto;display:grid;gap:10px;padding:18px 14px 14px;border-radius:26px;background:#fff6dc;color:#2a3a5a;box-shadow:0 8px 0 #e0c88a,0 14px 26px rgba(0,0,0,.3)}.qz-c h2{margin:0;text-align:center;font:900 24px var(--font)}.qz-s{margin:0;text-align:center;font:800 12px var(--font);opacity:.7}' +
+    '.qz-x{position:absolute;right:10px;top:10px;width:36px;height:36px;border:0;border-radius:50%;font:900 16px var(--font);color:#7a2a00;background:radial-gradient(circle at 35% 30%,#ffd27a,#ff8a1a 70%);box-shadow:0 3px 0 #a83a00}' +
+    '.qz-q{display:grid;grid-template-columns:1fr auto;gap:5px 8px;align-items:center;padding:10px;border-radius:16px;background:#fff;box-shadow:0 3px 0 rgba(0,0,0,.1)}.qz-q.ok{box-shadow:0 0 0 3px #ffd04a}.qz-q.got{opacity:.6}.qz-t{font:900 14px var(--font)}' +
+    '.qz-bar{grid-column:1;position:relative;height:16px;border-radius:9px;background:#e8e0cc;overflow:hidden}.qz-bar i{display:block;height:100%;background:linear-gradient(90deg,#8fd96a,#4f9a54)}.qz-bar b{position:absolute;inset:0;display:grid;place-items:center;font:900 10px var(--font);color:#2a3a5a}' +
+    '.qz-r{display:flex;gap:8px;font:900 13px var(--font)}.qz-r span{display:flex;align-items:center;gap:3px}.qz-q .qz-r{grid-column:1}.qz-q .qz-b{grid-column:2;grid-row:1/4}' +
+    '.qz-b{min-width:86px;padding:9px 10px;border:0;border-radius:13px;font:900 14px var(--font);color:#4a5a7a;background:#e8e0cc;box-shadow:0 3px 0 #c8bc9c}.qz-b.go{color:#fff;background:linear-gradient(180deg,#8be08f,#3fae55);box-shadow:0 4px 0 #22743a;animation:qzp 1s ease-in-out infinite}@keyframes qzp{50%{transform:scale(1.06)}}' +
+    '.qz-big{display:flex;align-items:center;gap:10px;padding:10px;border-radius:16px;background:linear-gradient(180deg,#ffe8a8,#ffd070)}.qz-big>div{flex:1}.qz-big b{font:900 14px var(--font)}.qz-ch{font-size:34px}.qz-big.ok .qz-ch{animation:lgsh .5s infinite}' +
+    '.lg{justify-items:center}.lg-days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;width:100%}.lg-days i{display:grid;justify-items:center;gap:2px;padding:5px 0;border-radius:10px;background:#fff;font-style:normal;font-size:16px}.lg-days i small{font:900 8px var(--font);opacity:.6}.lg-days i.p{background:#c8f0b0}.lg-days i.c{background:#ffd04a;box-shadow:0 0 0 2px #ff8a1a}' +
+    '.lg-chest{border:0;background:none;font-size:96px;line-height:1;padding:6px;animation:lgsh 1.2s ease-in-out infinite}.lg-chest.op{animation:lgop .65s cubic-bezier(.2,1.7,.4,1) forwards}@keyframes lgsh{0%,60%,100%{transform:rotate(0)}70%{transform:rotate(-9deg)}80%{transform:rotate(9deg)}90%{transform:rotate(-5deg)}}@keyframes lgop{40%{transform:scale(.8)}100%{transform:scale(1.25);filter:drop-shadow(0 0 22px #ffd04a)}}' +
+    '.lg-r{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;font:900 24px var(--font);animation:hbpop .5s cubic-bezier(.2,1.7,.4,1)}.lg-r[hidden]{display:none}.lg-r span{display:flex;align-items:center;gap:4px}.lg-r i{width:22px;height:22px}.lg-ok{width:100%}.lg-ok[hidden]{display:none}';
+  document.head.appendChild(css);
+})(window.BOA = window.BOA || {});
 </script>
 </body>
 </html>

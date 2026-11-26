@@ -7417,7 +7417,14 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     mexico:   { sky: 0x46aee8, hor: 0xffd7a4, fog: 0xf2d6ac, ground: 0x6aaa46, road: 0xc08e5e, edge: 0xf0d6a8, pave: 'bricks', name: 'Мексика' },
     germany:  { sky: 0x76b6ea, hor: 0xe8f0fa, fog: 0xdde8f0, ground: 0x72ac4c, road: 0xbaac96, edge: 0xeee6d6, pave: 'cobble', lamps: true, name: 'Германия' },
     cambodia: { sky: 0x58c4e0, hor: 0xffe8b8, fog: 0xdcecc0, ground: 0x4ea340, road: 0xc9a56c, edge: 0xf0e2b8, pave: 'slabs', name: 'Камбоджа' },
-    russia:   { sky: 0x9acbee, hor: 0xf0f6fb, fog: 0xe6eff7, ground: 0xf2f7fc, road: 0xc4cedb, edge: 0xffffff, pave: 'snow', lamps: true, name: 'Россия' }
+    russia:   { sky: 0x9acbee, hor: 0xf0f6fb, fog: 0xe6eff7, ground: 0xf2f7fc, road: 0xc4cedb, edge: 0xffffff, pave: 'snow', lamps: true, name: 'Россия' },
+    rocks:    { sky: 0x7aaad0, hor: 0xeee2c8, fog: 0xe0d6c0, ground: 0xa09a7a, road: 0x958d7c, edge: 0x7a7468, pave: 'gravel', hills: [0x9a9484, 0x8a8474], step: 'stone', amb: [0.06, 0xd8ccb0], name: 'Каменные холмы' },
+    savanna:  { sky: 0x5ab0e8, hor: 0xffe2a0, fog: 0xf6dca0, ground: 0xd9b048, road: 0xc08a4a, edge: 0x8a5a2a, pave: 'sand', hills: [0xd0a050, 0xb88a40], step: 'sand', amb: [0.08, 0xffe080], name: 'Золотая саванна' },
+    delta:    { sky: 0x8ab0c0, hor: 0xe6eef0, fog: 0xd6e2e6, ground: 0x5a8a6a, water: 0x5a8a98, road: 0x7a6a52, edge: 0x4a3a2a, planks: true, hills: [0x8aa4aa, 0x7a949a], step: 'wood', amb: [0.25, 0xffffff], fogNear: 22, name: 'Туманная дельта' },
+    ash:      { sky: 0x4a3a40, hor: 0xd88a5a, fog: 0x9a6a5a, ground: 0x3a3030, water: 0xff5a10, lava: true, road: 0x5a4a46, edge: 0x2a2222, pave: 'cracks', hills: [0x3a2e2e, 0x2e2424], step: 'stone', amb: [0.35, 0xff7a20], name: 'Выжженные земли' },
+    roots:    { sky: 0x6aa07a, hor: 0xd8e8b0, fog: 0xa8c890, ground: 0x3e6a32, road: 0x6a5032, edge: 0x4a3420, pave: 'moss', hills: [0x3e6a3a, 0x325a30], step: 'sand', amb: [0.18, 0xd8ff8a], name: 'Лес древних корней' },
+    bloom:    { sky: 0x4ac0d8, hor: 0xffe0f0, fog: 0xf0d8e8, ground: 0x4aa850, road: 0xc8a070, edge: 0xe05a8a, pave: 'slabs', hills: [0x3e9a50, 0x5ab060], step: 'sand', amb: [0.2, 0xff9ad0], name: 'Цветочные джунгли' },
+    tundra:   { sky: 0x3a5a8a, hor: 0xbfe8f0, fog: 0xcfe4f0, ground: 0xe8f4fc, road: 0x86b4d0, edge: 0xf6fbff, pave: 'ice', hills: [0xd8e8f4, 0xc0d8ea], step: 'snow', amb: [0.3, 0xffffff], aurora: true, name: 'Ледяная тундра' }
   };
   const LINES = {
     start: ['Ноги, не подведите.', 'Побежали. Только без героизма.', 'Я не бегаю. Но ради камней — ладно.'],
@@ -7483,6 +7490,49 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       () => grp(cyl(0.14, 0.2, 1.0, 0x6a4a30, 0, 0.5, 0), cone(1.4, 2.0, 0xe9f1f6, 0, 2.0, 0, 8), cone(1.1, 1.6, 0xf7fbfd, 0, 3.0, 0, 8)),
       () => grp(cyl(0.7, 0.8, 3.0, 0xc9573a, 0, 1.5, 0, 10), sph(1.0, 0x2f7a5a, 0, 3.7, 0, 1.15), cone(0.2, 0.8, 0xffd04a, 0, 4.9, 0, 6)),
       () => grp(box(2.4, 1.6, 2.2, 0x9a6a44, 0, 0.8, 0), box(2.8, 0.4, 2.6, 0xf7fbfd, 0, 1.8, 0), cone(2.1, 0.9, 0xf7fbfd, 0, 2.4, 0, 4))
+    ],
+    rocks: [
+      () => grp(sph(1.4, 0x9a9284, 0, 0.7, 0, 0.7), sph(0.9, 0xaaa294, 1.0, 0.4, 0.4, 0.7), sph(0.5, 0x8a8478, -0.9, 0.3, 0.3, 0.8)),
+      () => grp(box(0.8, 3.2, 0.6, 0x8a8478, 0, 1.6, 0), box(0.9, 0.3, 0.7, 0x9a9284, 0, 3.3, 0)),
+      () => grp(cyl(0.1, 0.16, 1.4, 0x5a4028, 0, 0.7, 0, 6), cone(0.9, 1.6, 0x4e7a42, 0, 2.0, 0, 7), cone(0.7, 1.2, 0x5a8a4a, 0, 2.7, 0, 7)),
+      () => grp(sph(0.6, 0x8aa04a, 0, 0.3, 0, 0.6), sph(0.45, 0x9ab05a, 0.5, 0.25, 0.2, 0.6)),
+      () => grp(box(2.0, 0.6, 1.4, 0xa8a090, 0, 0.3, 0), box(1.4, 0.6, 1.2, 0xb4ac9c, 0.2, 0.9, 0), box(0.8, 0.5, 0.8, 0x9a9284, -0.1, 1.45, 0.1))
+    ],
+    savanna: [
+      () => grp(cyl(0.16, 0.26, 2.6, 0x7a5228, 0, 1.3, 0, 7), cyl(0.06, 0.1, 1.4, 0x7a5228, 0.5, 2.6, 0, 5), cyl(2.0, 1.6, 0.5, 0x6a9a3a, 0, 3.2, 0, 10)),
+      () => grp(cyl(0.9, 1.2, 3.0, 0x9a7a5a, 0, 1.5, 0, 10), cyl(0.12, 0.2, 1.4, 0x8a6a4a, 0.6, 3.4, 0, 5), cyl(0.12, 0.2, 1.2, 0x8a6a4a, -0.5, 3.3, 0.3, 5), sph(0.8, 0x6a9a3a, 0, 4.0, 0, 0.6)),
+      () => grp(cone(0.7, 2.2, 0xb8804a, 0, 1.1, 0, 7), cone(0.4, 1.4, 0xc08a50, 0.6, 0.7, 0.2, 6)),
+      () => grp(cyl(0.03, 0.04, 1.2, 0xe0b850, -0.3, 0.6, 0, 4), cyl(0.03, 0.04, 1.5, 0xd8b048, 0, 0.75, 0.2, 4), cyl(0.03, 0.04, 1.0, 0xe8c060, 0.3, 0.5, -0.1, 4), cyl(0.03, 0.04, 1.3, 0xd0a840, 0.15, 0.65, -0.3, 4))
+    ],
+    delta: [
+      () => grp(cyl(0.04, 0.05, 2.0, 0x8a9a5a, -0.3, 1.0, 0, 4), cyl(0.04, 0.05, 2.4, 0x7a8a4a, 0, 1.2, 0.2, 4), cyl(0.04, 0.05, 1.8, 0x8a9a5a, 0.3, 0.9, -0.1, 4), cyl(0.09, 0.09, 0.4, 0x6a4a2a, 0, 2.5, 0.2, 6)),
+      () => { const g = grp(cyl(0.2, 0.3, 2.4, 0x5a4a38, 0, 1.6, 0, 7), sph(1.4, 0x4e7a5a, 0, 3.3, 0, 0.7)); for (let k = 0; k < 4; k++) { const r = cyl(0.06, 0.1, 1.2, 0x5a4a38, Math.cos(k * 1.6) * 0.5, 0.4, Math.sin(k * 1.6) * 0.5, 5); r.rotation.z = Math.cos(k * 1.6) * 0.6; r.rotation.x = -Math.sin(k * 1.6) * 0.6; g.add(r); } return g; },
+      () => grp(cyl(0.7, 0.7, 0.04, 0x6aa86a, 0, 0.02, 0, 10), cyl(0.5, 0.5, 0.04, 0x7ab87a, 1.0, 0.02, 0.6, 10), sph(0.15, 0xffe0f0, 0.2, 0.12, 0.1, 0.6)),
+      () => grp(box(1.8, 0.2, 0.7, 0x6a4a30, 0, 0.1, 0), cone(0.35, 0.5, 0x6a4a30, 1.05, 0.1, 0, 4))
+    ],
+    ash: [
+      () => grp(cone(0.5, 2.4, 0x1e1a22, 0, 1.2, 0, 5), cone(0.3, 1.5, 0x2a2430, 0.5, 0.75, 0.2, 5)),
+      () => grp(cyl(0.08, 0.16, 2.6, 0x2a2020, 0, 1.3, 0, 5), cyl(0.04, 0.07, 1.0, 0x2a2020, 0.4, 2.1, 0, 4), cyl(0.04, 0.07, 0.9, 0x2a2020, -0.35, 1.8, 0.1, 4)),
+      () => grp(cone(2.2, 3.4, 0x3a2e2e, 0, 1.7, 0, 8), mesh(new T.CylinderGeometry(0.42, 0.42, 0.1, 8), 0xff6a10, 0, 3.35, 0, { emissive: 0xff5a00, emissiveIntensity: 1.2 })),
+      () => grp(sph(0.9, 0x4a3a36, 0, 0.4, 0, 0.6), mesh(new T.SphereGeometry(0.3, 8, 6), 0xff8a30, 0.5, 0.3, 0.4, { emissive: 0xff6a10, emissiveIntensity: 1.0 }))
+    ],
+    roots: [
+      () => { const g = grp(cyl(0.9, 1.4, 6.0, 0x5a3a22, 0, 3.0, 0, 9), sph(2.6, 0x3a7a3a, 0, 6.8, 0, 0.8)); for (let k = 0; k < 5; k++) { const a = k * 1.25, r = cyl(0.14, 0.3, 1.8, 0x5a3a22, Math.cos(a) * 1.2, 0.3, Math.sin(a) * 1.2, 5); r.rotation.z = Math.cos(a) * 1.1; r.rotation.x = -Math.sin(a) * 1.1; g.add(r); } return g; },
+      () => grp(cyl(0.1, 0.14, 0.7, 0xf0e6d0, 0, 0.35, 0, 7), sph(0.55, 0xd9503a, 0, 0.75, 0, 0.6), cyl(0.07, 0.1, 0.5, 0xf0e6d0, 0.6, 0.25, 0.2, 6), sph(0.35, 0xe8c050, 0.6, 0.55, 0.2, 0.6)),
+      () => grp(sph(1.0, 0x3e8a3a, 0, 0.5, 0, 0.6), sph(0.7, 0x4a9a44, 0.7, 0.4, 0.3, 0.6)),
+      () => { const g = grp(cyl(0.35, 0.45, 3.2, 0x4a3020, 0, 0.0, 0, 8)); g.children[0].rotation.z = Math.PI / 2; g.children[0].position.y = 0.35; g.add(sph(0.3, 0x6aa84a, 0.6, 0.75, 0, 0.6)); return g; }
+    ],
+    bloom: [
+      () => grp(cyl(0.12, 0.16, 1.4, 0x4a8a3a, 0, 0.7, 0, 6), sph(0.9, 0xff5a9a, 0, 1.6, 0, 0.45), sph(0.35, 0xffd040, 0, 1.8, 0, 0.7)),
+      () => grp(cyl(0.1, 0.14, 1.0, 0x4a8a3a, 0, 0.5, 0, 6), sph(0.7, 0xa060e0, 0, 1.2, 0, 0.45), sph(0.25, 0xfff0a0, 0, 1.38, 0, 0.7)),
+      () => grp(cyl(0.14, 0.2, 3.2, 0x8a6a44, 0, 1.6, 0), cone(1.6, 0.5, 0x3fae52, 0.9, 3.2, 0, 6), cone(1.6, 0.5, 0x3fae52, -0.9, 3.2, 0, 6), cone(1.6, 0.5, 0x4abc5c, 0, 3.4, 0.9, 6)),
+      () => grp(sph(0.9, 0x3e9a46, 0, 0.6, 0, 0.8), sph(0.2, 0xff7ab0, 0.4, 1.2, 0.5, 1), sph(0.2, 0xffe060, -0.3, 1.1, 0.6, 1), sph(0.2, 0xff7ab0, 0.1, 1.3, -0.5, 1))
+    ],
+    tundra: [
+      () => grp(cone(0.5, 2.6, 0x9ae0f0, 0, 1.3, 0, 5), cone(0.35, 1.8, 0xb8f0ff, 0.5, 0.9, 0.2, 5), cone(0.25, 1.2, 0x8ad8ea, -0.4, 0.6, 0.1, 5)),
+      () => grp(sph(1.2, 0xf6fbff, 0, 0.4, 0, 0.5), sph(0.8, 0xffffff, 0.9, 0.3, 0.3, 0.5)),
+      () => grp(cyl(0.14, 0.2, 1.0, 0x6a4a30, 0, 0.5, 0), cone(1.2, 1.8, 0x3a6a5a, 0, 1.8, 0, 7), cone(1.0, 0.5, 0xffffff, 0, 2.5, 0, 7), cone(0.8, 1.2, 0x3a6a5a, 0, 2.9, 0, 7)),
+      () => grp(box(1.6, 1.2, 0.9, 0xd8eef8, 0, 0.6, 0), box(1.2, 0.8, 0.8, 0xe8f6ff, 0.3, 1.5, 0))
     ]
   };
 
@@ -7528,7 +7578,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     const r = this.r = new T.WebGLRenderer({ canvas: this.cv, antialias: true, powerPreference: 'high-performance' });
     r.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2)); r.setSize(w, h, false);
     const B = BIOMES[this.biome];
-    const sc = this.scene = new T.Scene(); sc.background = new T.Color(B.hor); sc.fog = new T.Fog(B.fog, 38, 130);
+    const sc = this.scene = new T.Scene(); sc.background = new T.Color(B.hor); sc.fog = new T.Fog(B.fog, B.fogNear || 38, B.fogNear ? 100 : 130);
     this.cam = new T.PerspectiveCamera(60, w / h, 0.1, 160);
     sc.add(new T.HemisphereLight(0xffffff, new T.Color(B.ground).lerp(new T.Color(0xffffff), 0.3), 0.82));
     const sun = this.sun = new T.DirectionalLight(0xfff4dc, 0.6); sun.position.set(-5, 11, 6); sc.add(sun);
@@ -7557,12 +7607,16 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     if (B.pave === 'bricks') { cx.lineWidth = 2; cx.strokeStyle = 'rgba(90,40,20,.4)'; for (let y = 0; y < 256; y += 16) for (let x = ((y / 16) % 2) * 16 - 16; x < 128; x += 32) cx.strokeRect(x, y, 32, 16); }
     if (B.pave === 'slabs') { cx.lineWidth = 3; for (let y = 0; y < 256; y += 40) for (let x = ((y / 40) % 2) * 20 - 20; x < 128; x += 40) { cx.strokeStyle = 'rgba(40,50,30,.4)'; cx.strokeRect(x, y, 40, 40); cx.fillStyle = 'rgba(70,130,60,.35)'; cx.fillRect(x + rnd(3, 28), y + rnd(3, 28), rnd(5, 10), 3); } }
     if (B.pave === 'snow') { for (let k = 0; k < 140; k++) { cx.fillStyle = 'rgba(255,255,255,.55)'; cx.beginPath(); cx.arc(rnd(0, 128), rnd(0, 256), rnd(1, 3), 0, 7); cx.fill(); } }
+    if (B.pave === 'gravel') { for (let k = 0; k < 260; k++) { cx.fillStyle = Math.random() < .5 ? 'rgba(255,255,255,.18)' : 'rgba(40,36,30,.25)'; cx.beginPath(); cx.arc(rnd(0, 128), rnd(0, 256), rnd(1, 3.2), 0, 7); cx.fill(); } for (let y = 0; y < 256; y += 64) { cx.fillStyle = 'rgba(60,54,44,.25)'; cx.fillRect(rnd(10, 60), y + rnd(0, 30), rnd(20, 50), rnd(10, 18)); } }
+    if (B.pave === 'cracks') { cx.fillStyle = 'rgba(0,0,0,.25)'; cx.fillRect(0, 0, 128, 256); for (let k = 0; k < 7; k++) { let x = rnd(10, 118), y = rnd(0, 256); cx.lineWidth = rnd(2, 4); cx.strokeStyle = 'rgba(255,110,20,.85)'; cx.shadowColor = '#ff6a10'; cx.shadowBlur = 6; cx.beginPath(); cx.moveTo(x, y); for (let j = 0; j < 5; j++) { x += rnd(-16, 16); y += rnd(8, 22); cx.lineTo(x, y); } cx.stroke(); } cx.shadowBlur = 0; }
+    if (B.pave === 'moss') { for (let k = 0; k < 18; k++) { cx.fillStyle = 'rgba(70,130,50,.35)'; cx.beginPath(); cx.ellipse(rnd(0, 128), rnd(0, 256), rnd(6, 18), rnd(4, 10), 0, 0, 7); cx.fill(); } for (let k = 0; k < 4; k++) { const y = rnd(0, 256); cx.lineWidth = rnd(5, 9); cx.strokeStyle = 'rgba(60,36,18,.55)'; cx.beginPath(); cx.moveTo(-5, y); cx.bezierCurveTo(40, y + rnd(-20, 20), 80, y + rnd(-20, 20), 133, y + rnd(-10, 10)); cx.stroke(); } }
+    if (B.pave === 'ice') { cx.fillStyle = 'rgba(255,255,255,.18)'; cx.fillRect(0, 0, 128, 256); cx.lineWidth = 1.5; cx.strokeStyle = 'rgba(255,255,255,.7)'; for (let k = 0; k < 9; k++) { let x = rnd(0, 128), y = rnd(0, 256); cx.beginPath(); cx.moveTo(x, y); for (let j = 0; j < 3; j++) { x += rnd(-20, 20); y += rnd(-20, 20); cx.lineTo(x, y); } cx.stroke(); } for (let k = 0; k < 6; k++) { cx.fillStyle = 'rgba(255,255,255,.35)'; cx.fillRect(rnd(0, 110), rnd(0, 250), rnd(10, 26), 2); } }
     if (B.planks) { for (let y = 0; y < 256; y += 21) { cx.fillStyle = 'rgba(40,24,10,.6)'; cx.fillRect(0, y, 128, 3); cx.fillStyle = 'rgba(255,230,190,.12)'; cx.fillRect(0, y + 3, 128, 2); for (let k = 0; k < 3; k++) { cx.fillStyle = 'rgba(40,24,10,.45)'; cx.beginPath(); cx.arc(rnd(8, 120), y + rnd(8, 16), rnd(1.5, 3), 0, 7); cx.fill(); } } }
     const rt = this.roadTex = new T.CanvasTexture(cvs); rt.wrapS = rt.wrapT = T.RepeatWrapping; rt.repeat.set(1, 28); rt.anisotropy = 4;
     const road = new T.Mesh(new T.PlaneGeometry(roadW, 220), new T.MeshLambertMaterial({ map: rt })); road.rotation.x = -Math.PI / 2; road.position.set(0, 0, -90); sc.add(road);
     for (const s of [-1, 1]) {
       const curb = new T.Mesh(new T.BoxGeometry(0.35, 0.22, 220), M(B.edge)); curb.position.set(s * (roadW / 2 + 0.17), 0.1, -90); sc.add(curb);
-      const gr = new T.Mesh(new T.PlaneGeometry(60, 220), M(B.water || B.ground, B.water ? { transparent: true, opacity: 0.95 } : undefined)); gr.rotation.x = -Math.PI / 2; gr.position.set(s * (roadW / 2 + 30.3), -0.03, -90); sc.add(gr);
+      const gr = new T.Mesh(new T.PlaneGeometry(60, 220), M(B.water || B.ground, B.lava ? { emissive: 0xff4a00, emissiveIntensity: 0.75 } : B.water ? { transparent: true, opacity: 0.95 } : undefined)); gr.rotation.x = -Math.PI / 2; gr.position.set(s * (roadW / 2 + 30.3), -0.03, -90); sc.add(gr);
     }
     if (B.dashes) for (const l of [-1, 1]) for (let i = 0; i < 20; i++) { const d = new T.Mesh(new T.PlaneGeometry(0.12, 2.2), M(B.edge, { transparent: true, opacity: 0.8 })); d.rotation.x = -Math.PI / 2; d.position.set(l * LANE * 0.5 * 1, 0.02, -i * 7); sc.add(d); this.dash.push(d); }
     // декорации по бокам
@@ -7573,9 +7627,10 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     }
     if (B.lamps) for (let i = 0; i < 9; i++) for (const s of [-1, 1]) { const lp = grp(cyl(0.06, 0.09, 2.4, 0x5a4028, 0, 1.2, 0, 6), mesh(new T.SphereGeometry(0.22, 8, 6), 0xfff0b0, 0, 2.5, 0, { emissive: 0xffd060, emissiveIntensity: 1.1 })); lp.position.set(s * (roadW / 2 + 0.7), 0, -i * 17 - 4); sc.add(lp); this.props.push(lp); }
     // дальние холмы
-    for (let i = 0; i < 7; i++) { const h = cone(14 + i * 2.5, 15 + (i % 3) * 5, i % 2 ? 0x9eb78f : 0x87a77a, -60 + i * 20, 5.5, -110, 6); h.material = M(i % 2 ? 0xa8c19a : 0x92b085, { fog: true }); sc.add(h); }
+    for (let i = 0; i < 7; i++) { const hc = B.hills ? B.hills[i % 2] : i % 2 ? 0xa8c19a : 0x92b085, h = cone(14 + i * 2.5, 15 + (i % 3) * 5, hc, -60 + i * 20, 5.5, -110, 6); h.material = M(hc, { fog: true }); sc.add(h); }
+    if (B.aurora) for (let k = 0; k < 3; k++) { const a = new T.Mesh(new T.PlaneGeometry(150, 14, 24, 1), new T.MeshBasicMaterial({ color: [0x5affc0, 0x7ad0ff, 0xb08aff][k], transparent: true, opacity: 0.28, fog: false, side: T.DoubleSide, depthWrite: false })); const pa = a.geometry.attributes.position; for (let j = 0; j < pa.count; j++) pa.setY(j, pa.getY(j) + Math.sin(pa.getX(j) * 0.06 + k) * 5); a.position.set(0, 42 + k * 6, -105 + k * 4); sc.add(a); }
     // облака
-    this.clouds = []; for (let i = 0; i < 9; i++) { const c = grp(sph(3, 0xffffff, 0, 0, 0, 0.55), sph(2.2, 0xffffff, 3, -0.3, 0, 0.5), sph(2.4, 0xffffff, -3, -0.2, 0.3, 0.5)); c.children.forEach((m) => { m.material = new T.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.92, fog: false }); }); c.position.set(rnd(-70, 70), rnd(24, 38), rnd(-100, -30)); c.userData.v = rnd(0.4, 1.2); sc.add(c); this.clouds.push(c); }
+    this.clouds = []; for (let i = 0; i < 9; i++) { const c = grp(sph(3, 0xffffff, 0, 0, 0, 0.55), sph(2.2, 0xffffff, 3, -0.3, 0, 0.5), sph(2.4, 0xffffff, -3, -0.2, 0.3, 0.5)); c.children.forEach((m) => { m.material = new T.MeshBasicMaterial({ color: B.lava ? 0x5a4646 : 0xffffff, transparent: true, opacity: B.lava ? 0.8 : 0.92, fog: false }); }); c.position.set(rnd(-70, 70), rnd(24, 38), rnd(-100, -30)); c.userData.v = rnd(0.4, 1.2); sc.add(c); this.clouds.push(c); }
     // частицы
     const N = 260; this.pn = N; const pg = new T.BufferGeometry();
     this.pp = new Float32Array(N * 3); this.pc = new Float32Array(N * 3); this.pv = new Float32Array(N * 3); this.pl = new Float32Array(N);
@@ -7693,6 +7748,46 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       if (type === 'beam') { const g = grp(box(W * 1.0, 0.4, 0.5, 0x8a5a34, 0, 1.55, 0), box(W * 1.02, 0.18, 0.56, 0xffffff, 0, 1.8, 0), box(0.3, 1.7, 0.35, 0x8a5a34, -W * 0.44, 0.85, 0), box(0.3, 1.7, 0.35, 0x8a5a34, W * 0.44, 0.85, 0));
         for (let k = 0; k < 6; k++) g.add(cone(0.06, 0.35, 0xdff4ff, -W * 0.35 + k * W * 0.14, 1.2, 0.2, 5)); g.children.slice(-6).forEach((c) => { c.rotation.x = Math.PI; }); return g; }
     }
+    if (bio === 'rocks') {
+      if (type === 'crate') return grp(sph(0.75, 0x9a9284, 0, 0.55, 0, 0.75), sph(0.45, 0xaaa294, 0.45, 0.85, 0.2, 0.8), sph(0.3, 0x8a8478, -0.4, 0.3, 0.45, 0.8));
+      if (type === 'beam') { const g = grp(box(0.55, 1.7, 0.6, 0x8a8478, -W * 0.42, 0.85, 0), box(0.55, 1.7, 0.6, 0x8a8478, W * 0.42, 0.85, 0), box(W * 1.05, 0.5, 0.7, 0xa8a090, 0, 1.55, 0)); g.add(sph(0.2, 0x8aa04a, 0.3, 1.85, 0.2, 0.6)); return g; }
+      if (type === 'wall') return grp(box(W * 0.9, 2.4, 0.9, 0x8a8478, 0, 1.2, 0), sph(0.7, 0x9a9284, 0.2, 2.5, 0, 0.6), box(0.5, 0.5, 0.06, 0xd9823a, -0.2, 1.4, 0.48));
+      if (type === 'hurdle') { const g = grp(cyl(0.32, 0.36, W * 0.96, 0x9a9284, 0, 0.42, 0, 7)); g.children[0].rotation.z = Math.PI / 2; return g; }
+    }
+    if (bio === 'savanna') {
+      if (type === 'crate') { const g = grp(cone(0.8, 1.3, 0xb8804a, 0, 0.65, 0, 8), cone(0.45, 0.8, 0xc08a50, 0.5, 0.4, 0.3, 7)); return g; }
+      if (type === 'beam') return grp(cyl(0.12, 0.18, 1.7, 0x7a5228, -W * 0.44, 0.85, 0, 6), cyl(0.12, 0.18, 1.7, 0x7a5228, W * 0.44, 0.85, 0, 6), cyl(W * 0.65, W * 0.55, 0.4, 0x6a9a3a, 0, 1.75, 0, 10));
+      if (type === 'wall') return grp(cyl(0.7, 0.9, 2.4, 0x9a7a5a, 0, 1.2, 0, 10), sph(0.9, 0x6a9a3a, 0, 2.8, 0, 0.6), box(0.5, 0.06, 0.5, 0xc9502a, 0, 1.6, 0.8));
+      if (type === 'hurdle') { const g = grp(box(W * 0.96, 0.6, 0.5, 0xd9b048, 0, 0.3, 0)); for (let k = 0; k < 6; k++) g.add(cyl(0.03, 0.04, 0.6, 0xe8c060, -W * 0.4 + k * W * 0.16, 0.8, 0, 4)); return g; }
+    }
+    if (bio === 'delta') {
+      if (type === 'crate') return grp(cyl(0.55, 0.6, 1.0, 0x5a4a38, 0, 0.5, 0, 10), cyl(0.57, 0.57, 0.08, 0x3a3020, 0, 0.3, 0, 10), cyl(0.57, 0.57, 0.08, 0x3a3020, 0, 0.75, 0, 10), sph(0.25, 0x9ad0e8, 0, 1.15, 0, 0.6));
+      if (type === 'beam') { const g = grp(cyl(0.12, 0.14, 1.7, 0x5a4a38, -W * 0.44, 0.85, 0, 6), cyl(0.12, 0.14, 1.7, 0x5a4a38, W * 0.44, 0.85, 0, 6), box(W * 1.0, 0.3, 0.4, 0x6a5a44, 0, 1.6, 0)); for (let k = 0; k < 5; k++) g.add(box(0.5, 0.35, 0.03, k % 2 ? 0x9ad0e8 : 0xeaf6ff, -W * 0.36 + k * W * 0.18, 1.25, 0.05)); return g; }
+      if (type === 'wall') return grp(box(W * 0.95, 1.6, 0.9, 0x6a5a44, 0, 0.8, 0), box(W * 0.8, 1.0, 0.7, 0x5a4a38, 0, 2.1, 0), cone(0.9, 0.8, 0x4a6a78, 0, 3.0, 0, 4));
+    }
+    if (bio === 'ash') {
+      if (type === 'crate') return grp(sph(0.75, 0x3a3030, 0, 0.5, 0, 0.7), mesh(new T.SphereGeometry(0.3, 8, 6), 0xff7a20, 0.25, 0.9, 0.35, { emissive: 0xff5a00, emissiveIntensity: 1.1 }), cone(0.25, 0.6, 0x1e1a22, -0.35, 1.0, 0, 5));
+      if (type === 'beam') return grp(cone(0.32, 1.8, 0x1e1a22, -W * 0.44, 0.9, 0, 5), cone(0.32, 1.8, 0x1e1a22, W * 0.44, 0.9, 0, 5), box(W * 1.0, 0.35, 0.5, 0x2a2228, 0, 1.6, 0), mesh(new T.BoxGeometry(W * 0.8, 0.08, 0.52), 0xff6a10, 0, 1.45, 0, { emissive: 0xff5a00, emissiveIntensity: 1.2 }));
+      if (type === 'wall') return grp(cone(0.95, 2.8, 0x2a2228, 0, 1.4, 0, 6), mesh(new T.BoxGeometry(0.1, 1.8, 0.05), 0xff6a10, 0.2, 1.0, 0.6, { emissive: 0xff5a00, emissiveIntensity: 1.3 }));
+      if (type === 'hurdle') return grp(mesh(new T.BoxGeometry(W * 0.96, 0.5, 0.6), 0xff6a10, 0, 0.25, 0, { emissive: 0xff4a00, emissiveIntensity: 1.0 }), box(W * 0.96, 0.12, 0.66, 0x2a2228, 0, 0.55, 0));
+    }
+    if (bio === 'roots') {
+      if (type === 'crate') return grp(cyl(0.1, 0.14, 0.7, 0xf0e6d0, 0, 0.35, 0, 7), sph(0.7, 0xd9503a, 0, 0.8, 0, 0.55), sph(0.1, 0xfff2d0, 0.3, 1.0, 0.45, 1), sph(0.1, 0xfff2d0, -0.25, 0.98, 0.4, 1));
+      if (type === 'beam') { const g = grp(cyl(0.35, 0.4, W * 1.1, 0x5a3a22, 0, 1.6, 0, 8)); g.children[0].rotation.z = Math.PI / 2 - 0.08; for (const s of [-1, 1]) { const r = cyl(0.15, 0.3, 1.8, 0x5a3a22, s * W * 0.44, 0.8, 0, 6); r.rotation.z = s * 0.25; g.add(r); } g.add(sph(0.35, 0x3e8a3a, 0.4, 1.95, 0, 0.6)); return g; }
+      if (type === 'wall') { const g = grp(cyl(0.7, 0.95, 3.0, 0x5a3a22, 0, 1.5, 0, 8), sph(1.0, 0x3a7a3a, 0, 3.3, 0, 0.7)); g.add(mesh(new T.CircleGeometry(0.25, 10), 0xd8ff8a, 0, 1.6, 0.85, { emissive: 0xb8ff6a, emissiveIntensity: 0.9 })); return g; }
+      if (type === 'hurdle') { const g = grp(cyl(0.25, 0.32, W * 0.98, 0x4a3020, 0, 0.35, 0, 7)); g.children[0].rotation.z = Math.PI / 2; g.add(sph(0.22, 0x6aa84a, -0.3, 0.6, 0, 0.6)); return g; }
+    }
+    if (bio === 'bloom') {
+      if (type === 'crate') return grp(cyl(0.12, 0.16, 0.6, 0x4a8a3a, 0, 0.3, 0, 6), sph(0.8, 0xff5a9a, 0, 0.8, 0, 0.55), sph(0.3, 0xffd040, 0, 1.05, 0, 0.7));
+      if (type === 'beam') { const g = grp(cyl(0.1, 0.12, 1.7, 0x4a8a3a, -W * 0.44, 0.85, 0, 6), cyl(0.1, 0.12, 1.7, 0x4a8a3a, W * 0.44, 0.85, 0, 6), cyl(0.12, 0.12, W * 1.0, 0x3e9a46, 0, 1.6, 0, 6)); g.children[2].rotation.z = Math.PI / 2; for (let k = 0; k < 5; k++) g.add(sph(0.2, [0xff5a9a, 0xffd040, 0xa060e0][k % 3], -W * 0.36 + k * W * 0.18, 1.45, 0.05, 0.8)); return g; }
+      if (type === 'wall') return grp(sph(1.0, 0x3e9a46, 0, 1.0, 0, 1.1), sph(0.8, 0x4aa850, 0, 2.2, 0, 0.9), sph(0.3, 0xff5a9a, 0.5, 1.6, 0.6, 1), sph(0.3, 0xffd040, -0.4, 2.3, 0.5, 1));
+    }
+    if (bio === 'tundra') {
+      if (type === 'crate') return grp(box(1.2, 1.0, 1.2, 0xb8e4f4, 0, 0.5, 0), box(1.24, 0.1, 1.24, 0xffffff, 0, 1.02, 0));
+      if (type === 'beam') { const g = grp(box(W * 1.0, 0.4, 0.5, 0xc8e8f6, 0, 1.6, 0), box(0.4, 1.7, 0.4, 0xb8e0f0, -W * 0.44, 0.85, 0), box(0.4, 1.7, 0.4, 0xb8e0f0, W * 0.44, 0.85, 0)); for (let k = 0; k < 6; k++) { const c = cone(0.07, 0.4, 0xeaffff, -W * 0.35 + k * W * 0.14, 1.2, 0.15, 5); c.rotation.x = Math.PI; g.add(c); } return g; }
+      if (type === 'wall') return grp(cone(0.7, 3.0, 0x9ae0f0, 0, 1.5, 0, 5), cone(0.45, 2.0, 0xb8f0ff, 0.45, 1.0, 0.2, 5), cone(0.4, 1.6, 0x8ad8ea, -0.45, 0.8, 0.1, 5));
+      if (type === 'hurdle') return grp(sph(0.5, 0xffffff, -W * 0.3, 0.25, 0, 0.6), sph(0.55, 0xf6fbff, 0, 0.3, 0, 0.6), sph(0.5, 0xffffff, W * 0.3, 0.25, 0, 0.6));
+    }
     return null;
   }
   /* ---------- предметы ---------- */
@@ -7765,7 +7860,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     this.cv.addEventListener('pointerup', (e) => { if (mx === null || e.pointerType === 'touch') return; const dx = e.clientX - mx, dy = e.clientY - my; if (Math.abs(dx) > 24 || Math.abs(dy) > 24) { if (Math.abs(dx) > Math.abs(dy)) this.act(dx < 0 ? 'l' : 'r'); else this.act(dy < 0 ? 'u' : 'd'); } mx = null; });
     this._kd = (e) => { const k = e.key; if (k === 'ArrowLeft' || k === 'a') this.act('l'); else if (k === 'ArrowRight' || k === 'd') this.act('r'); else if (k === 'ArrowUp' || k === 'w' || k === ' ') this.act('u'); else if (k === 'ArrowDown' || k === 's') this.act('d'); else if (k === 'Escape') this.close(); };
     window.addEventListener('keydown', this._kd);
-    $('run-go').addEventListener('click', () => { try { BOA.Audio.init(); } catch (e) { /* без звука */ } $('run-start').hidden = true; this.reset(); this.S.on = true; try { BOA.Audio.mode('run'); BOA.Audio.surface = ({ swamp: 'wood', egypt: 'sand', russia: 'snow' })[this.biome] || 'stone'; } catch (e) { /* ок */ } this.say(pick(LINES.start)); });
+    $('run-go').addEventListener('click', () => { try { BOA.Audio.init(); } catch (e) { /* без звука */ } $('run-start').hidden = true; this.reset(); this.S.on = true; try { BOA.Audio.mode('run'); BOA.Audio.surface = BIOMES[this.biome].step || ({ swamp: 'wood', egypt: 'sand', russia: 'snow' })[this.biome] || 'stone'; } catch (e) { /* ок */ } this.say(pick(LINES.start)); });
     { const crew = () => { try { const n = g.crew.nikita(), L = g.crew.list.slice(); return n ? [n].concat(L.filter((w) => w !== n)) : L; } catch (e) { return []; } };
       const swap = (d) => { const L = crew(); if (L.length < 2 || this.S.on) return; let i = L.indexOf(this.pickRec || L[0]); if (i < 0) i = 0; i = (i + d + L.length) % L.length; this.pickRec = L[i];
         if (this.heroG) this.scene.remove(this.heroG); this.makeHero(); try { localStorage.setItem('boa.runner', L[i].id); } catch (e) { /* ок */ } };
@@ -7830,7 +7925,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
         S.nextZ += d; if (S.nextZ > -34) { this.pattern(-66); S.nextZ -= 12 + Math.random() * 5 - Math.min(4, S.dist / 400); }
         this.collide(dt);
         $('r-dist').textContent = Math.floor(S.dist); this.buffs();
-        if (this.biome === 'swamp' && Math.random() < 0.15) this.spark(rnd(-9, 9), rnd(0.5, 3), rnd(-30, -4), 1, 0xe8ff90);
+        { const am = this.biome === 'swamp' ? [0.15, 0xe8ff90] : BIOMES[this.biome].amb; if (am && Math.random() < am[0]) this.spark(rnd(-9, 9), rnd(0.5, 3), rnd(-30, -4), 1, am[1]); }
         if (S.dashT > 0 && Math.random() < 0.7) this.spark(S.x + rnd(-0.5, 0.5), rnd(0.2, 1.8), 0.5, 1, 0xbaffc4);
         if (!S.y && Math.random() < 0.35) this.spark(S.x + rnd(-0.3, 0.3), 0.08, 0.4, 1, 0xe9dcc0);
       }
@@ -7915,7 +8010,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
 (function (BOA) {
   'use strict';
   const T = window.THREE, K = BOA.Kit, { M, mesh, box, cyl, cone, sph, grp, rnd, clamp } = K;
-  const ARCH_MATS = { hut: ['wood', 'stone'], tower: ['stone', 'bronze'], ring: ['stone', 'stone'], dock: ['wood', 'wood'], workshop: ['bronze', 'stone'], garden: ['wood', 'wood'], arena: ['stone', 'wood'], market: ['wood', 'bronze'], pyramid: ['stone', 'stone'] };
+  const ARCH_MATS = { hut: ['wood', 'stone'], tower: ['stone', 'bronze'], ring: ['stone', 'stone'], dock: ['wood', 'wood'], workshop: ['bronze', 'stone'], garden: ['wood', 'wood'], arena: ['stone', 'wood'], market: ['wood', 'bronze'], pyramid: ['stone', 'stone'], cave: ['stone', 'wood'], quarry: ['stone', 'bronze'], rondavel: ['wood', 'stone'], totem: ['wood', 'bronze'], mill: ['wood', 'stone'], volcano: ['stone', 'bronze'], treehouse: ['wood', 'wood'], igloo: ['stone', 'wood'], temple: ['stone', 'bronze'], house: ['wood', 'stone'] };
 
   // палитры: стены, крыша, акцент, камень, дерево, вода
   const PAL = {
@@ -7926,7 +8021,14 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     mexico: { wall: 0xe0c49a, roof: 0xc9553a, acc: 0x2e9a8a, stone: 0xc9a878, wood: 0x6a4a2a, water: 0x48b0b0, glow: 0xff9a50 },
     germany: { wall: 0xf1e4c8, roof: 0xb5472e, acc: 0x3d6a8a, stone: 0xb8ac98, wood: 0x6a4a2a, water: 0x5a90c0, glow: 0xffd890 },
     cambodia: { wall: 0xb9a98a, roof: 0x5a8a3a, acc: 0xe0a030, stone: 0xa89878, wood: 0x6a4a2a, water: 0x3aa890, glow: 0xffe080 },
-    russia: { wall: 0xc9573a, roof: 0x2f7a5a, acc: 0xffd04a, stone: 0xdfe8ee, wood: 0x8a5a30, water: 0x7ab0d8, glow: 0xffc870 }
+    russia: { wall: 0xc9573a, roof: 0x2f7a5a, acc: 0xffd04a, stone: 0xdfe8ee, wood: 0x8a5a30, water: 0x7ab0d8, glow: 0xffc870 },
+    rocks: { wall: 0xb4a68c, roof: 0x7a6a52, acc: 0xd9823a, stone: 0x9a9284, wood: 0x6a4a2c, water: 0x6a9ab0, glow: 0xffc060 },
+    savanna: { wall: 0xd9a95a, roof: 0xc9a040, acc: 0xc9502a, stone: 0xc9a878, wood: 0x7a5228, water: 0x5aa0a8, glow: 0xffd860 },
+    delta: { wall: 0xa8b8b0, roof: 0x4a6a78, acc: 0x9ad0e8, stone: 0x8a9a96, wood: 0x5a4a38, water: 0x5a8a98, glow: 0xd8f4ff },
+    ash: { wall: 0x4a3a36, roof: 0x2a2222, acc: 0xff6a20, stone: 0x5a4a44, wood: 0x3a2a22, water: 0xff5a10, glow: 0xff8a30 },
+    roots: { wall: 0x7a5a3a, roof: 0x3a7a3a, acc: 0xd9c050, stone: 0x6a7a5a, wood: 0x5a3a22, water: 0x3a6a5a, glow: 0xd8ff8a },
+    bloom: { wall: 0xe0b890, roof: 0xe05a8a, acc: 0xffd040, stone: 0x9ab07a, wood: 0x6a4a2a, water: 0x3ac0b0, glow: 0xffb0e0 },
+    tundra: { wall: 0xeaf6ff, roof: 0x9ad0f0, acc: 0x4ad0b0, stone: 0xc8dcea, wood: 0x6a5a4a, water: 0x5a90c0, glow: 0x9affe0 }
   };
   const E = (c, i) => ({ emissive: c, emissiveIntensity: i || 0.8 });
 
@@ -8008,19 +8110,128 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       if (L >= 3) for (const x of [-1.3, 1.3]) g.add(mesh(new T.CylinderGeometry(0.07, 0.07, 0.5, 6), P.glow, x, 0.55, 3.3, E(P.glow, 1)));
       if (L >= 5) { g.add(mesh(new T.ConeGeometry(0.4, 0.8, 4), P.glow, 0, n * 0.75 + 0.4, 0, E(P.glow, 1.2))); }
       return g;
+    },
+    // пещера в скале с дверью и навесом
+    cave(L, P) {
+      const g = new T.Group(); g.add(sph(2.4, P.stone, 0, 0.6, -0.4, 0.75)); g.add(sph(1.5, P.wall, 1.3, 0.3, 0.4, 0.7)); g.add(sph(1.2, P.stone, -1.5, 0.2, 0.3, 0.7));
+      g.add(mesh(new T.CircleGeometry(0.75, 14), 0x1e1610, 0, 0.75, 1.62)); g.add(box(1.0, 0.9, 0.1, P.wood, 0, 0.45, 1.66));
+      if (L >= 2) { g.add(mesh(new T.BoxGeometry(0.3, 0.3, 0.08), P.glow, 0.8, 1.2, 1.55, E(P.glow, 1))); for (const x of [-0.6, 0.6]) g.add(cyl(0.06, 0.06, 1.4, P.wood, x, 0.7, 2.2, 5)); g.add(box(1.6, 0.1, 1.0, P.roof, 0, 1.45, 1.9)); }
+      if (L >= 3) { g.add(cyl(0.22, 0.26, 1.2, P.stone, -0.9, 2.2, -0.2, 7)); g.add(sph(0.3, 0xdddddd, -0.9, 3.1, -0.2, 0.8)); }
+      if (L >= 4) for (let k = 0; k < 5; k++) g.add(box(0.5, 0.4, 0.4, P.wall, -1.8 + k * 0.4, 0.2 + (k % 2) * 0.4, 1.9));
+      if (L >= 5) { g.add(cyl(0.05, 0.05, 1.6, P.wood, 1.6, 2.3, 0, 5)); g.add(box(0.8, 0.45, 0.04, P.acc, 2.0, 2.9, 0)); g.add(mesh(new T.SphereGeometry(0.2, 8, 6), P.glow, 0, 2.6, 0.8, E(P.glow, 1.2))); }
+      return g;
+    },
+    // каменоломня: уступы, кран, вагонетка
+    quarry(L, P) {
+      const g = new T.Group(); for (let k = 0; k < 2 + Math.min(3, L); k++) g.add(box(3.6 - k * 0.6, 0.55, 2.4 - k * 0.3, k % 2 ? P.wall : P.stone, -0.4, 0.28 + k * 0.55, -0.6 - k * 0.15));
+      g.add(cyl(0.08, 0.1, 3.2, P.wood, 1.8, 1.6, 0.8, 5)); const arm = box(2.2, 0.12, 0.12, P.wood, 1.0, 3.1, 0.8); arm.rotation.z = -0.25; g.add(arm); g.add(box(0.5, 0.5, 0.5, P.stone, 0.2, 2.1, 0.8));
+      if (L >= 2) { g.add(box(0.8, 0.45, 0.55, 0x5a5a62, 1.2, 0.35, 1.8)); for (const x of [0.9, 1.5]) { const w = cyl(0.14, 0.14, 0.6, 0x2a2a2a, x, 0.14, 1.8, 8); w.rotation.x = Math.PI / 2; g.add(w); } }
+      if (L >= 3) for (let k = 0; k < 4; k++) g.add(box(0.45, 0.45, 0.45, P.wall, -2.0 + (k % 2) * 0.5, 0.23 + (k > 1 ? 0.45 : 0), 1.6));
+      if (L >= 4) { g.add(box(1.2, 0.9, 1.0, P.wood, -2.2, 0.45, -1.4)); g.add(cone(0.9, 0.6, P.roof, -2.2, 1.2, -1.4, 4)); }
+      if (L >= 5) g.add(mesh(new T.SphereGeometry(0.22, 8, 6), P.glow, 1.8, 3.4, 0.8, E(P.glow, 1.2)));
+      return g;
+    },
+    // круглая хижина с соломенной крышей
+    rondavel(L, P) {
+      const g = new T.Group(), n = L >= 4 ? 3 : L >= 2 ? 2 : 1; const sp = [[0, 0, 1.2], [-1.9, 0.6, 0.85], [1.9, 0.7, 0.8]];
+      for (let k = 0; k < n; k++) { const [x, z, r] = sp[k]; g.add(cyl(r, r * 1.02, 1.3 * r, P.wall, x, 0.65 * r, z, 12)); g.add(cone(r * 1.4, 1.5 * r, P.roof, x, 1.3 * r + 0.7 * r, z, 12)); g.add(box(0.45 * r, 0.8 * r, 0.1, P.wood, x, 0.4 * r, z + r)); g.add(cyl(r * 1.04, r * 1.04, 0.12, P.acc, x, 0.9 * r, z, 12)); }
+      if (L >= 3) for (let k = 0; k < 14; k++) { const a = k / 14 * Math.PI * 2; g.add(cyl(0.05, 0.06, 0.7, P.wood, Math.cos(a) * 3.0, 0.35, Math.sin(a) * 3.0, 4)); }
+      if (L >= 5) { g.add(cyl(0.05, 0.05, 1.6, P.wood, 0, 3.6, 0, 5)); g.add(mesh(new T.SphereGeometry(0.22, 8, 6), P.glow, 0, 4.5, 0, E(P.glow, 1.2))); }
+      return g;
+    },
+    // резной тотем
+    totem(L, P) {
+      const g = new T.Group(); g.add(cyl(1.4, 1.6, 0.3, P.stone, 0, 0.15, 0, 12)); const n = 1 + L; const cols = [P.wood, P.acc, P.wall, P.roof];
+      for (let k = 0; k < n; k++) { const y = 0.3 + k * 0.8; g.add(cyl(0.5, 0.55, 0.78, cols[k % 4], 0, y + 0.39, 0, 10)); for (const x of [-0.2, 0.2]) g.add(mesh(new T.SphereGeometry(0.09, 6, 5), P.glow, x, y + 0.5, 0.47, E(P.glow, 0.9))); g.add(box(0.5, 0.08, 0.1, 0x2a1a10, 0, y + 0.2, 0.5)); }
+      const top = 0.3 + n * 0.8; for (const s of [-1, 1]) { const w = box(1.1, 0.12, 0.5, P.acc, s * 0.8, top - 0.4, 0); w.rotation.z = s * 0.3; g.add(w); }
+      if (L >= 3) for (const a of [0.8, 2.4, 4.0, 5.5]) g.add(cyl(0.06, 0.08, 0.9, P.wood, Math.cos(a) * 1.9, 0.45, Math.sin(a) * 1.9, 5)), g.add(mesh(new T.SphereGeometry(0.14, 8, 6), P.glow, Math.cos(a) * 1.9, 1.0, Math.sin(a) * 1.9, E(P.glow, 1.1)));
+      if (L >= 5) g.add(mesh(new T.OctahedronGeometry(0.35), P.glow, 0, top + 0.5, 0, E(P.glow, 1.3)));
+      return g;
+    },
+    // водяная мельница у ручья
+    mill(L, P) {
+      const g = new T.Group(); g.add(box(1.2, 0.08, 4.8, P.water, 1.6, 0.06, 0)); g.add(box(2.0, 1.6 + L * 0.15, 1.8, P.wall, -0.2, 0.8 + L * 0.075, 0)); const rf = cone(1.7, 1.1, P.roof, -0.2, 1.6 + L * 0.15 + 0.55, 0, 4); rf.rotation.y = Math.PI / 4; g.add(rf);
+      const wh = new T.Group(); wh.position.set(1.05, 1.0, 0); const rim = new T.Mesh(new T.TorusGeometry(0.85, 0.08, 6, 16), M(P.wood)); rim.rotation.y = Math.PI / 2; wh.add(rim); for (let k = 0; k < 8; k++) { const b = box(0.1, 1.7, 0.18, P.wood, 0, 0, 0); b.rotation.x = k * Math.PI / 8; wh.add(b); } wh.userData.spin = 1; g.add(wh);
+      g.add(box(0.5, 0.5, 0.1, P.glow, -0.2, 1.0, 0.92)); g.children[g.children.length - 1].material = M(P.glow, E(P.glow, 0.9));
+      if (L >= 3) { g.add(box(0.8, 0.12, 2.6, P.wood, 1.6, 0.3, -1.6)); }
+      if (L >= 4) for (let k = 0; k < 3; k++) g.add(cyl(0.22, 0.25, 0.5, 0xd9c08a, -1.6, 0.25, -0.6 + k * 0.6, 8));
+      if (L >= 5) { g.add(cyl(0.05, 0.05, 1.4, P.wood, -0.2, 3.3, 0, 5)); g.add(box(0.7, 0.4, 0.04, P.acc, 0.15, 3.8, 0)); }
+      return g;
+    },
+    // огненный горн-вулкан
+    volcano(L, P) {
+      const g = new T.Group(), h = 1.6 + L * 0.35; g.add(cyl(0.5, 2.4, h, P.stone, 0, h / 2, 0, 10)); g.add(mesh(new T.CylinderGeometry(0.48, 0.48, 0.1, 10), P.water, 0, h + 0.02, 0, E(P.glow, 1.4)));
+      for (let k = 0; k < 3; k++) { const a = k * 2.1 + 0.4, s = mesh(new T.BoxGeometry(0.16, h * 0.7, 0.05), P.water, Math.cos(a) * 1.3, h * 0.4, Math.sin(a) * 1.3, E(P.glow, 1.2)); s.rotation.y = -a; s.rotation.z = 0.5; g.add(s); }
+      if (L >= 2) { g.add(box(1.0, 0.6, 0.7, 0x3a3a42, 1.9, 0.3, 1.3)); g.add(box(1.3, 0.12, 0.4, 0x2a2a2e, 1.9, 0.66, 1.3)); }
+      if (L >= 3) for (let k = 0; k < 3; k++) g.add(box(0.4, 0.3, 0.4, P.acc, -1.8 + k * 0.45, 0.15, 1.6)), g.children[g.children.length - 1].material = M(P.acc, E(P.acc, 0.6));
+      if (L >= 4) { g.add(cyl(0.12, 0.12, 2.4, P.wood, -2.2, 1.2, -0.6, 5)); g.add(cone(0.9, 0.5, P.roof, -2.2, 2.6, -0.6, 6)); }
+      if (L >= 5) g.add(mesh(new T.SphereGeometry(0.4, 10, 8), P.glow, 0, h + 0.6, 0, E(P.glow, 1.5)));
+      return g;
+    },
+    // дом внутри огромного дерева
+    treehouse(L, P) {
+      const g = new T.Group(), H = 3.0 + L * 0.35; g.add(cyl(1.0, 1.5, H, P.wood, 0, H / 2, 0, 10));
+      for (let k = 0; k < 5; k++) { const a = k / 5 * Math.PI * 2, r = cyl(0.18, 0.32, 1.8, P.wood, Math.cos(a) * 1.4, 0.3, Math.sin(a) * 1.4, 6); r.rotation.z = Math.cos(a) * 1.1; r.rotation.x = -Math.sin(a) * 1.1; g.add(r); }
+      g.add(sph(2.0 + L * 0.15, P.roof, 0, H + 0.9, 0, 0.75)); g.add(sph(1.3, P.roof, 1.3, H + 0.4, 0.5, 0.8));
+      g.add(mesh(new T.CircleGeometry(0.42, 12), 0x24180c, 0, 0.6, 1.47)); g.add(box(0.6, 0.9, 0.08, 0x8a5a2a, 0, 0.5, 1.48));
+      if (L >= 2) for (const [x, y] of [[0.6, 1.8], [-0.55, 2.4]]) g.add(mesh(new T.CircleGeometry(0.2, 10), P.glow, x, y, 1.3, E(P.glow, 1)));
+      if (L >= 3) { g.add(cyl(1.6, 1.6, 0.1, P.wood, 0, H * 0.62, 0, 12)); for (let k = 0; k < 10; k++) { const a = k / 10 * Math.PI * 2; g.add(cyl(0.03, 0.03, 0.4, P.wood, Math.cos(a) * 1.55, H * 0.62 + 0.2, Math.sin(a) * 1.55, 4)); } }
+      if (L >= 4) for (let k = 0; k < 4; k++) g.add(sph(0.22, k % 2 ? 0xd9503a : 0xf0e0c0, -1.9 + k * 0.3, 0.2, 1.3 - k * 0.2, 0.6));
+      if (L >= 5) for (let k = 0; k < 5; k++) g.add(mesh(new T.SphereGeometry(0.12, 6, 5), P.glow, Math.cos(k * 1.3) * 1.8, H + 0.2 + (k % 2) * 0.5, Math.sin(k * 1.3) * 1.8, E(P.glow, 1.3)));
+      return g;
+    },
+    // ледяной дом
+    igloo(L, P) {
+      const g = new T.Group(), r = 1.5 + L * 0.12; const d = sph(r, P.wall, 0, 0, 0, 1); d.geometry = new T.SphereGeometry(r, 16, 8, 0, Math.PI * 2, 0, Math.PI / 2); g.add(d);
+      for (let k = 1; k < 4; k++) { const ring = new T.Mesh(new T.TorusGeometry(r * Math.cos(k * 0.38), 0.03, 4, 24), M(P.stone)); ring.rotation.x = Math.PI / 2; ring.position.y = r * Math.sin(k * 0.38); g.add(ring); }
+      const tun = cyl(0.6, 0.6, 1.2, P.wall, 0, 0.35, r + 0.3, 12, 1); tun.rotation.x = Math.PI / 2; g.add(tun); g.add(mesh(new T.CircleGeometry(0.42, 12), 0x24404e, 0, 0.42, r + 0.92));
+      if (L >= 2) g.add(mesh(new T.CircleGeometry(0.22, 10), P.glow, 0.7, 0.9, r * 0.82, E(P.glow, 1)));
+      if (L >= 3) for (let k = 0; k < 4; k++) g.add(cone(0.25, 1.0 + (k % 2) * 0.6, P.acc, -2.4 + (k % 2) * 0.4, 0.5, -1.2 + k * 0.7, 5)), g.children[g.children.length - 1].material = M(P.acc, { emissive: P.acc, emissiveIntensity: 0.35, transparent: true, opacity: 0.85 });
+      if (L >= 4) { const s2 = sph(0.9, P.wall, 2.1, 0, -0.8, 1); s2.geometry = new T.SphereGeometry(0.9, 12, 6, 0, Math.PI * 2, 0, Math.PI / 2); g.add(s2); }
+      if (L >= 5) { g.add(cyl(0.05, 0.05, 1.6, P.wood, 0, r + 0.8, 0, 5)); g.add(box(0.7, 0.4, 0.04, P.acc, 0.38, r + 1.35, 0)); }
+      return g;
+    },
+    // храм с колоннами и фронтоном
+    temple(L, P, o) {
+      const g = new T.Group(), n = Math.min(6, 2 + L), w = 4.0; g.add(box(w + 0.6, 0.3, 3.2, P.stone, 0, 0.15, 0)); g.add(box(w + 0.3, 0.25, 2.9, P.wall, 0, 0.42, 0));
+      for (let k = 0; k < n; k++) { const x = -w / 2 + 0.3 + k * ((w - 0.6) / (n - 1)); for (const z of [-1.1, 1.1]) g.add(cyl(0.17, 0.2, 1.9, P.wall, x, 1.5, z, 10)); }
+      if (L >= 2) g.add(box(w, 0.3, 2.6, P.stone, 0, 2.6, 0));
+      if (L >= 3) { const pg = new T.CylinderGeometry(1, 1, w + 0.2, 3); pg.rotateZ(Math.PI / 2); pg.rotateX(-Math.PI / 2); const pd = new T.Mesh(pg, M(P.roof)); pd.scale.set(1, 0.75, 1.45); pd.position.set(0, 2.92, 0); g.add(pd); }
+      if (L >= 4) g.add(box(w * 0.9, 0.12, 0.05, P.acc, 0, 2.6, 1.32));
+      if (L >= 5) { g.add(mesh(new T.SphereGeometry(0.3, 10, 8), P.glow, 0, 1.4, 0, E(P.glow, 1.3))); for (const x of [-2.6, 2.6]) g.add(cyl(0.3, 0.35, 0.5, P.stone, x, 0.25, 1.8, 8)), g.add(mesh(new T.ConeGeometry(0.22, 0.5, 8), P.glow, x, 0.75, 1.8, E(P.glow, 1.2))); }
+      return g;
+    },
+    // дом с двускатной крышей и балками (фахверк, изба)
+    house(L, P, o) {
+      const g = new T.Group(), fl = L >= 3 ? 2 : 1, w = 2.6, d = 2.2, h = 1.3 * fl; o = o || {};
+      g.add(box(w, h, d, P.wall, 0, h / 2, 0)); const rf = cone(Math.hypot(w, d) * 0.62, 1.4, P.roof, 0, h + 0.7, 0, 4); rf.rotation.y = Math.PI / 4; rf.scale.set(1, 1, 0.82); g.add(rf);
+      for (let f = 0; f < fl; f++) { g.add(box(w + 0.02, 0.1, 0.06, P.wood, 0, f * 1.3 + 1.25, d / 2)); for (const x of [-1.25, 0, 1.25]) g.add(box(0.1, 1.3, 0.06, P.wood, x, f * 1.3 + 0.65, d / 2 + 0.01)); for (const x of [-0.62, 0.62]) g.add(mesh(new T.BoxGeometry(0.38, 0.4, 0.06), P.glow, x, f * 1.3 + 0.75, d / 2 + 0.03, E(P.glow, 0.85))); }
+      g.add(box(0.55, 0.9, 0.08, P.wood, 0, 0.45, d / 2 + 0.05));
+      g.add(box(0.35, 1.0, 0.35, P.stone, 0.8, h + 1.0, -0.3));
+      if (L >= 2) { g.add(box(1.2, 0.08, 0.7, P.wood, 0, 0.9, d / 2 + 0.4)); for (const x of [-0.5, 0.5]) g.add(cyl(0.04, 0.04, 0.9, P.wood, x, 0.45, d / 2 + 0.7, 4)); }
+      if (L >= 4) { g.add(box(1.4, 1.0, 1.4, P.wall, -2.1, 0.5, -0.5)); const r2 = cone(1.2, 0.8, P.roof, -2.1, 1.4, -0.5, 4); r2.rotation.y = Math.PI / 4; g.add(r2); }
+      if (L >= 5) for (let k = 0; k < 6; k++) g.add(mesh(new T.SphereGeometry(0.12, 6, 5), k % 2 ? P.acc : P.glow, -1.2 + k * 0.48, h + 0.05, d / 2 + 0.12, E(k % 2 ? P.acc : P.glow, 1)));
+      return g;
     }
   };
 
   /* ---------- биомы: 1 убежище + 3 пристройки ---------- */
   const DEF = {
     swamp: [['hut', 'Хижина Грязимира', {}], ['dock', 'Мостки над тиной'], ['ring', 'Круг древних камней'], ['tower', 'Сторожевая башня']],
-    greece: [['hut', 'Дом Ворчуна'], ['ring', 'Колоннада', { columns: 1 }], ['arena', 'Амфитеатр'], ['tower', 'Маяк на скале']],
-    egypt: [['hut', 'Шатёр Златника'], ['pyramid', 'Малая пирамида'], ['market', 'Песчаный базар'], ['ring', 'Аллея обелисков', { columns: 1 }]],
-    italy: [['hut', 'Дом Лурены'], ['arena', 'Арена'], ['dock', 'Мост-акведук'], ['tower', 'Падающая башня', { tilt: 1 }]],
-    mexico: [['hut', 'Хижина Пепельника'], ['pyramid', 'Ступенчатый храм'], ['workshop', 'Раскалённая кузня'], ['garden', 'Кактусовая ферма']],
-    germany: [['hut', 'Дом Корнеплода'], ['tower', 'Замковая башня'], ['workshop', 'Кузница'], ['garden', 'Сад корней']],
-    cambodia: [['hut', 'Дом Лианны на сваях', { stilts: 1 }], ['pyramid', 'Храм в джунглях'], ['dock', 'Плавучий рынок'], ['garden', 'Сад орхидей']],
-    russia: [['hut', 'Изба Студенца'], ['tower', 'Колокольня', { dome: 1 }], ['workshop', 'Печь-кузня'], ['market', 'Зимняя ярмарка']]
+    greece: [['temple', 'Храм Афины'], ['ring', 'Колоннада', { columns: 1 }], ['arena', 'Амфитеатр'], ['tower', 'Маяк на скале']],
+    rocks: [['cave', 'Пещера Ворчуна'], ['quarry', 'Каменоломня'], ['ring', 'Дольмены'], ['tower', 'Каменная сторожка']],
+    egypt: [['pyramid', 'Великая пирамида'], ['temple', 'Храм у Нила'], ['market', 'Песчаный базар'], ['ring', 'Аллея обелисков', { columns: 1 }]],
+    savanna: [['rondavel', 'Шатёр Златника'], ['market', 'Обменный круг'], ['garden', 'Поле проса'], ['totem', 'Золотой тотем']],
+    italy: [['arena', 'Колизей'], ['temple', 'Пантеон'], ['dock', 'Мост-акведук'], ['tower', 'Падающая башня', { tilt: 1 }]],
+    delta: [['hut', 'Дом Лурены на сваях', { stilts: 1 }], ['dock', 'Лодочная пристань'], ['mill', 'Водяная мельница'], ['tower', 'Маяк в тумане']],
+    mexico: [['pyramid', 'Ступенчатый храм'], ['market', 'Рынок какао'], ['ring', 'Поле для мяча'], ['garden', 'Кактусовая ферма']],
+    ash: [['workshop', 'Кузня Пепельника'], ['volcano', 'Огненный горн'], ['ring', 'Обсидиановый круг'], ['tower', 'Дымовая башня']],
+    germany: [['tower', 'Замковая башня'], ['house', 'Фахверковый дом'], ['workshop', 'Кузница'], ['market', 'Рождественский рынок']],
+    roots: [['treehouse', 'Дом в корнях'], ['garden', 'Грибная поляна'], ['workshop', 'Корневая мастерская'], ['totem', 'Дерево-страж']],
+    cambodia: [['pyramid', 'Храм в джунглях'], ['hut', 'Дом на сваях', { stilts: 1 }], ['dock', 'Плавучий рынок'], ['garden', 'Сад лотосов']],
+    bloom: [['hut', 'Шалаш Лианны', { stilts: 1 }], ['garden', 'Сад гигантских цветов'], ['dock', 'Лиановый мост'], ['totem', 'Цветочный идол']],
+    russia: [['tower', 'Собор с куполами', { dome: 1 }], ['house', 'Изба'], ['workshop', 'Печь-кузня'], ['market', 'Зимняя ярмарка']],
+    tundra: [['igloo', 'Иглу Студенца'], ['ring', 'Ледяные столбы'], ['market', 'Рыбный лёд'], ['tower', 'Ледяной маяк']]
   };
   const SPOTS = [[0, -1.5], [-7.2, 3.2], [7.2, 3.0], [0.4, 8.2]];
 
@@ -8063,9 +8274,9 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       const gen = K.PROPS[bid] || K.PROPS.greece; let seed = 11 + bid.length * 7; const rr = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
       for (let i = 0; i < 46; i++) { const a = rr() * Math.PI * 2, d = 11.5 + rr() * 3.6, pr = gen[(rr() * gen.length) | 0](); pr.position.set(Math.cos(a) * d, 0, Math.sin(a) * d); pr.rotation.y = rr() * 6; pr.scale.setScalar(0.7 + rr() * 0.6); pr.traverse((m) => { if (m.isMesh) m.castShadow = true; }); sc.add(pr); }
       // частицы погоды
-      const N = 160, pg = new T.BufferGeometry(); this.wp = new Float32Array(N * 3); this.wv = new Float32Array(N * 3); for (let i = 0; i < N; i++) { this.wp[i * 3] = rnd(-16, 16); this.wp[i * 3 + 1] = rnd(0, 10); this.wp[i * 3 + 2] = rnd(-16, 16); this.wv[i * 3] = rnd(-0.3, 0.3); this.wv[i * 3 + 1] = bid === 'russia' ? -rnd(0.8, 1.6) : bid === 'mexico' ? rnd(0.5, 1.2) : rnd(-0.15, 0.25); this.wv[i * 3 + 2] = rnd(-0.3, 0.3); }
-      pg.setAttribute('position', new T.BufferAttribute(this.wp, 3)); const wc = { swamp: 0xe8ff90, russia: 0xffffff, mexico: 0xff9a50, cambodia: 0xffb0d0, germany: 0xc9a84a, egypt: 0xf0d890, greece: 0xffffff, italy: 0xffe0b0 }[bid] || 0xffffff;
-      this.weather = new T.Points(pg, new T.PointsMaterial({ color: wc, size: bid === 'russia' ? 0.22 : 0.16, transparent: true, opacity: 0.85, depthWrite: false })); this.weather.frustumCulled = false; sc.add(this.weather);
+      const N = 160, pg = new T.BufferGeometry(); this.wp = new Float32Array(N * 3); this.wv = new Float32Array(N * 3); for (let i = 0; i < N; i++) { this.wp[i * 3] = rnd(-16, 16); this.wp[i * 3 + 1] = rnd(0, 10); this.wp[i * 3 + 2] = rnd(-16, 16); this.wv[i * 3] = rnd(-0.3, 0.3); this.wv[i * 3 + 1] = bid === 'russia' || bid === 'tundra' ? -rnd(0.8, 1.6) : bid === 'mexico' || bid === 'ash' ? rnd(0.5, 1.2) : bid === 'bloom' ? -rnd(0.2, 0.5) : rnd(-0.15, 0.25); this.wv[i * 3 + 2] = rnd(-0.3, 0.3); }
+      pg.setAttribute('position', new T.BufferAttribute(this.wp, 3)); const wc = { swamp: 0xe8ff90, russia: 0xffffff, mexico: 0xff9a50, cambodia: 0xffb0d0, germany: 0xc9a84a, egypt: 0xf0d890, greece: 0xffffff, italy: 0xffe0b0, rocks: 0xd8ccb0, savanna: 0xffe080, delta: 0xeaf6ff, ash: 0xff7a20, roots: 0xd8ff8a, bloom: 0xff9ad0, tundra: 0xd8fff4 }[bid] || 0xffffff;
+      this.weather = new T.Points(pg, new T.PointsMaterial({ color: wc, size: bid === 'russia' || bid === 'tundra' ? 0.22 : bid === 'delta' ? 0.3 : 0.16, transparent: true, opacity: 0.85, depthWrite: false })); this.weather.frustumCulled = false; sc.add(this.weather);
       // постройки
       this.groups = []; this.holders = []; DEF[bid].forEach((d, i) => { const h = new T.Group(); h.position.set(SPOTS[i][0], 0, SPOTS[i][1]); h.rotation.y = Math.atan2(-SPOTS[i][0], 6 - SPOTS[i][1]) * 0.4; sc.add(h); this.holders.push(h); this.groups.push(h); this.rebuild(i); });
       // кольцо выбора
@@ -8099,7 +8310,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       this._idle = (this._idle || 0) + dt; if (this._idle > 6) this.auto = true; if (this.auto) this.az += dt * 0.07;
       this.tgt.lerp(this.tgtGoal, Math.min(1, dt * 3.5)); this.dist += (this.distGoal - this.dist) * Math.min(1, dt * 3);
       cam.position.set(this.tgt.x + Math.sin(this.az) * Math.cos(this.el) * this.dist, this.tgt.y + Math.sin(this.el) * this.dist, this.tgt.z + Math.cos(this.az) * Math.cos(this.el) * this.dist); cam.lookAt(this.tgt);
-      this.holders.forEach((h, i) => { const u = h.userData; if (u.pop > 0) { u.pop = Math.max(0, u.pop - dt * 1.6); const k = 1 + Math.sin((1 - u.pop) * Math.PI) * 0.18 * (u.pop > 0 ? 1 : 0); h.scale.set(k, 1 + (k - 1) * 1.6, k); } else h.scale.set(1, 1, 1); h.children.forEach((c) => { if (c.userData.q) { c.position.y = 2.3 + Math.sin(this.tm * 3 + i) * 0.15; c.rotation.y += dt * 2; } }); });
+      this.holders.forEach((h, i) => { const u = h.userData; if (u.pop > 0) { u.pop = Math.max(0, u.pop - dt * 1.6); const k = 1 + Math.sin((1 - u.pop) * Math.PI) * 0.18 * (u.pop > 0 ? 1 : 0); h.scale.set(k, 1 + (k - 1) * 1.6, k); } else h.scale.set(1, 1, 1); h.traverse((c) => { if (c.userData.spin) c.rotation.x += dt * 1.2; }); h.children.forEach((c) => { if (c.userData.q) { c.position.y = 2.3 + Math.sin(this.tm * 3 + i) * 0.15; c.rotation.y += dt * 2; } }); });
       const sp = SPOTS[this.sel]; this.ring.position.x = sp[0]; this.ring.position.z = sp[1]; const sc = 1 + Math.sin(this.tm * 3) * 0.03; this.ring.scale.set(sc, sc, sc);
       if (this.who) { this.who.time += dt; try { this.who._pose(0); } catch (e) { /* ок */ } this.who.root.position.y = (this.who.baseY || 0) + Math.abs(Math.sin(this.tm * 2)) * 0.04; }
       const p = this.wp, v = this.wv; for (let k = 0; k < p.length; k += 3) { p[k] += v[k] * dt; p[k + 1] += v[k + 1] * dt; p[k + 2] += v[k + 2] * dt; if (p[k + 1] < 0) p[k + 1] = 10; else if (p[k + 1] > 10) p[k + 1] = 0; } this.weather.geometry.attributes.position.needsUpdate = true;
@@ -8119,17 +8330,25 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
   const KIND = { temple: ['stone', 'bronze'], statue: ['stone', 'bronze'], pyramid: ['stone', 'wood'], arena: ['stone', 'wood'], monument: ['stone', 'wood'], castle: ['stone', 'wood'], cathedral: ['stone', 'bronze'], fortress: ['stone', 'wood'], rocktomb: ['stone', 'bronze'], tower: ['bronze', 'stone'], theatre: ['stone', 'wood'], mausoleum: ['stone', 'bronze'], pagoda: ['wood', 'bronze'] };
 
   const BIOMES = [
-    { id: 'swamp', n: 'Болото', ico: '🐸', who: 'Грязимир', intro: ['Это моё болото. Тут тихо, сыро и никто не лезет.', 'Но в тине я нашёл старые камни. Их кто-то ставил кругами — ради чего-то большого.', 'Для большого нужны камень, дерево и бронза. Их раскидали по дорогам. Бегать я не люблю, но ради камней — ладно.'] },
-    { id: 'greece', n: 'Греция', ico: '🏛️', who: 'Ворчун', intro: ['За болотом начинается Греция. Белый камень, синее небо и ветер в колоннах.', 'Здесь живёт Ворчун. Ворчит на всё, но блоки таскает лучше всех.'] },
-    { id: 'egypt', n: 'Египет', ico: '🔺', who: 'Златник', intro: ['Дальше — пески Египта. Тут всё огромное и очень давнее.', 'В сухих травах у пирамид живёт Златник. Говорит мало, кладёт ровно.'] },
-    { id: 'italy', n: 'Италия', ico: '🏟️', who: 'Лурена', intro: ['Италия: арены, арки и башня, которая слегка падает, но держится.', 'Из речного тумана выходит Лурена. Тонкая работа — её дело.'] },
-    { id: 'mexico', n: 'Мексика', ico: '🌵', who: 'Пепельник', intro: ['Мексика: ступенчатые пирамиды и жаркий ветер.', 'Пепельник пришёл из выжженных земель. Горячий нрав и крепкая спина.'] },
-    { id: 'germany', n: 'Германия', ico: '🏰', who: 'Корнеплод', intro: ['Германия: замки на скалах и соборы до облаков.', 'Корнеплод — хранитель корней. Стены у него растут, как деревья.'] },
-    { id: 'cambodia', n: 'Камбоджа', ico: '🌴', who: 'Лианна', intro: ['Камбоджа: джунгли, где храмы заросли лианами.', 'Лианна из джунглей. Резьбу делает лучше всех на свете.'] },
-    { id: 'russia', n: 'Россия', ico: '❄️', who: 'Студенец', intro: ['Последняя земля — снежная Россия. Купола, метель и тёплые печи.', 'Студенец — дитя метелей. Мёрзнет всегда, но таскает без остановки.'] }
+    { id: 'swamp', n: 'Болото', ico: '🐸', who: 'Грязимир', home: 1, intro: ['Это моё болото. Тут тихо, сыро и никто не лезет.', 'Но в тине я нашёл старые камни. Их кто-то ставил кругами — ради чего-то большого.', 'Для большого нужны камень, дерево и бронза. Их раскидали по дорогам. Бегать я не люблю, но ради камней — ладно.'] },
+    { id: 'greece', n: 'Греция', ico: '🏛️', who: '', intro: ['За болотом начинается Греция. Белый камень, синее небо и ветер в колоннах.', 'Тут строили храмы на века. Посмотрим, как у них получалось. Говорят, за холмами живёт кто-то очень сильный и очень недовольный.'] },
+    { id: 'rocks', n: 'Каменные холмы', ico: '⛰️', who: 'Ворчун', home: 1, intro: ['Каменные холмы. Тут даже трава растёт из щебня.', 'Это дом Ворчуна. Он живёт в пещере и ворчит на эхо, потому что эхо ворчит в ответ.', 'Построим ему нормальный дом — и он потащит с нами блоки дальше.'] },
+    { id: 'egypt', n: 'Египет', ico: '🔺', who: '', intro: ['Дальше — пески Египта. Тут всё огромное и очень давнее.', 'Пирамиды складывали по камешку. Как я. Только у меня камешков меньше.'] },
+    { id: 'savanna', n: 'Золотая саванна', ico: '🦒', who: 'Златник', home: 1, intro: ['За пустыней трава становится золотой. Это саванна.', 'Здесь живёт Златник. Говорит мало, кладёт ровно, а его шатёр видно за три холма.', 'Если поможем ему отстроиться — он научит класть камень по струнке.'] },
+    { id: 'italy', n: 'Италия', ico: '🏟️', who: '', intro: ['Италия: арены, арки и башня, которая слегка падает, но держится.', 'Римляне строили дороги прямо. Мы бегаем криво, зато быстро.'] },
+    { id: 'delta', n: 'Туманная дельта', ico: '🌫️', who: 'Лурена', home: 1, intro: ['Туманная дельта: река рассыпается на сотни рукавов.', 'Из тумана выходит Лурена. Тонкая работа — её дело. Дом у неё на сваях, а мост — из лунного света. Шучу, из досок.'] },
+    { id: 'mexico', n: 'Мексика', ico: '🌵', who: '', intro: ['Мексика: ступенчатые пирамиды и жаркий ветер.', 'На горизонте дым. Там кто-то живёт прямо на горячей земле.'] },
+    { id: 'ash', n: 'Выжженные земли', ico: '🌋', who: 'Пепельник', home: 1, intro: ['Выжженные земли. Под ногами трещины, из трещин — жар.', 'Пепельник отсюда родом. Горячий нрав и крепкая спина. Его кузне нужен горн побольше.', 'Беги быстро — тут подошвы плавятся.'] },
+    { id: 'germany', n: 'Германия', ico: '🏰', who: '', intro: ['Германия: замки на скалах и соборы до облаков.', 'А за замками начинается лес, где корни толще башен.'] },
+    { id: 'roots', n: 'Лес древних корней', ico: '🌳', who: 'Корнеплод', home: 1, intro: ['Лес древних корней. Деревьям тут по тысяче лет.', 'Корнеплод — хранитель корней. Стены у него растут, как деревья. Дом у него — прямо в стволе.'] },
+    { id: 'cambodia', n: 'Камбоджа', ico: '🛕', who: '', intro: ['Камбоджа: храмы, которые заросли лианами.', 'Где лианы — там и цветы. Где цветы — там кто-то очень терпеливый.'] },
+    { id: 'bloom', n: 'Цветочные джунгли', ico: '🌺', who: 'Лианна', home: 1, intro: ['Цветочные джунгли. Каждый цветок размером с мою хижину.', 'Лианна живёт тут. Резьбу делает лучше всех на свете и плетёт мосты из лиан.'] },
+    { id: 'russia', n: 'Россия', ico: '❄️', who: '', intro: ['Снежная Россия. Купола, метель и тёплые печи.', 'Дальше на север — только лёд. И кто-то, кто всегда мёрзнет.'] },
+    { id: 'tundra', n: 'Ледяная тундра', ico: '🧊', who: 'Студенец', home: 1, intro: ['Ледяная тундра. Небо светится зелёным, а снег скрипит, как дверь.', 'Студенец — дитя метелей. Мёрзнет всегда, но таскает без остановки. Построим ему иглу потеплее.'] }
   ];
   BIOMES.forEach((x) => { x.b = [0, 1, 2, 3].map((i) => x.id + ':' + i); });
-  const REP = { greece: 'parthenon', egypt: 'pyramid', italy: 'colosseum', mexico: 'chichen', germany: 'castle', cambodia: 'angkor', russia: 'basil' };
+  const REP = { greece: 'parthenon', egypt: 'pyramid', italy: 'colosseum', mexico: 'chichen', germany: 'castle', cambodia: 'angkor', russia: 'basil', rocks: 'parthenon', savanna: 'pyramid', delta: 'colosseum', ash: 'chichen', roots: 'castle', bloom: 'angkor', tundra: 'basil' };
+  const B_ = (i) => BIOMES[i].id;
   const fmtT = (ms) => { const s = Math.max(0, Math.ceil(ms / 1000)), m = (s / 60) | 0, h = (m / 60) | 0; return h ? h + ' ч ' + (m % 60) + ' м' : m ? m + ' м ' + (s % 60) + ' с' : s + ' с'; };
 
   const H = BOA.Hub = {
@@ -8139,12 +8358,12 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     bi() { const m = this.meta(); return Math.max(0, BIOMES.findIndex((b) => b.id === m.biome)); },
     total(i) { return BIOMES[i].b.reduce((a, id) => a + this.lv(id), 0); },
     need(i) { return i ? 8 : 0; },
-    unlocked(i) { return i === 0 || this.total(i - 1) >= this.need(i); },
+    unlocked(i) { return i === 0 || this.total(i - 1) >= this.need(i) || this.total(i) > 0; },
     bonus() { let n = 0; BIOMES.forEach((b, i) => { n += this.total(i); }); return 1 + 0.03 * n; },
     name(id) { const a = id.split(':'); return BOA.Dio.DEF[a[0]][+a[1]][1]; },
     cost(id, L) {
-      const a = id.split(':'), s = +a[1], bi = BIOMES.findIndex((b) => b.id === a[0]), k = BOA.Dio.ARCH_MATS[BOA.Dio.DEF[a[0]][s][0]], u = Math.round((8 + 4 * bi) * MUL[L] * (s ? 1 + s * 0.15 : 1));
-      const o = { stone: 0, wood: 0, bronze: 0, coins: Math.round(20 * (1 + bi * 0.8) * (1 + s * 0.35) * [1, 2, 3.5, 6, 9][L] / 5) * 5 }; o[k[0]] += Math.ceil(u * 0.6); o[k[1]] += Math.floor(u * 0.4); return o;
+      const a = id.split(':'), s = +a[1], bi = BIOMES.findIndex((b) => b.id === a[0]), k = BOA.Dio.ARCH_MATS[BOA.Dio.DEF[a[0]][s][0]], u = Math.round((8 + 2.2 * bi) * MUL[L] * (s ? 1 + s * 0.15 : 1));
+      const o = { stone: 0, wood: 0, bronze: 0, coins: Math.round(20 * (1 + bi * 0.45) * (1 + s * 0.35) * [1, 2, 3.5, 6, 9][L] / 5) * 5 }; o[k[0]] += Math.ceil(u * 0.6); o[k[1]] += Math.floor(u * 0.4); return o;
     },
     can(c) { const m = this.meta(); return this.g.economy.coins >= c.coins && m.mat.stone >= c.stone && m.mat.wood >= c.wood && m.mat.bronze >= c.bronze; },
 
@@ -8176,7 +8395,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       D.setBusy(m.up && B.b.includes(m.up.id) ? B.b.indexOf(m.up.id) : -1);
       if (!B.b.includes(m.sel)) m.sel = B.b[0]; D.setSel(B.b.indexOf(m.sel));
       // существо биома у убежища (Грязимир — всегда, остальные после прихода)
-      let rec = null; try { rec = B.id === 'swamp' ? g.crew.nikita() : g.crew.list.find((w) => w.name === B.who); } catch (e) { rec = null; }
+      let rec = null; try { rec = !B.who || B.id === 'swamp' ? g.crew.nikita() : g.crew.list.find((w) => w.name === B.who); } catch (e) { rec = null; }
       const want = rec ? B.id + ':' + rec.name : '';
       if (D.whoKey !== want) { D.whoKey = want; if (!rec) D.setWho(null); else { try { D.setWho(new BOA.Worker3D(rec.id, BOA.Look.of(rec), 1.7, g.tools || {}, 'foreman', 0)); } catch (e) { D.setWho(null); } } }
     },
@@ -8185,7 +8404,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       const m = this.meta();
       if (!this.unlocked(i)) { this.g.ui.toast('Нужно ' + this.need(i) + ' ур. построек в биоме: ' + BIOMES[i - 1].n); return; }
       m.biome = BIOMES[i].id; m.sel = null; this.syncSites(); this.render();
-      if (i && !m.seen['b' + i]) { m.seen['b' + i] = 1; this.joinCreature(i); this.slides('Грязимир', BIOMES[i].intro, () => this.g.save(), i); }
+      if (i && !m.seen['b_' + B_(i)]) { m.seen['b_' + B_(i)] = 1; this.joinCreature(i); this.slides('Грязимир', BIOMES[i].intro, () => this.g.save(), i); }
     },
 
     /* ---------- улучшения с таймером ---------- */
@@ -8212,9 +8431,9 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     // существо биома приходит, когда в нём построено первое здание
     checkJoin() { BIOMES.forEach((b, i) => { if (i && this.total(i) > 0) this.joinCreature(i, true); }); },
     joinCreature(i, quiet) {
-      const g = this.g, B = BIOMES[i], m = this.meta(); if (m.seen['j' + i] || this.total(i) < 1 && quiet) return;
+      const g = this.g, B = BIOMES[i], m = this.meta(); if (!B.who || m.seen['j_' + B.id] || this.total(i) < 1 && quiet) return;
       const r = (BOA.CREW.ROSTER || []).find((x) => x.name === B.who); if (!r || this.total(i) < 1) return;
-      m.seen['j' + i] = 1; g.crew.callRoster && g.crew.callRoster(r);
+      m.seen['j_' + B.id] = 1; const rb = REP[B.id]; if (rb && g.built && !g.built[rb]) g.built[rb] = 1; g.crew.callRoster && g.crew.callRoster(r);
       this.slides(r.name, [r.blurb], () => g.save(), i, 'call_' + r.mdl);
     },
 
@@ -8241,7 +8460,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       BIOMES.forEach((x, i) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'hb-bc' + (i === bi ? ' on' : '') + (this.unlocked(i) ? '' : ' lock'); b.innerHTML = '<span>' + (this.unlocked(i) ? x.ico : '🔒') + '</span>' + x.n; b.onclick = () => this.setBiome(i); bio.appendChild(b); });
       const tabs = $('hb-tabs'); tabs.textContent = '';
       B.b.forEach((id) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'hb-tab' + (id === m.sel ? ' on' : ''); b.innerHTML = H.name(id) + '<small>ур. ' + this.lv(id) + '/' + MAXL + '</small>'; b.onclick = () => this.select(id); tabs.appendChild(b); });
-      $('hb-story').textContent = B.n + ' · ' + B.who + (this.total(bi) ? ' · бонус наград +' + Math.round((this.bonus() - 1) * 100) + '%' : '');
+      $('hb-story').textContent = B.n + ' · ' + (B.who ? 'дом: ' + B.who : 'эпоха · Грязимир и бригада') + (this.total(bi) ? ' · бонус наград +' + Math.round((this.bonus() - 1) * 100) + '%' : '');
       this._card = ''; this.paint();
     },
     paint() {

@@ -400,6 +400,12 @@ img { display: block; }
 
 .card .row { min-width: 0; gap: 6px; padding: 8px; } .card .row .btn { min-width: 0; padding-left: 10px; padding-right: 10px; font-size: 14px; white-space: nowrap; } .card .rinfo b, .card .rinfo small { overflow-wrap: anywhere; }
 
+
+/* раннер: выбор бегуна */
+.run-pick{display:flex;align-items:center;justify-content:center;gap:12px}
+.run-arr{width:44px;height:44px;border-radius:50%;border:0;background:rgba(0,0,0,.08);font:900 28px/1 inherit;color:inherit;cursor:pointer;box-shadow:0 2px 0 rgba(0,0,0,.15)}
+.run-arr:active{transform:translateY(2px);box-shadow:none}
+.run-arr[hidden]{display:none}
 </style>
 <style>
 /* мир существ: мшистая земля, тёплое золото, мягкие скругления */
@@ -433,7 +439,7 @@ button,.btn{border-radius:16px}
     @keyframes spLn{0%{opacity:.9;transform:scaleX(0)}70%{opacity:.7;transform:scaleX(1)}100%{opacity:0;transform:scaleX(1.1)}}
   </style>
   <script>(function(){var s=document.getElementById('splash');if(!s)return;var done=false;function end(){if(done)return;done=true;s.classList.add('out');setTimeout(function(){if(s.parentNode)s.parentNode.removeChild(s)},1000)}
-    var _b=s.querySelector('.sp-b'),_s=s.querySelector('.sp-s');var _g=s.querySelector('.sp-g');if(_b&&_s)_s.src=_b.src;if(_b&&_g)_g.src=_b.src;var t0=Date.now();requestAnimationFrame(function(){requestAnimationFrame(function(){t0=Date.now();setTimeout(end,3300)})});s.addEventListener('pointerdown',function(){if(Date.now()-t0>600)end()});})();</script>
+    var _b=s.querySelector('.sp-b'),_s=s.querySelector('.sp-s');var _g=s.querySelector('.sp-g');if(_b&&_s)_s.src=_b.src;if(_b&&_g)_g.src=_b.src;var t0=Date.now();requestAnimationFrame(function(){requestAnimationFrame(function(){t0=Date.now();setTimeout(end,700)})});s.addEventListener('pointerdown',function(){if(Date.now()-t0>600)end()});})();</script>
 
   <div id="app">
     <div id="gl"></div>
@@ -6696,7 +6702,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
 
     _bind() {
       const g = this.g, e = this.e, $ = this.$;
-      e.btnPlay.addEventListener('click', () => { this.audio(); if (g.slot) BOA.Hub.enter(); else this._newInEmpty(); });
+      e.btnPlay.addEventListener('click', () => { this.audio(); if (g.slot) { BOA.Hub.enter(); setTimeout(() => { try { if (!BOA.Runner._cur) BOA.Runner.open(g); } catch (er) { /* ок */ } }, 60); } else this._newInEmpty(); });
       $('btn-new').addEventListener('click', () => { this.audio(); this._newInEmpty(true); });
       $('btn-saves').addEventListener('click', () => { this.audio(); this.showSaves(); });
       $('btn-settings').addEventListener('click', () => { this.audio(); this.showSettings(); });
@@ -7335,13 +7341,13 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
   /* ---------- биомы = страны ---------- */
   const BIOMES = {
     swamp:    { sky: 0x6f9a86, hor: 0xcfe0b8, fog: 0xb9cfa8, ground: 0x4e7a3a, water: 0x3f6f5e, road: 0x8a6a45, edge: 0x5a3f28, planks: true, name: 'Болото' },
-    greece:   { sky: 0x58b6f0, hor: 0xdff3ff, fog: 0xd2ecf9, ground: 0x93c95a, road: 0xd8c593, edge: 0xf6eed8, name: 'Греция' },
-    egypt:    { sky: 0x4fb3ee, hor: 0xffecc0, fog: 0xf8e6b8, ground: 0xe8c36c, road: 0xd8a85a, edge: 0xfff0c8, name: 'Египет' },
-    italy:    { sky: 0x62b0f0, hor: 0xffe2c8, fog: 0xf6e2cf, ground: 0x86bd5a, road: 0xcfb58a, edge: 0xf4e6d0, name: 'Италия' },
-    mexico:   { sky: 0x46aee8, hor: 0xffd7a4, fog: 0xf2d6ac, ground: 0x6aaa46, road: 0xc08e5e, edge: 0xf0d6a8, name: 'Мексика' },
-    germany:  { sky: 0x76b6ea, hor: 0xe8f0fa, fog: 0xdde8f0, ground: 0x72ac4c, road: 0xbaac96, edge: 0xeee6d6, name: 'Германия' },
-    cambodia: { sky: 0x58c4e0, hor: 0xffe8b8, fog: 0xdcecc0, ground: 0x4ea340, road: 0xc9a56c, edge: 0xf0e2b8, name: 'Камбоджа' },
-    russia:   { sky: 0x9acbee, hor: 0xf0f6fb, fog: 0xe6eff7, ground: 0xf2f7fc, road: 0xc4cedb, edge: 0xffffff, name: 'Россия' }
+    greece:   { sky: 0x58b6f0, hor: 0xdff3ff, fog: 0xd2ecf9, ground: 0x93c95a, road: 0xd8c593, edge: 0xf6eed8, pave: 'tiles', name: 'Греция' },
+    egypt:    { sky: 0x4fb3ee, hor: 0xffecc0, fog: 0xf8e6b8, ground: 0xe8c36c, road: 0xd8a85a, edge: 0xfff0c8, pave: 'sand', name: 'Египет' },
+    italy:    { sky: 0x62b0f0, hor: 0xffe2c8, fog: 0xf6e2cf, ground: 0x86bd5a, road: 0xcfb58a, edge: 0xf4e6d0, pave: 'cobble', lamps: true, name: 'Италия' },
+    mexico:   { sky: 0x46aee8, hor: 0xffd7a4, fog: 0xf2d6ac, ground: 0x6aaa46, road: 0xc08e5e, edge: 0xf0d6a8, pave: 'bricks', name: 'Мексика' },
+    germany:  { sky: 0x76b6ea, hor: 0xe8f0fa, fog: 0xdde8f0, ground: 0x72ac4c, road: 0xbaac96, edge: 0xeee6d6, pave: 'cobble', lamps: true, name: 'Германия' },
+    cambodia: { sky: 0x58c4e0, hor: 0xffe8b8, fog: 0xdcecc0, ground: 0x4ea340, road: 0xc9a56c, edge: 0xf0e2b8, pave: 'slabs', name: 'Камбоджа' },
+    russia:   { sky: 0x9acbee, hor: 0xf0f6fb, fog: 0xe6eff7, ground: 0xf2f7fc, road: 0xc4cedb, edge: 0xffffff, pave: 'snow', lamps: true, name: 'Россия' }
   };
   const LINES = {
     start: ['Ноги, не подведите.', 'Побежали. Только без героизма.', 'Я не бегаю. Но ради камней — ладно.'],
@@ -7426,7 +7432,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       '<div class="rp dist"><b id="r-dist">0</b> м</div></div>' +
       '<div id="run-buffs" class="run-buffs"></div>' +
       '<div id="run-say" class="run-say"></div>' +
-      '<div id="run-start" class="run-ov"><div class="run-card"><div class="run-av" id="run-av"></div><h2>Забег</h2><p id="run-sub"></p>' +
+      '<div id="run-start" class="run-ov"><div class="run-card"><div class="run-pick"><button id="run-pl" class="run-arr" type="button" aria-label="Предыдущий бегун">‹</button><div class="run-av" id="run-av"></div><button id="run-pr" class="run-arr" type="button" aria-label="Следующий бегун">›</button></div><h2 id="run-nm">Забег</h2><p id="run-sub"></p>' +
       '<p class="run-help">↔ — дорожка · ↑ — прыжок · ↓ — подкат<br>Монеты, камень, дерево и бронза идут на стройку. Из сундуков выпадают алмазы.</p>' +
       '<button id="run-go" class="btn primary big" type="button">Бежать</button></div></div>' +
       '<div id="run-over" class="run-ov" hidden><div class="run-card"><h2 id="ro-t">Забег окончен</h2>' +
@@ -7475,6 +7481,12 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     const cvs = document.createElement('canvas'); cvs.width = 128; cvs.height = 256; const cx = cvs.getContext('2d'), rc = new T.Color(B.road);
     cx.fillStyle = '#' + rc.getHexString(); cx.fillRect(0, 0, 128, 256);
     for (let i = 0; i < 70; i++) { const l = rnd(-0.025, 0.025), c = rc.clone().offsetHSL(0, 0, l); cx.fillStyle = '#' + c.getHexString(); cx.fillRect(rnd(0, 120), rnd(0, 250), rnd(8, 30), rnd(6, 16)); }
+    if (B.pave === 'tiles') { cx.fillStyle = 'rgba(0,0,0,.12)'; cx.fillRect(0, 0, 128, 256); cx.lineWidth = 2.5; cx.strokeStyle = 'rgba(110,90,55,.55)'; for (let y = 0; y < 256; y += 32) for (let x = 0; x < 128; x += 32) cx.strokeRect(x + 1, y + 1, 30, 30); }
+    if (B.pave === 'cobble') { for (let y = 0; y < 256; y += 12) for (let x = ((y / 12) % 2) * 7; x < 128; x += 14) { cx.fillStyle = 'rgba(0,0,0,.2)'; cx.fillRect(x, y, 13, 1.6); cx.fillRect(x, y, 1.6, 11); cx.fillStyle = 'rgba(255,255,255,.1)'; cx.fillRect(x + 2, y + 2, 8, 2); } }
+    if (B.pave === 'sand') { for (let k = 0; k < 220; k++) { cx.fillStyle = Math.random() < .5 ? 'rgba(255,240,200,.35)' : 'rgba(120,90,40,.22)'; cx.fillRect(rnd(0, 128), rnd(0, 256), 2, 1); } for (let y = 0; y < 256; y += 48) { cx.fillStyle = 'rgba(150,110,50,.18)'; cx.fillRect(0, y + rnd(0, 20), 128, 5); } }
+    if (B.pave === 'bricks') { cx.lineWidth = 2; cx.strokeStyle = 'rgba(90,40,20,.4)'; for (let y = 0; y < 256; y += 16) for (let x = ((y / 16) % 2) * 16 - 16; x < 128; x += 32) cx.strokeRect(x, y, 32, 16); }
+    if (B.pave === 'slabs') { cx.lineWidth = 3; for (let y = 0; y < 256; y += 40) for (let x = ((y / 40) % 2) * 20 - 20; x < 128; x += 40) { cx.strokeStyle = 'rgba(40,50,30,.4)'; cx.strokeRect(x, y, 40, 40); cx.fillStyle = 'rgba(70,130,60,.35)'; cx.fillRect(x + rnd(3, 28), y + rnd(3, 28), rnd(5, 10), 3); } }
+    if (B.pave === 'snow') { for (let k = 0; k < 140; k++) { cx.fillStyle = 'rgba(255,255,255,.55)'; cx.beginPath(); cx.arc(rnd(0, 128), rnd(0, 256), rnd(1, 3), 0, 7); cx.fill(); } }
     if (B.planks) { for (let y = 0; y < 256; y += 21) { cx.fillStyle = 'rgba(40,24,10,.6)'; cx.fillRect(0, y, 128, 3); cx.fillStyle = 'rgba(255,230,190,.12)'; cx.fillRect(0, y + 3, 128, 2); for (let k = 0; k < 3; k++) { cx.fillStyle = 'rgba(40,24,10,.45)'; cx.beginPath(); cx.arc(rnd(8, 120), y + rnd(8, 16), rnd(1.5, 3), 0, 7); cx.fill(); } } }
     const rt = this.roadTex = new T.CanvasTexture(cvs); rt.wrapS = rt.wrapT = T.RepeatWrapping; rt.repeat.set(1, 28); rt.anisotropy = 4;
     const road = new T.Mesh(new T.PlaneGeometry(roadW, 220), new T.MeshLambertMaterial({ map: rt })); road.rotation.x = -Math.PI / 2; road.position.set(0, 0, -90); sc.add(road);
@@ -7482,14 +7494,14 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       const curb = new T.Mesh(new T.BoxGeometry(0.35, 0.22, 220), M(B.edge)); curb.position.set(s * (roadW / 2 + 0.17), 0.1, -90); sc.add(curb);
       const gr = new T.Mesh(new T.PlaneGeometry(60, 220), M(B.water || B.ground, B.water ? { transparent: true, opacity: 0.95 } : undefined)); gr.rotation.x = -Math.PI / 2; gr.position.set(s * (roadW / 2 + 30.3), -0.03, -90); sc.add(gr);
     }
-    if (!B.planks) for (const l of [-1, 1]) for (let i = 0; i < 20; i++) { const d = new T.Mesh(new T.PlaneGeometry(0.12, 2.2), M(B.edge, { transparent: true, opacity: 0.8 })); d.rotation.x = -Math.PI / 2; d.position.set(l * LANE * 0.5 * 1, 0.02, -i * 7); sc.add(d); this.dash.push(d); }
+    if (B.dashes) for (const l of [-1, 1]) for (let i = 0; i < 20; i++) { const d = new T.Mesh(new T.PlaneGeometry(0.12, 2.2), M(B.edge, { transparent: true, opacity: 0.8 })); d.rotation.x = -Math.PI / 2; d.position.set(l * LANE * 0.5 * 1, 0.02, -i * 7); sc.add(d); this.dash.push(d); }
     // декорации по бокам
     const gen = PROPS[this.biome]; this.props = [];
     for (let i = 0; i < 18; i++) for (const s of [-1, 1]) {
       const p = gen[(Math.random() * gen.length) | 0](); p.position.set(s * (roadW / 2 + 2.5 + Math.random() * 9), 0, -i * 9 - Math.random() * 5); p.rotation.y = rnd(-0.5, 0.5);
       p.scale.setScalar(rnd(0.85, 1.35)); sc.add(p); this.props.push(p);
     }
-    if (!B.planks) for (let i = 0; i < 9; i++) for (const s of [-1, 1]) { const lp = grp(cyl(0.06, 0.09, 2.4, 0x5a4028, 0, 1.2, 0, 6), mesh(new T.SphereGeometry(0.22, 8, 6), 0xfff0b0, 0, 2.5, 0, { emissive: 0xffd060, emissiveIntensity: 1.1 })); lp.position.set(s * (roadW / 2 + 0.7), 0, -i * 17 - 4); sc.add(lp); this.props.push(lp); }
+    if (B.lamps) for (let i = 0; i < 9; i++) for (const s of [-1, 1]) { const lp = grp(cyl(0.06, 0.09, 2.4, 0x5a4028, 0, 1.2, 0, 6), mesh(new T.SphereGeometry(0.22, 8, 6), 0xfff0b0, 0, 2.5, 0, { emissive: 0xffd060, emissiveIntensity: 1.1 })); lp.position.set(s * (roadW / 2 + 0.7), 0, -i * 17 - 4); sc.add(lp); this.props.push(lp); }
     // дальние холмы
     for (let i = 0; i < 7; i++) { const h = cone(14 + i * 2.5, 15 + (i % 3) * 5, i % 2 ? 0x9eb78f : 0x87a77a, -60 + i * 20, 5.5, -110, 6); h.material = M(i % 2 ? 0xa8c19a : 0x92b085, { fog: true }); sc.add(h); }
     // облака
@@ -7513,7 +7525,9 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
   /* ---------- герой на скелете из игры ---------- */
   P.makeHero = function () {
     const g = this.g; let rec = null;
-    try { rec = g.crew.nikita(); } catch (e) { rec = null; }
+    if (!this.pickRec) { try { const id = +localStorage.getItem('boa.runner'); this.pickRec = (g.crew.list || []).find((w) => w.id === id) || null; } catch (e) { /* ок */ } }
+    try { rec = this.pickRec || g.crew.nikita(); } catch (e) { rec = null; }
+    try { $('run-nm').textContent = (rec && rec.name) || 'Забег'; const many = (g.crew.list || []).length > 1; $('run-pl').hidden = $('run-pr').hidden = !many; } catch (e) { /* ок */ }
     const look = rec ? BOA.Look.of(rec) : null;
     this.hero = null;
     try {
@@ -7620,6 +7634,10 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     this._kd = (e) => { const k = e.key; if (k === 'ArrowLeft' || k === 'a') this.act('l'); else if (k === 'ArrowRight' || k === 'd') this.act('r'); else if (k === 'ArrowUp' || k === 'w' || k === ' ') this.act('u'); else if (k === 'ArrowDown' || k === 's') this.act('d'); else if (k === 'Escape') this.close(); };
     window.addEventListener('keydown', this._kd);
     $('run-go').addEventListener('click', () => { try { BOA.Audio.init(); } catch (e) { /* без звука */ } $('run-start').hidden = true; this.reset(); this.S.on = true; this.say(pick(LINES.start)); });
+    { const crew = () => { try { const n = g.crew.nikita(), L = g.crew.list.slice(); return n ? [n].concat(L.filter((w) => w !== n)) : L; } catch (e) { return []; } };
+      const swap = (d) => { const L = crew(); if (L.length < 2 || this.S.on) return; let i = L.indexOf(this.pickRec || L[0]); if (i < 0) i = 0; i = (i + d + L.length) % L.length; this.pickRec = L[i];
+        if (this.heroG) this.scene.remove(this.heroG); this.makeHero(); try { localStorage.setItem('boa.runner', L[i].id); } catch (e) { /* ок */ } };
+      $('run-pl').addEventListener('click', () => swap(-1)); $('run-pr').addEventListener('click', () => swap(1)); }
     $('ro-again').addEventListener('click', () => { $('run-over').hidden = true; this.reset(); this.S.on = true; });
     $('ro-back').addEventListener('click', () => this.close());
     $('run-back').addEventListener('click', () => { if (this.S.on && !this.S.ended) this.finish('Остановился'); else this.close(); });

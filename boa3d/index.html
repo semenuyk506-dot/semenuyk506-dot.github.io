@@ -7115,6 +7115,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
 /* Грязимир рассказывает о постройках: короткие реплики при старте, на середине и на финише. Показываются в том же «облачке», что и обучение. */
 (function (BOA) {
   const ST = {"parthenon": ["Парфенон — храм богини Афины на Акрополе. Начали в 447 году до н. э. Колонны там чуть выгнуты: греки так обманывали глаз.", "Готово. Вроде прямой, а на самом деле нет. Хитрые были греки. Одобряю."], "hermes": ["Гермес — вестник богов, в сандалиях с крылышками. Мне бы такие: по ступенькам леса бегать.", "Бог посланий стоит как положено. А я уже устал. Хорошая статуя."], "pyramid": ["Пирамида Хеопса в Гизе: почти 4,5 тысячи лет и около двух с половиной миллионов блоков. Пересчитывать не буду.", "Почти четыре тысячи лет она была самой высокой постройкой мира. Нам тоже есть куда расти. Вверх."], "sphinx": ["Большой сфинкс в Гизе — лев с человеческой головой, высеченный прямо из скалы. Вот это экономия материала.", "Лев, голова, лапы — всё на месте. Про нос не спрашивай."], "colosseum": ["Колизей в Риме открыли в 80 году н. э. Трибуны вмещали десятки тысяч зрителей. Билетов я не продаю.", "Арки, арки, арки, три яруса. Вот так надо строить: одно и то же много раз."], "stonehenge": ["Стоунхендж: камни стоят в Англии около пяти тысяч лет. Как их таскали — загадка. У нас хотя бы лебёдки.", "Камни стоят. Зачем — никто не знает. Я тоже иногда не знаю, зачем всё это."], "castle": ["Замок на скале в Баварии, как из сказки. Строить начали в 1869 году, король не дожил до конца. Я надеюсь дожить.", "Сказка готова. Только не спрашивай про стоимость."], "basil": ["Собор Василия Блаженного в Москве, XVI век: несколько церквей под разноцветными куполами. Построен по приказу Ивана Грозного.", "Купола как леденцы. Красиво, но красить такое — вечная работа."], "hagia": ["Айя-София в Стамбуле: огромный купол собрали при Юстиниане примерно за пять лет, в шестом веке. Скорость, достойная уважения.", "Купол огромный — и не падает. Учись, Грязимир."], "pagoda": ["Японская пагода: несколько этажей с загнутыми крышами. Внутри стоит центральный столб — потому её не страшат землетрясения. Умно.", "Стоит ровно. Землетрясение ей не страшно. Мне бы так."], "great_wall": ["Великая Китайская стена тянется на тысячи километров. Строили её веками, при многих династиях. Свой участок я знаю.", "Ещё кусок стены. Конца не видно, как у любой нормальной стройки."], "angkor": ["Ангкор-Ват в Камбодже, XII век — самый большой религиозный комплекс в мире. Вокруг него ров. Пять башен, как бутоны лотоса.", "Пять башен, ров вокруг. Красота. Ров — это просто очень большая лужа."], "taj": ["Тадж-Махал в Агре — мавзолей из белого мрамора. Император Шах-Джахан построил его для жены Мумтаз-Махал.", "Белый мрамор, четыре минарета, ни пятнышка. Для любимой постарался. Вот это отношение к работе."], "petra": ["Петра в Иордании — город, вырубленный в розовых скалах. Строили не вверх, а вглубь. Мой любимый способ: ничего не носить.", "Скала в скале. Из камня сделали дом. Камня у нас тоже много."], "chichen": ["Чичен-Ица, пирамида Кукулькана: четыре лестницы по 91 ступеньке и верхняя площадка — выходит 365, как дней в году. Календарь в камне.", "Ступени посчитал — сходится. Календарь работает."], "eiffel": ["Эйфелева башня: открыта в 1889 году, строили чуть больше двух лет. Собирали из железных деталей, как конструктор. Метод мне нравится.", "Железное кружево. Её собирались снести через двадцать лет, а она стоит до сих пор. Хорошая временная постройка."], "christ": ["Христос-Искупитель в Рио: статуя высотой около 30 метров на горе Корковаду, открыта в 1931 году. Руки раскинуты.", "Руки раскинуты, будто говорит: «Ну вот видишь, получилось». Спасибо."], "moai": ["Моаи — каменные головы острова Пасхи. Их вырубали из вулканического туфа и ставили на постаменты. Таскали без колёс. Говорят, «шагали».", "Стоят и смотрят. Я тоже так умею: смотрю и жду, пока бригада закончит."], "liberty": ["Статуя Свободы — подарок Франции США, 1886 год. Внутри железный каркас, снаружи тонкая медь. Со временем позеленела.", "Факел поднят. Позеленела от времени, так медь и делает. Красить не надо."], "opera": ["Сиднейская опера: крыша из «раковин». Строили 14 лет, открыли в 1973-м. Дольше, чем планировали. Мне это знакомо.", "Белые паруса готовы. Мы справились быстрее, чем за 14 лет. Горжусь."], "zeus_temple": ["Храм Зевса в Олимпии, V век до н. э. Внутри стояла гигантская статуя Зевса — чудо света. Рядом проходили Олимпийские игры.", "Храм есть. Статуи пока нет, это другая стройка. Не торопи меня."], "epidaurus": ["Театр в Эпидавре: акустика такая, что с верхнего ряда слышно, как на сцене шуршит бумага. Греки обошлись без микрофонов.", "Хлопнул в ладоши — слышно везде. Гениально. В нашей бригаде кричишь — не слышат."], "erechtheion": ["Эрехтейон на Акрополе знаменит портиком кариатид — колоннами в виде девушек. Крыша тяжёлая, а они держат.", "Шесть девушек держат крышу и не жалуются. Берём пример."], "abu_simbel": ["Абу-Симбел: храм Рамсеса II, высеченный в скале. В 1960-х его разрезали на блоки и перенесли выше: иначе затопило бы при плотине.", "Один раз построили, один раз перенесли. Вот это называется «переделка»."], "alexandria": ["Александрийский маяк на острове Фарос — одно из семи чудес света, III век до н. э. Огонь был виден далеко в море.", "Маяк светит. Ночью я хотя бы не споткнусь о блоки."], "pantheon": ["Римский Пантеон: купол из неармированного бетона, до сих пор самый большой в мире в своём роде. В центре — круглое отверстие.", "Дождь внутрь тоже попадает. Дырка в потолке — нарочно. Римляне, что с них взять."], "pisa": ["Пизанская башня начала наклоняться ещё при стройке: грунт мягкий. Строили почти двести лет, с перерывами.", "Стоит криво, как положено. Я бы сказал, что специально, но не скажу."], "aqueduct": ["Акведук — мост для воды. Римляне строили их по всей империи. Вода шла сама, под уклоном, без насосов.", "Вода сама идёт вниз. Лучшая бригада на свете — гравитация. И без зарплаты."], "bigben": ["Биг-Бен: колокол в башне британского парламента, 1859 год. «Биг-Беном» зовут колокол, а не башню. Все путают.", "Бьёт каждый час. Точнее меня: время не врёт, а я могу."], "towerbridge": ["Тауэрский мост в Лондоне, 1894 год. Разводной: пролёты поднимаются, чтобы пропустить корабли.", "Разводится — и корабли идут. Мне бы так: махнул — и все расступились."], "teotihuacan": ["Теотиуакан — «город богов» в Мексике. Пирамида Солнца — одна из самых больших в Америке. Главная улица — «Дорога мёртвых».", "Широкая дорога, пирамиды по сторонам. Хороший план города. Планировщика бы нанять."], "monastery": ["Монастырь Эд-Дейр в Петре: фасад высотой около 45 метров, вырубленный в скале. К нему поднимаются по ступеням, их около восьмисот.", "Опять скала, опять фасад. Скала тяжелее блоков, я знаю, о чём говорю."], "himeji": ["Замок Химэдзи называют «замком белой цапли»: он белый, как птица. Пережил войны и землетрясения, ему больше четырёхсот лет.", "Белая цапля встала. Ещё четыреста лет простоит. Не меньше."], "itsukushima": ["Тории Ицукусимы стоят в воде: во время прилива кажется, что они плывут. Святилище на острове Миядзима.", "Ворота в воде. Ботинки мокрые, зато красиво."], "kremlin": ["Московский Кремль: красные стены и башни, многовековая крепость. Спасская башня с курантами построена в 1491 году.", "Красный кирпич, зубцы. Выглядит надёжно. Люблю, когда надёжно."], "brandenburg": ["Бранденбургские ворота в Берлине, 1791 год. Наверху богиня победы в колеснице, запряжённой четвёркой коней. Символ города.", "Колесница с конями на крыше. Как они всё это туда затащили — отдельный вопрос."], "cologne": ["Кёльнский собор: начали в 1248 году, закончили в 1880-м. Шесть с лишним веков. После этого мой срок — пустяки.", "Шестьсот лет стройки. А меня подгоняют. Сравни, да."], "temple_heaven": ["Храм Неба в Пекине: император приходил сюда молиться о хорошем урожае. Круглая крыша — небо, квадратный двор — земля.", "Круглое небо над квадратной землёй. Символика. Мне главное, чтоб крыша не текла."], "terracotta": ["Терракотовая армия: тысячи глиняных воинов для императора Цинь Шихуанди. У каждого своё лицо.", "Тысячи воинов, все разные. Мои рабочие тоже все разные, так что я не удивлён."], "bluemosque": ["Голубая мечеть в Стамбуле, XVII век. Шесть минаретов, а внутри десятки тысяч голубых изразцов. Отсюда и название.", "Голубая плитка везде. Укладывать — адский труд. Уважение мастерам."], "bayon": ["Байон в Ангкор-Томе: башни с огромными каменными лицами, которые улыбаются во все стороны.", "Каменные лица улыбаются. Хоть кто-то на этой стройке улыбается."], "qutb": ["Кутб-Минар в Дели — башня из красного песчаника высотой около 73 метров, XIII век. Внутри примерно 380 ступеней.", "Высокая красная башня. Лестницу уже посчитал: снизу вверх тяжелее, чем сверху вниз."], "lotus": ["Храм Лотоса в Дели, 1986 год. Белый мрамор, 27 лепестков, как у цветка. Открыт для людей любой веры.", "Мраморный цветок расцвёл. Двадцать семь лепестков. Не путай с блоками."], "arc": ["Триумфальная арка в Париже: Наполеон велел построить в честь побед, открыта в 1836 году. Под ней могила неизвестного солдата.", "Арка стоит. Площадь вокруг — двенадцать улиц сходятся. Бедные водители."], "notredame": ["Нотр-Дам в Париже: начали в 1163 году, основные работы шли около века. Готика: стрельчатые арки, контрфорсы, витражи.", "Контрфорсы подпирают стены снаружи. Готика — это когда стену подпирают палками. Зато красиво."], "lincoln": ["Мемориал Линкольна в Вашингтоне, 1922 год. Огромная сидящая статуя в колоннаде. Колонн тридцать шесть — по числу штатов при его жизни.", "Сидит, думает. Тридцать шесть колонн. Чётко, строго. Мне нравится."], "rushmore": ["Гора Рашмор: лица четырёх президентов высотой с шестиэтажный дом вырубали 14 лет, с 1927 года. Много динамита и меткий глаз.", "Четыре лица в скале. Скала не жалуется. Самый терпеливый заказчик."], "goldengate": ["Золотые Ворота в Сан-Франциско, 1937 год. Подвесной мост с пролётом около 1,3 километра, был самым длинным в мире. Оранжевый, чтобы его видели в тумане.", "Мост в тумане, оранжевый. Подвесной. Хорошая работа."], "harbour": ["Мост через гавань Сиднея, арка открыта в 1932 году. Стальной, на заклёпках — их около шести миллионов.", "Шесть миллионов заклёпок. Я не считал, но я бы удивился."], "rano": ["Рано-Рараку — каменоломня на острове Пасхи, где вырубали почти все моаи. Там до сих пор лежат сотни незаконченных статуй.", "Стоят в склоне, как будто ждут смены. Знакомое чувство."], "gobekli": ["Гёбекли-Тепе в Турции: каменные кольца и столбы возрастом около 11 тысяч лет — старше Стоунхенджа и пирамид.", "Самая древняя постройка в нашем списке. Без чертежей, без бетона. И стоит."], "djoser": ["Ступенчатая пирамида Джосера в Саккаре — первая большая каменная постройка Египта, около 2670 года до н. э. Архитектор — Имхотеп.", "Ступенька на ступеньке. Все остальные пирамиды — продолжение идеи. Имхотеп, привет."], "ziggurat": ["Зиккурат Ура в Месопотамии: ступенчатая башня из кирпича. Наверху стоял храм.", "Кирпичи, кирпичи, кирпичи. Ровно, ступенями. Моё любимое."], "hanging_gardens": ["Висячие сады Семирамиды — чудо света, которое, возможно, существовало в Вавилоне. Историки до сих пор спорят, где. А мы построим.", "Зелень на каждом ярусе. Поливать — бесконечная работа. Нет, я не вызываюсь."], "artemis": ["Храм Артемиды в Эфесе — одно из семи чудес света, больше ста колонн. Его сжигали, строили заново. Эфесу не везло.", "Колонны стоят, храм красивый. Давай без поджогов."], "zeus_statue": ["Статуя Зевса в Олимпии работы Фидия: трон, золото, слоновая кость, высота около 12 метров. Одно из семи чудес света.", "Сидит на троне, весь в золоте. Руку подать не может, зато впечатляет."], "mausoleum": ["Мавзолей в Галикарнасе — гробница царя Мавсола, IV век до н. э. От его имени пошло слово «мавзолей». Одно из семи чудес света.", "Слово «мавзолей» пошло отсюда. Построишь одну гробницу — и войдёшь в словарь."], "colossus": ["Колосс Родосский — бронзовая статуя бога Гелиоса высотой около 30 метров, одно из семи чудес света. Простоял недолго: землетрясение.", "Бронзовый и гордый. Землетрясений не боимся, мы же сделали крепче."], "viaduct": ["Гёльчтальский виадук в Германии, 1851 год — самый большой кирпичный мост в мире. Больше двадцати миллионов кирпичей.", "Миллионы кирпичей. Я бы не считал. Кладка ровная, каменщикам привет."], "crystalpalace": ["Хрустальный дворец в Лондоне, 1851 год: стекло и чугун, построен для Всемирной выставки примерно за девять месяцев. Собирали как конструктор.", "Стеклянный дворец. Мыть окна — отдельная профессия. Хорошо, что не моя."], "stadium": ["Маракана в Рио-де-Жанейро: стадион, построенный к чемпионату мира 1950 года. На финале собралось около двухсот тысяч человек.", "Огромный стадион. Мест хватит всем, и нам тоже, если за кофе."], "skyscraper": ["Бурдж-Халифа в Дубае, 2010 год: больше 800 метров — самое высокое здание в мире. Лифты едут быстро.", "Небоскрёб под облака. Если не смотреть вниз — отлично. Я смотрю вниз."], "sophia": ["Софийский собор в Киеве, XI век, времён Ярослава Мудрого. Внутри сохранились золотые мозаики и фрески. Зелёные купола — моя слабость.", "Купола как надо, золото внутри. Построено на века."], "khotyn": ["Хотинская крепость на Днестре: башни, стены и ров, XIII—XVIII века. Столько раз переходила из рук в руки, что мне жалко стены.", "Стены толстые, башни высокие. Неприступная, как моя бригада в обеденный перерыв."], "odessa_opera": ["Одесский оперный театр, 1887 год. Барокко, зал с отличной акустикой, проект венских архитекторов Фельнера и Гельмера.", "Золото, барокко, оркестр. А у меня бригада поёт «раз-два, взяли». Тоже искусство."]}, MID = ["Половина. Спина говорит одно, прораб — другое. Продолжаем.", "Уже полдела. Не расслабляйтесь: вторая половина всегда длиннее.", "Ровно середина. Могу объявить перекур. Не буду.", "Половину осилили. Выглядит всё ещё криво, но это нормально."], GEN = {"en": {"intro": "Let's build {n}. I'll grumble, you tap, and it'll get done.", "mid": "Halfway there. My back says stop, I say keep going.", "done": "{n} is finished. Don't tell anyone I'm proud."}, "es": {"intro": "Vamos a construir {n}. Yo refunfuño, tú tocas y se hace.", "mid": "Ya vamos por la mitad. Mi espalda dice basta, yo digo sigue.", "done": "{n} está terminado. No le digas a nadie que estoy orgulloso."}, "pl": {"intro": "Budujemy: {n}. Ja pomarudzę, ty stukasz — i będzie gotowe.", "mid": "Połowa za nami. Plecy mówią dość, ja mówię dalej.", "done": "{n} gotowe. Nikomu nie mów, że jestem dumny."}, "ru": {"intro": "Строим: {n}. Я поворчу, ты потыкаешь — и будет готово.", "mid": null, "done": "{n} готово. Только никому не говори, что я горжусь."}};
+  BOA.GRYAZ_ST = ST;
   BOA.UI.prototype.story = function (kind, id) {
     const g = this.g, tu = this.tutorial; if (!tu || g.tut < 5 || g.screen !== 'game') return;
     const d = BOA.def(id); if (!d) return;
@@ -7477,6 +7478,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     ash:      { sky: 0x4a3a40, hor: 0xd88a5a, fog: 0x9a6a5a, ground: 0x3a3030, water: 0xff5a10, lava: true, road: 0x5a4a46, edge: 0x2a2222, pave: 'cracks', hills: [0x3a2e2e, 0x2e2424], step: 'stone', amb: [0.35, 0xff7a20], name: 'Выжженные земли' },
     roots:    { sky: 0x6aa07a, hor: 0xd8e8b0, fog: 0xa8c890, ground: 0x3e6a32, road: 0x6a5032, edge: 0x4a3420, pave: 'moss', hills: [0x3e6a3a, 0x325a30], step: 'sand', amb: [0.18, 0xd8ff8a], name: 'Лес древних корней' },
     bloom:    { sky: 0x4ac0d8, hor: 0xffe0f0, fog: 0xf0d8e8, ground: 0x4aa850, road: 0xc8a070, edge: 0xe05a8a, pave: 'slabs', hills: [0x3e9a50, 0x5ab060], step: 'sand', amb: [0.2, 0xff9ad0], name: 'Цветочные джунгли' },
+    england:  { sky: 0x8aa8c8, hor: 0xdfe6ee, fog: 0xcfd8e2, ground: 0x5f9a4a, road: 0x8a8a92, edge: 0xd8d4cc, pave: 'cobble', lamps: true, hills: [0x6a9a5a, 0x5a8a4e], step: 'stone', amb: [0.35, 0xc8d8f0], rain: true, name: 'Англия' },
     tundra:   { sky: 0x3a5a8a, hor: 0xbfe8f0, fog: 0xcfe4f0, ground: 0xe8f4fc, road: 0x86b4d0, edge: 0xf6fbff, pave: 'ice', hills: [0xd8e8f4, 0xc0d8ea], step: 'snow', amb: [0.3, 0xffffff], aurora: true, name: 'Ледяная тундра' }
   };
   const LINES = {
@@ -7581,6 +7583,13 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       () => grp(cyl(0.14, 0.2, 3.2, 0x8a6a44, 0, 1.6, 0), cone(1.6, 0.5, 0x3fae52, 0.9, 3.2, 0, 6), cone(1.6, 0.5, 0x3fae52, -0.9, 3.2, 0, 6), cone(1.6, 0.5, 0x4abc5c, 0, 3.4, 0.9, 6)),
       () => grp(sph(0.9, 0x3e9a46, 0, 0.6, 0, 0.8), sph(0.2, 0xff7ab0, 0.4, 1.2, 0.5, 1), sph(0.2, 0xffe060, -0.3, 1.1, 0.6, 1), sph(0.2, 0xff7ab0, 0.1, 1.3, -0.5, 1))
     ],
+    england: [
+      () => grp(box(0.9, 2.3, 0.9, 0xd2232a, 0, 1.15, 0), box(1.0, 0.2, 1.0, 0xb81c22, 0, 2.4, 0), cyl(0.5, 0.5, 0.2, 0xd2232a, 0, 2.55, 0, 8), mesh(new T.BoxGeometry(0.7, 1.3, 0.05), 0xfff4c0, 0, 1.4, 0.46, { emissive: 0xffe08a, emissiveIntensity: 0.5 }), box(0.7, 0.14, 0.06, 0x1a1a1a, 0, 2.15, 0.47)),
+      () => grp(cyl(0.18, 0.26, 2.2, 0x6a5a48, 0, 1.1, 0, 7), sph(1.4, 0x4e8a42, 0, 3.0, 0, 0.85), sph(1.0, 0x5a9a4c, 0.8, 2.6, 0.3, 0.85)),
+      () => { const g = grp(box(3.2, 2.6, 2.2, 0xa8503a, 0, 1.3, 0), cone(2.3, 1.3, 0x4a4a52, 0, 3.25, 0, 4), box(0.4, 0.9, 0.4, 0xa8503a, 0.9, 3.6, 0)); g.children[1].rotation.y = Math.PI / 4; for (const x of [-0.8, 0.8]) for (const y of [0.9, 1.9]) g.add(mesh(new T.BoxGeometry(0.5, 0.6, 0.05), 0xfff0b0, x, y, 1.12, { emissive: 0xffd880, emissiveIntensity: 0.5 })); g.add(box(0.6, 1.0, 0.05, 0x1a3a6a, 0, 0.5, 1.12)); return g; },
+      () => grp(box(1.8, 0.5, 0.6, 0x3a5a2a, 0, 0.25, 0), sph(0.12, 0xff5a7a, -0.5, 0.6, 0.2, 1), sph(0.12, 0xffffff, 0, 0.6, 0.2, 1), sph(0.12, 0xff5a7a, 0.5, 0.6, 0.2, 1)),
+      () => grp(cyl(0.06, 0.08, 3.0, 0x1a1a1a, 0, 1.5, 0, 6), box(0.36, 0.5, 0.36, 0x1a1a1a, 0, 3.15, 0), mesh(new T.BoxGeometry(0.28, 0.4, 0.28), 0xfff0b0, 0, 3.15, 0, { emissive: 0xffd060, emissiveIntensity: 1.0 }))
+    ],
     tundra: [
       () => grp(cone(0.5, 2.6, 0x9ae0f0, 0, 1.3, 0, 5), cone(0.35, 1.8, 0xb8f0ff, 0.5, 0.9, 0.2, 5), cone(0.25, 1.2, 0x8ad8ea, -0.4, 0.6, 0.1, 5)),
       () => grp(sph(1.2, 0xf6fbff, 0, 0.4, 0, 0.5), sph(0.8, 0xffffff, 0.9, 0.3, 0.3, 0.5)),
@@ -7605,9 +7614,9 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       '<div class="rp dist"><b id="r-dist">0</b> м</div></div>' +
       '<div id="run-buffs" class="run-buffs"></div>' +
       '<div id="run-say" class="run-say"></div><div id="run-th" class="run-th" hidden>💰 Хапуга <b id="run-thd">13</b> м<i id="run-thb"></i></div>' +
-      '<div id="run-start" class="run-ov"><div class="run-card"><div class="run-pick"><button id="run-pl" class="run-arr" type="button" aria-label="Предыдущий бегун">‹</button><div class="run-av" id="run-av"></div><button id="run-pr" class="run-arr" type="button" aria-label="Следующий бегун">›</button></div><h2 id="run-nm">Забег</h2><p id="run-sub"></p>' +
+      '<div id="run-start" class="run-ov"><div class="run-card"><div class="run-pick"><button id="run-pl" class="run-arr" type="button" aria-label="Предыдущий бегун">‹</button><div class="run-av" id="run-av"></div><button id="run-pr" class="run-arr" type="button" aria-label="Следующий бегун">›</button></div><h2 id="run-nm">Забег</h2><div id="run-team" class="run-team"></div><p id="run-sub"></p>' +
       '<p class="run-help">↔ — дорожка · ↑ — прыжок · ↓ — подкат<br>Монеты, камень, дерево и бронза идут на стройку. Из сундуков выпадают алмазы.</p>' +
-      '<button id="run-go" class="btn primary big" type="button">Бежать</button></div></div>' +
+      '<button id="run-go" class="ro-go" type="button">БЕЖАТЬ!</button></div></div>' +
       '<div id="run-over" class="run-ov ro" hidden><div class="ro-box"><div class="ro-av" id="ro-av"></div><div class="ro-t" id="ro-t">Забег окончен</div>' +
       '<div class="ro-card"><div class="ro-d"><b id="ro-d">0</b><i>🏆</i></div><div class="ro-best" id="ro-best"></div><div class="ro-c">+<b id="ro-c">0</b><i class="rcoin"></i></div>' +
       '<div class="ro-m"><span><i class="rst"></i><b id="ro-s">0</b></span><span><i class="rwd"></i><b id="ro-w">0</b></span><span><i class="rbr"></i><b id="ro-b">0</b></span><span>💎<b id="ro-dia">0</b></span><span>🧰<b id="ro-ch">0</b></span></div>' +
@@ -7726,7 +7735,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
 
 
   /* ---------- Хапуга: убегает впереди с мешком, роняет монеты. Догнать можно рывком ---------- */
-  const SOLID = { crate: 1, beam: 1, wall: 1, hurdle: 1, spike: 1, swing: 1, log: 1, cart: 1 };
+  const SOLID = { crate: 1, beam: 1, wall: 1, hurdle: 1, spike: 1, swing: 1, log: 1, cart: 1, mover: 1, pit: 1, barrel: 1 };
   P.makeThief = function () {
     this.th = null; if (!BOA.MdlHero || !BOA.MDL || !BOA.MDL.hapuga) return;
     try {
@@ -7874,6 +7883,12 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       if (type === 'beam') { const g = grp(cyl(0.1, 0.12, 1.7, 0x4a8a3a, -W * 0.44, 0.85, 0, 6), cyl(0.1, 0.12, 1.7, 0x4a8a3a, W * 0.44, 0.85, 0, 6), cyl(0.12, 0.12, W * 1.0, 0x3e9a46, 0, 1.6, 0, 6)); g.children[2].rotation.z = Math.PI / 2; for (let k = 0; k < 5; k++) g.add(sph(0.2, [0xff5a9a, 0xffd040, 0xa060e0][k % 3], -W * 0.36 + k * W * 0.18, 1.45, 0.05, 0.8)); return g; }
       if (type === 'wall') return grp(sph(1.0, 0x3e9a46, 0, 1.0, 0, 1.1), sph(0.8, 0x4aa850, 0, 2.2, 0, 0.9), sph(0.3, 0xff5a9a, 0.5, 1.6, 0.6, 1), sph(0.3, 0xffd040, -0.4, 2.3, 0.5, 1));
     }
+    if (bio === 'england') {
+      if (type === 'crate') return grp(box(1.2, 0.9, 1.0, 0x8a5a2c, 0, 0.45, 0), box(1.24, 0.1, 1.04, 0x5a3a1c, 0, 0.9, 0), box(0.6, 0.3, 0.02, 0xf6efe0, 0, 0.5, 0.51), sph(0.18, 0xf6f6f6, 0.2, 1.08, 0, 0.7), cyl(0.04, 0.04, 0.18, 0xf6f6f6, 0.42, 1.08, 0, 5));
+      if (type === 'beam') { const g = grp(box(W * 1.0, 0.5, 0.4, 0x1a1a1a, 0, 1.6, 0), box(0.14, 1.7, 0.14, 0x1a1a1a, -W * 0.45, 0.85, 0), box(0.14, 1.7, 0.14, 0x1a1a1a, W * 0.45, 0.85, 0)); for (let k = 0; k < 4; k++) g.add(box(W * 0.2, 0.32, 0.02, k % 2 ? 0xffffff : 0xd2232a, -W * 0.3 + k * W * 0.2, 1.6, 0.21)); return g; }
+      if (type === 'wall') return grp(box(0.95, 2.3, 0.95, 0xd2232a, 0, 1.15, 0), box(1.05, 0.2, 1.05, 0xb81c22, 0, 2.38, 0), cyl(0.52, 0.52, 0.22, 0xd2232a, 0, 2.55, 0, 8), mesh(new T.BoxGeometry(0.72, 1.3, 0.05), 0xfff4c0, 0, 1.4, 0.49, { emissive: 0xffe08a, emissiveIntensity: 0.5 }));
+      if (type === 'hurdle') { const g = grp(box(W * 0.96, 0.28, 0.2, 0xffffff, 0, 0.5, 0)); for (let k = 0; k < 5; k++) g.add(box(W * 0.1, 0.28, 0.22, 0xd2232a, -W * 0.4 + k * W * 0.2, 0.5, 0)); g.add(box(0.12, 0.5, 0.2, 0x1a1a1a, -W * 0.44, 0.25, 0), box(0.12, 0.5, 0.2, 0x1a1a1a, W * 0.44, 0.25, 0)); return g; }
+    }
     if (bio === 'tundra') {
       if (type === 'crate') return grp(box(1.2, 1.0, 1.2, 0xb8e4f4, 0, 0.5, 0), box(1.24, 0.1, 1.24, 0xffffff, 0, 1.02, 0));
       if (type === 'beam') { const g = grp(box(W * 1.0, 0.4, 0.5, 0xc8e8f6, 0, 1.6, 0), box(0.4, 1.7, 0.4, 0xb8e0f0, -W * 0.44, 0.85, 0), box(0.4, 1.7, 0.4, 0xb8e0f0, W * 0.44, 0.85, 0)); for (let k = 0; k < 6; k++) { const c = cone(0.07, 0.4, 0xeaffff, -W * 0.35 + k * W * 0.14, 1.2, 0.15, 5); c.rotation.x = Math.PI; g.add(c); } return g; }
@@ -7902,6 +7917,9 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     else if (type === 'pit') { m = grp(mesh(new T.BoxGeometry(LANE * 0.98, 0.04, 2.4), 0x120e0a, 0, 0.035, 0), box(LANE * 0.98, 0.1, 0.16, 0x9a6a3a, 0, 0.1, 1.28), box(LANE * 0.98, 0.1, 0.16, 0x9a6a3a, 0, 0.1, -1.28)); }
     else if (type === 'barrel') { m = grp(cyl(0.55, 0.55, 1.0, 0x9a6a3a, 0, 0.55, 0, 12), cyl(0.57, 0.57, 0.1, 0x4a3a2a, 0, 0.3, 0, 12), cyl(0.57, 0.57, 0.1, 0x4a3a2a, 0, 0.8, 0, 12)); m.children.forEach((c) => { c.rotation.z = Math.PI / 2; c.position.y = 0.55; }); m.children[1].position.x = -0.25; m.children[2].position.x = 0.25; m.userData.spin = 1; }
     else if (type === 'swing') { m = grp(cyl(0.2, 0.2, LANE * 2.0, 0x8a5a2c, 0, 0.7, 0, 8), sph(0.3, 0xc9503a, LANE * 1.0, 0.7, 0, 1), sph(0.3, 0xc9503a, -LANE * 1.0, 0.7, 0, 1)); m.children[0].rotation.z = Math.PI / 2; }
+    else if (type === 'cart') { const B = BIOMES[this.biome]; m = grp(box(1.3, 0.9, 1.7, 0x7a5a3a, 0, 0.75, 0), box(1.36, 0.1, 1.76, 0x4a3a2a, 0, 1.22, 0), box(1.36, 0.1, 1.76, 0x4a3a2a, 0, 0.36, 0), sph(0.35, 0xb9b2a4, -0.25, 1.35, 0.3, 0.8), sph(0.3, 0xd88a44, 0.3, 1.32, -0.3, 0.8), sph(0.28, B.edge, 0.05, 1.42, 0, 0.8));
+      for (const x of [-0.6, 0.6]) for (const z of [-0.55, 0.55]) { const w = cyl(0.26, 0.26, 0.14, 0x2a2a2a, x, 0.28, z, 10); w.rotation.z = Math.PI / 2; m.add(w); } m.add(box(0.1, 0.1, 0.5, 0x2a2a2a, 0, 0.5, 1.05)); }
+    else if (type === 'mover') { m = themed(this.biome, 'crate') || grp(box(1.3, 1.1, 1.3, 0xa9784a, 0, 0.55, 0), box(1.36, 0.12, 1.36, 0x7e5430, 0, 1.1, 0)); m.add(cone(0.18, 0.4, 0xffd04a, -0.85, 0.7, 0, 3), cone(0.18, 0.4, 0xffd04a, 0.85, 0.7, 0, 3)); m.children[m.children.length - 2].rotation.z = Math.PI / 2; m.children[m.children.length - 1].rotation.z = -Math.PI / 2; }
     else if (type === 'x2') { m = mesh(new T.OctahedronGeometry(0.46), 0xffd04a, 0, 0, 0, { emissive: 0xc07000, emissiveIntensity: 0.9 }); }
     else if (type === 'arch') { const B = BIOMES[this.biome]; m = grp(box(0.5, 6, 0.5, B.edge, -5.2, 3, 0), box(0.5, 6, 0.5, B.edge, 5.2, 3, 0), box(11.0, 1.5, 0.5, 0xc9683a, 0, 6.4, 0)); const cv = document.createElement('canvas'); cv.width = 256; cv.height = 64; const c2 = cv.getContext('2d'); c2.fillStyle = '#ffe9b0'; c2.font = '900 44px sans-serif'; c2.textAlign = 'center'; c2.textBaseline = 'middle'; c2.fillText(String(y) + ' м', 128, 34); const pl = new T.Mesh(new T.PlaneGeometry(6, 1.5), new T.MeshBasicMaterial({ map: new T.CanvasTexture(cv), transparent: true })); pl.position.set(0, 6.4, 0.28); m.add(pl); y = 0; }
     if (type !== 'coin' && type !== 'arch') ink(m, type === 'stone' || type === 'wood' || type === 'bronze' ? 0.035 : 0.05);
@@ -7929,6 +7947,18 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       [1, () => { const l = L(); this.spawn('spike', l, z); this.spawn(mat(), l, z - 2.2, 2.0); this.line('coin', other(l)[0], z, 5); }],
       [1, () => { const l = L(); this.spawn('chest', l, z); this.spawn('crate', other(l)[0], z - 1); this.spawn('crate', other(l)[1], z - 1); }],
       [1, () => { this.spawn(['shield', 'mag', 'dash', 'x2'][(Math.random() * 4) | 0], L(), z); this.line('coin', L(), z - 4, 4); }],
+      // змейка монет через все дорожки
+      [2, () => { for (let i = 0; i < 14; i++) { const c = this.spawn('coin', 0, z - i * 1.2); c.position.x = Math.sin(i * 0.45) * LANE; } }],
+      // слалом: стены по очереди, монеты в просветах
+      [2 + d * 2, () => { const a = L(), b = other(a)[(Math.random() * 2) | 0], c = [-1, 0, 1].find((x) => x !== a && x !== b); this.spawn('wall', a, z); this.line('coin', other(a)[0], z + 1, 3); this.spawn('wall', b, z - 10); this.line('coin', c, z - 9, 3); this.spawn('wall', a === c ? b : c === b ? a : c, z - 20); this.spawn('chest', a, z - 22); }],
+      // тележка катится навстречу — уйти с дорожки
+      [1 + d * 2, () => { const l = L(); this.spawn('cart', l, z - 18).userData.vz = 6.5; this.line('coin', l, z + 2, 5); this.line(mat(), other(l)[0], z - 3, 3, 1.6); }],
+      // ящик ползает поперёк дороги
+      [1 + d * 2, () => { const b = this.spawn('mover', 0, z); b.userData.ph = Math.random() * 6; arc(L(), z + 2, 6, 1.6); }],
+      // барьеры во всю ширину — прыжок, над ними дуги монет
+      [1.5, () => { for (const l of [-1, 0, 1]) { this.spawn('hurdle', l, z); arc(l, z + 1.6, 5, 1.3); } this.line(mat(), L(), z - 7, 3, 1.5); }],
+      // ворота: подкат под балки на всех дорожках, бонус за ними
+      [1 + d, () => { for (const l of [-1, 0, 1]) this.spawn('beam', l, z); this.line('coin', L(), z - 1, 6, 1.2); this.spawn(['shield', 'mag', 'x2'][(Math.random() * 3) | 0], L(), z - 9); }],
       [d * 3, () => { const o = other(L()); this.spawn('barrel', o[0], z - 16).userData.vz = 8; this.spawn('pit', o[1], z); this.line('coin', 0, z - 2, 6); }]
     ];
     let tot = P.reduce((a, x) => a + x[0], 0), r = Math.random() * tot; for (const x of P) { r -= x[0]; if (r <= 0) { x[1](); return; } } P[0][1]();
@@ -7942,7 +7972,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     else if (a === 'd') { if (S.y > 0.02) S.vy = -18; else { S.slide = 0.75; try { BOA.Audio.slide(); } catch (e) { /* ок */ } } }
   };
   P.bind = function () {
-    const root = this.root; let tx = null, ty = null, tt = 0;
+    const g = this.g, root = this.root; let tx = null, ty = null, tt = 0;
     this._ts = (e) => { const t = e.touches[0]; tx = t.clientX; ty = t.clientY; tt = performance.now(); };
     this._tm = (e) => { if (tx === null) return; const t = e.touches[0], dx = t.clientX - tx, dy = t.clientY - ty; if (Math.abs(dx) > 34 || Math.abs(dy) > 34) { if (Math.abs(dx) > Math.abs(dy)) this.act(dx < 0 ? 'l' : 'r'); else this.act(dy < 0 ? 'u' : 'd'); tx = null; } e.preventDefault(); };
     this._te = () => { tx = null; };
@@ -7956,7 +7986,18 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     { const crew = () => { try { const n = g.crew.nikita(), L = g.crew.list.slice(); return n ? [n].concat(L.filter((w) => w !== n)) : L; } catch (e) { return []; } };
       const swap = (d) => { const L = crew(); if (L.length < 2 || this.S.on) return; let i = L.indexOf(this.pickRec || L[0]); if (i < 0) i = 0; i = (i + d + L.length) % L.length; this.pickRec = L[i];
         if (this.heroG) this.scene.remove(this.heroG); this.makeHero(); try { localStorage.setItem('boa.runner', L[i].id); } catch (e) { /* ок */ } };
-      $('run-pl').addEventListener('click', () => swap(-1)); $('run-pr').addEventListener('click', () => swap(1)); }
+      $('run-pl').addEventListener('click', () => swap(-1)); $('run-pr').addEventListener('click', () => swap(1));
+      // команда: Грязимир и герои родных земель; ещё не пришедшие — силуэтом с подсказкой
+      this.team = () => { const box = $('run-team'); if (!box) return; box.textContent = ''; let nik = null; try { nik = g.crew.nikita(); } catch (e) { /* ок */ }
+        const homes = (BOA.Hub.BIOMES || []).filter((b) => b.home && b.who !== 'Грязимир'), cur = this.pickRec || nik;
+        const add = (rec, name, ico, hint) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'rt' + (rec ? '' : ' lock') + (rec && cur && rec.id === cur.id ? ' on' : ''); let u = ''; try { if (rec && g.ui.workerThumb) u = g.ui.workerThumb(rec) || ''; } catch (e) { /* ок */ }
+          b.innerHTML = '<i' + (u ? ' style="background-image:url(' + u + ')"' : '') + '>' + (rec ? '' : ico) + '</i><span>' + name + '</span>';
+          b.onclick = () => { if (!rec) { this.say('Придёт в команду в главе «' + hint + '»', 2400); return; } if (this.S.on) return; this.pickRec = rec; if (this.heroG) this.scene.remove(this.heroG); this.makeHero(); try { localStorage.setItem('boa.runner', rec.id); } catch (e) { /* ок */ } this.team(); };
+          box.appendChild(b); };
+        if (nik) add(nik, 'Грязимир');
+        homes.forEach((h) => { let rec = null; try { rec = g.crew.list.find((w) => w.name === h.who) || null; } catch (e) { /* ок */ } add(rec, h.who, h.ico, h.n); });
+      };
+      this.team(); }
     $('ro-again').addEventListener('click', () => { $('run-over').hidden = true; this.reset(); this.S.on = true; });
     $('ro-back').addEventListener('click', () => this.close());
     $('run-back').addEventListener('click', () => { if (this.S.on && !this.S.ended) this.finish('Остановился'); else this.close(); });
@@ -8017,7 +8058,8 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
         S.nextZ += d; if (S.nextZ > -34) { this.pattern(-66); S.nextZ -= 12 + Math.random() * 5 - Math.min(4, S.dist / 400); }
         this.collide(dt);
         $('r-dist').textContent = Math.floor(S.dist); this.buffs();
-        { const am = this.biome === 'swamp' ? [0.15, 0xe8ff90] : BIOMES[this.biome].amb; if (am && Math.random() < am[0]) this.spark(rnd(-9, 9), rnd(0.5, 3), rnd(-30, -4), 1, am[1]); }
+        { const bst = (BOA.Hub.meta().best || 0); if (!S._half && bst > 200 && S.dist > bst / 2) { S._half = 1; this.say('Половина рекорда!', 2200); try { if (BOA.Voice && BOA.lang === 'ru') BOA.Voice.play('mid_' + ((Math.random() * 4) | 0)); } catch (e) { /* ок */ } } }
+        { const am = this.biome === 'swamp' ? [0.15, 0xe8ff90] : BIOMES[this.biome].amb; if (am && Math.random() < am[0]) this.spark(rnd(-9, 9), rnd(0.5, 3), rnd(-30, -4), 1, am[1]); if (BIOMES[this.biome].rain) for (let k = 0; k < 3; k++) { this.spark(rnd(-8, 8), rnd(4, 8), rnd(-26, 2), 1, 0xb8c8e0); const q = this.pi; this.pv[q * 3] = -1; this.pv[q * 3 + 1] = -14; this.pv[q * 3 + 2] = 4; } }
         if (S.dashT > 0 && Math.random() < 0.7) this.spark(S.x + rnd(-0.5, 0.5), rnd(0.2, 1.8), 0.5, 1, 0xbaffc4);
         if (!S.y && Math.random() < 0.35) this.spark(S.x + rnd(-0.3, 0.3), 0.08, 0.4, 1, 0xe9dcc0);
       }
@@ -8042,7 +8084,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     for (let i = items.length - 1; i >= 0; i--) {
       const m = items[i], u = m.userData; m.position.z += d;
       if (m.position.z > back) { this.scene.remove(m); items.splice(i, 1); continue; }
-      if (u.vz) m.position.z += u.vz * dt; if (u.spin) m.rotation.x -= dt * 7; if (u.type === 'swing') m.position.x = Math.sin(S.t * 2.4 + u.ph) * LANE * 1.15;
+      if (u.vz) m.position.z += u.vz * dt; if (u.spin) m.rotation.x -= dt * 7; if (u.type === 'swing') m.position.x = Math.sin(S.t * 2.4 + u.ph) * LANE * 1.15; else if (u.type === 'mover') m.position.x = Math.sin(S.t * 1.5 + u.ph) * LANE; else if (u.type === 'cart') m.position.y = Math.abs(Math.sin(S.t * 14)) * 0.05;
       if (u.type === 'x2') { m.rotation.y += dt * 3; m.position.y = 1.0 + Math.sin(S.t * 3 + i) * 0.12; }
       if (u.type === 'coin') { m.rotation.z += dt * 4; } else if (u.type === 'stone' || u.type === 'wood' || u.type === 'bronze') { m.rotation.y += dt * 2.2; m.position.y = u.base + Math.sin(S.t * 3 + i) * 0.08; }
       else if (u.type === 'shield' || u.type === 'mag' || u.type === 'dash') { m.rotation.y += dt * 2.5; m.position.y = u.base + Math.sin(S.t * 3 + i) * 0.1; }
@@ -8066,7 +8108,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       else if (u.type === 'mag' && dx < 1.0) take(() => { S.mag = 9; this.spark(m.position.x, 1, z, 12, 0xff8080); this.say('Магнит: всё само летит.'); try { BOA.Audio.power(); } catch (e) { /* ок */ } });
       else if (u.type === 'x2' && dx < 1.0) take(() => { S.x2 = 10; this.spark(m.position.x, 1, z, 14, 0xffd84a); this.say('Монеты ×2!'); try { BOA.Audio.power(); } catch (e) { /* ок */ } });
       else if (u.type === 'dash' && dx < 1.0) take(() => { S.dashT = 4; this.spark(m.position.x, 1, z, 12, 0x9affb0); this.say('Рывок! Через всё!'); try { BOA.Audio.dash(); } catch (e) { /* ок */ } });
-      else if ((u.type === 'crate' && dx < 0.95 && S.y < 1.0) || (u.type === 'beam' && dx < 0.95 && S.slide <= 0 && S.y < 1.7) || (u.type === 'wall' && dx < 1.0 && S.y < 2.4) || (u.type === 'spike' && dx < 1.0 && S.y < 0.55) || (u.type === 'hurdle' && dx < 0.95 && S.y < 0.78) || (u.type === 'pit' && dx < 0.9 && S.y < 0.25 && Math.abs(z) < 0.9) || (u.type === 'barrel' && dx < 0.95 && S.y < 0.9) || (u.type === 'swing' && dx < 0.55 && S.y < 1.1) || (u.type === 'swing' && Math.abs(m.children[1].position.x + m.position.x - S.x) < 0.6 && S.y < 1.1) || (u.type === 'swing' && Math.abs(m.children[2].position.x + m.position.x - S.x) < 0.6 && S.y < 1.1)) {
+      else if ((u.type === 'crate' && dx < 0.95 && S.y < 1.0) || (u.type === 'beam' && dx < 0.95 && S.slide <= 0 && S.y < 1.7) || (u.type === 'wall' && dx < 1.0 && S.y < 2.4) || (u.type === 'spike' && dx < 1.0 && S.y < 0.55) || (u.type === 'hurdle' && dx < 0.95 && S.y < 0.78) || (u.type === 'pit' && dx < 0.9 && S.y < 0.25 && Math.abs(z) < 0.9) || (u.type === 'barrel' && dx < 0.95 && S.y < 0.9) || (u.type === 'cart' && dx < 1.0 && S.y < 1.6) || (u.type === 'mover' && dx < 0.95 && S.y < 1.0) || (u.type === 'swing' && dx < 0.55 && S.y < 1.1) || (u.type === 'swing' && Math.abs(m.children[1].position.x + m.position.x - S.x) < 0.6 && S.y < 1.1) || (u.type === 'swing' && Math.abs(m.children[2].position.x + m.position.x - S.x) < 0.6 && S.y < 1.1)) {
         if (S.dashT > 0) { this.scene.remove(m); items.splice(i, 1); this.spark(m.position.x, 1, z, 14, 0xe8dcc0); }
         else if (S.shield) { S.shield = 0; S.inv = 1; S.hit = 0.25; if (this.th) this.th.gap += 4; this.scene.remove(m); items.splice(i, 1); this.spark(m.position.x, 1, z, 16, 0x7ab8ff); this.say(pick(LINES.shield)); try { BOA.Audio.hit(); } catch (e) { /* ок */ } }
         else if (S.inv <= 0) { S.dying = 0.9; S.hit = 0.4; try { BOA.Audio.hit(); } catch (e) { /* ок */ } this.spark(S.x, 1, 0, 18, 0xffffff); this.say(pick(LINES.hit)); S.on = false; return; }
@@ -8093,12 +8135,13 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     '.run .rp.dist{position:absolute;left:50%;transform:translateX(-50%);top:max(10px,env(safe-area-inset-top));margin:0;padding:6px 26px;background:#24406e;color:#fff;font-size:24px;min-width:120px;justify-content:center;box-shadow:0 3px 0 rgba(0,0,0,.3)}' +
     '#run-back.chip{position:absolute;right:10px;top:max(10px,env(safe-area-inset-top));width:46px;height:46px;border-radius:50%;border:0;font-size:20px;font-weight:900;color:#7a2a00;background:radial-gradient(circle at 35% 30%,#ffd27a,#ff8a1a 70%);box-shadow:0 4px 0 #a83a00}' +
     '.run-hud{flex-direction:column;align-items:flex-start;gap:4px}.run-hud .rp{padding:4px 9px;font-size:13px}.run-hud .rp:nth-child(2){font-size:17px;padding:6px 12px}.run-th{top:calc(max(10px,env(safe-area-inset-top)) + 50px)}.run-buffs{top:170px}' +
+    '.run-team{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none;justify-content:flex-start}.run-team::-webkit-scrollbar{display:none}.rt{flex:none;display:grid;justify-items:center;gap:2px;width:58px;border:0;background:none;color:var(--ink);font:800 10px var(--font);padding:0}.rt i{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:#cfe3f7 center 20%/cover;border:3px solid #fff;box-shadow:0 2px 0 rgba(0,0,0,.2);font-size:22px;font-style:normal}.rt.on i{border-color:#ff8a1a;box-shadow:0 0 0 3px #ffd04a}.rt.lock i{background:#5a6478;filter:grayscale(1) brightness(.8)}.rt.lock span{opacity:.55}' +
     '.run-ov{position:absolute;inset:0;display:grid;place-items:center;padding:16px;background:rgba(30,50,80,.5)}.run-ov[hidden]{display:none}' +
     '.run-card{width:min(360px,100%);display:grid;gap:10px;text-align:center;background:var(--card);color:var(--ink);border-radius:24px;padding:18px;box-shadow:0 6px 0 rgba(0,0,0,.25)}.run-card h2{margin:0;font-size:26px}.run-card p{margin:0;font-size:14px;line-height:1.35}.run-help{opacity:.85}' +
     '.run-av{width:96px;height:112px;margin:-48px auto 0;border-radius:20px;background:#cfe3f7 center/cover;border:3px solid #f2a93b}.run-rows{display:flex;justify-content:space-around;font-weight:800;font-size:12px}.run-rows span{display:grid;gap:2px;justify-items:center}.run-rows b{font-size:22px}';
   document.head.appendChild(css);
 
-  BOA.Kit = { M, mesh, box, cyl, cone, sph, grp, PROPS, BIOMES, rnd, clamp };
+  BOA.Kit = { M, mesh, box, cyl, cone, sph, grp, PROPS, BIOMES, rnd, clamp, ink };
   BOA.Runner = {
     _cur: null,
     open(g, bid) {
@@ -8113,7 +8156,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
 (function (BOA) {
   'use strict';
   const T = window.THREE, K = BOA.Kit, { M, mesh, box, cyl, cone, sph, grp, rnd, clamp } = K;
-  const ARCH_MATS = { hut: ['wood', 'stone'], tower: ['stone', 'bronze'], ring: ['stone', 'stone'], dock: ['wood', 'wood'], workshop: ['bronze', 'stone'], garden: ['wood', 'wood'], arena: ['stone', 'wood'], market: ['wood', 'bronze'], pyramid: ['stone', 'stone'], cave: ['stone', 'wood'], quarry: ['stone', 'bronze'], rondavel: ['wood', 'stone'], totem: ['wood', 'bronze'], mill: ['wood', 'stone'], volcano: ['stone', 'bronze'], treehouse: ['wood', 'wood'], igloo: ['stone', 'wood'], temple: ['stone', 'bronze'], house: ['wood', 'stone'] };
+  const ARCH_MATS = { hut: ['wood', 'stone'], tower: ['stone', 'bronze'], ring: ['stone', 'stone'], dock: ['wood', 'wood'], workshop: ['bronze', 'stone'], garden: ['wood', 'wood'], arena: ['stone', 'wood'], market: ['wood', 'bronze'], pyramid: ['stone', 'stone'], cave: ['stone', 'wood'], quarry: ['stone', 'bronze'], rondavel: ['wood', 'stone'], totem: ['wood', 'bronze'], mill: ['wood', 'stone'], volcano: ['stone', 'bronze'], treehouse: ['wood', 'wood'], igloo: ['stone', 'wood'], temple: ['stone', 'bronze'], house: ['wood', 'stone'], bridge: ['stone', 'bronze'], clock: ['stone', 'bronze'], glasshouse: ['bronze', 'wood'] };
 
   // палитры: стены, крыша, акцент, камень, дерево, вода
   const PAL = {
@@ -8131,9 +8174,45 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     ash: { wall: 0x4a3a36, roof: 0x2a2222, acc: 0xff6a20, stone: 0x5a4a44, wood: 0x3a2a22, water: 0xff5a10, glow: 0xff8a30 },
     roots: { wall: 0x7a5a3a, roof: 0x3a7a3a, acc: 0xd9c050, stone: 0x6a7a5a, wood: 0x5a3a22, water: 0x3a6a5a, glow: 0xd8ff8a },
     bloom: { wall: 0xe0b890, roof: 0xe05a8a, acc: 0xffd040, stone: 0x9ab07a, wood: 0x6a4a2a, water: 0x3ac0b0, glow: 0xffb0e0 },
+    england: { wall: 0xc9b89a, roof: 0x4a4a58, acc: 0xd2232a, stone: 0xa8a090, wood: 0x5a4030, water: 0x5a7a9a, glow: 0xffe8a0 },
     tundra: { wall: 0xeaf6ff, roof: 0x9ad0f0, acc: 0x4ad0b0, stone: 0xc8dcea, wood: 0x6a5a4a, water: 0x5a90c0, glow: 0x9affe0 }
   };
   const E = (c, i) => ({ emissive: c, emissiveIntensity: i || 0.8 });
+
+  /* ---------- фактуры: черепица, штукатурка, кладка, доски (белые узоры, цвет даёт материал) ---------- */
+  const TEX = {};
+  function tex(kind) {
+    if (TEX[kind]) return TEX[kind];
+    const c = document.createElement('canvas'); c.width = c.height = 128; const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, 128, 128);
+    const ln = (y0, h, a) => { x.fillStyle = 'rgba(40,28,18,' + a + ')'; x.fillRect(0, y0, 128, h); };
+    if (kind === 'roof') { for (let r = 0; r < 8; r++) { const y = r * 16; x.fillStyle = 'rgba(255,255,255,.25)'; x.fillRect(0, y + 2, 128, 4); ln(y + 13, 3, 0.35); for (let k = (r % 2) * 8; k < 128; k += 16) { x.fillStyle = 'rgba(40,28,18,.28)'; x.fillRect(k, y, 2, 16); } } }
+    else if (kind === 'wall') { for (let k = 0; k < 260; k++) { x.fillStyle = Math.random() < 0.5 ? 'rgba(0,0,0,.05)' : 'rgba(255,255,255,.2)'; x.beginPath(); x.arc(Math.random() * 128, Math.random() * 128, 1 + Math.random() * 4, 0, 7); x.fill(); } ln(124, 4, 0.18); }
+    else if (kind === 'stone') { for (let r = 0; r < 6; r++) { const y = r * 21.3; ln(y, 2.5, 0.38); for (let k = (r % 2) * 16; k < 128; k += 32) { x.fillStyle = 'rgba(40,28,18,.38)'; x.fillRect(k, y, 2.5, 21.3); x.fillStyle = 'rgba(255,255,255,.22)'; x.fillRect(k + 4, y + 4, 18, 3); } } }
+    else if (kind === 'wood') { for (let r = 0; r < 8; r++) { const y = r * 16; ln(y, 2, 0.4); x.strokeStyle = 'rgba(40,28,18,.16)'; x.lineWidth = 1; for (let k = 0; k < 3; k++) { x.beginPath(); x.moveTo(0, y + 4 + k * 4); x.bezierCurveTo(40, y + 2 + k * 4, 80, y + 7 + k * 4, 128, y + 4 + k * 4); x.stroke(); } } }
+    const t = new T.CanvasTexture(c); t.wrapS = t.wrapT = T.RepeatWrapping; t.repeat.set(kind === 'roof' ? 6 : 3, kind === 'roof' ? 3 : 2); t.anisotropy = 4; return (TEX[kind] = t);
+  }
+  const SKM = {};
+  // одеть постройку в фактуры по цветам палитры
+  function skin(root, P) {
+    const map = {}; map[P.roof] = 'roof'; map[P.wall] = 'wall'; map[P.stone] = 'stone'; map[P.wood] = 'wood';
+    root.traverse((o) => { if (!o.isMesh || !o.material || !o.material.color || o.material.emissiveIntensity > 0.05 && o.material.emissive && o.material.emissive.getHex()) return; const hx = o.material.color.getHex(), k = map[hx]; if (!k) return;
+      const key = hx + k; o.material = SKM[key] || (SKM[key] = new T.MeshLambertMaterial({ color: hx, map: tex(k), flatShading: true })); });
+    return root;
+  }
+  // окно в раме с подоконником и ставнями
+  function win(g, P, x, y, z, ry, w, h, shut) {
+    const o = new T.Group(); o.position.set(x, y, z); o.rotation.y = ry || 0; w = w || 0.42; h = h || 0.5;
+    o.add(mesh(new T.BoxGeometry(w, h, 0.06), P.glow, 0, 0, 0.02, E(P.glow, 0.75)));
+    const fr = 0xf6efe0; o.add(box(w + 0.12, 0.07, 0.1, fr, 0, h / 2, 0.04), box(w + 0.12, 0.07, 0.1, fr, 0, -h / 2, 0.04), box(0.07, h, 0.1, fr, -w / 2, 0, 0.04), box(0.07, h, 0.1, fr, w / 2, 0, 0.04), box(0.04, h, 0.08, fr, 0, 0, 0.05), box(w, 0.04, 0.08, fr, 0, 0, 0.05));
+    o.add(box(w + 0.22, 0.07, 0.2, P.wood, 0, -h / 2 - 0.05, 0.08));
+    if (shut) for (const s of [-1, 1]) o.add(box(w * 0.5, h + 0.04, 0.05, P.acc, s * (w * 0.75 + 0.04), 0, 0.03));
+    g.add(o); return o;
+  }
+  function door(g, P, x, y, z, ry, w, h) {
+    const o = new T.Group(); o.position.set(x, y, z); o.rotation.y = ry || 0; w = w || 0.55; h = h || 0.95;
+    o.add(box(w, h, 0.08, P.wood, 0, h / 2, 0.02)); o.add(box(w + 0.14, 0.08, 0.12, 0xf6efe0, 0, h + 0.02, 0.03), box(0.07, h, 0.12, 0xf6efe0, -w / 2 - 0.03, h / 2, 0.03), box(0.07, h, 0.12, 0xf6efe0, w / 2 + 0.03, h / 2, 0.03));
+    o.add(sph(0.05, 0xffd04a, w * 0.3, h * 0.48, 0.09, 1)); o.add(box(w + 0.4, 0.1, 0.35, P.stone, 0, 0.05, 0.22)); g.add(o); return o;
+  }
 
   /* ---------- типовые постройки: уровень L от 1 до 5 ---------- */
   const ARCH = {
@@ -8142,9 +8221,9 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       const stilts = o.stilts; const y0 = stilts ? 1.0 : 0;
       if (stilts) for (const [x, z] of [[-0.8, -0.8], [0.8, -0.8], [-0.8, 0.8], [0.8, 0.8]]) g.add(cyl(0.12, 0.14, 1.1, P.wood, x, 0.55, z, 6));
       g.add(cyl(w * 0.5, w * 0.55, 1.5, P.wall, 0, y0 + 0.75, 0, 10)); g.add(cone(w * 0.74, 1.3 + L * 0.1, P.roof, 0, y0 + 2.15, 0, 10));
-      g.add(box(0.55, 0.95, 0.12, P.wood, 0, y0 + 0.48, w * 0.5));
-      if (L >= 2) { g.add(mesh(new T.BoxGeometry(0.32, 0.32, 0.1), P.glow, 0.65, y0 + 1.0, w * 0.46, E(P.glow, 0.9))); g.add(mesh(new T.BoxGeometry(0.32, 0.32, 0.1), P.glow, -0.65, y0 + 1.0, w * 0.46, E(P.glow, 0.9))); }
-      if (L >= 3) g.add(box(0.38, 1.1, 0.38, P.stone, -0.55, y0 + 2.7, 0.1));
+      door(g, P, 0, y0, w * 0.5, 0, 0.55, 0.95);
+      if (L >= 2) { for (const s of [-1, 1]) { const a = s * 0.62; win(g, P, Math.sin(a) * w * 0.5, y0 + 0.95, Math.cos(a) * w * 0.5, a, 0.34, 0.38, true); } }
+      if (L >= 3) { g.add(box(0.38, 1.1, 0.38, P.stone, -0.55, y0 + 2.7, 0.1)); g.add(box(0.48, 0.12, 0.48, P.stone, -0.55, y0 + 3.28, 0.1)); const sm = new T.Group(); sm.position.set(-0.55, y0 + 3.4, 0.1); sm.userData.smoke = 1; for (let k = 0; k < 3; k++) sm.add(sph(0.16 + k * 0.05, 0xeeeeee, 0, k * 0.35, 0, 1)); g.add(sm); }
       if (L >= 4) { g.add(box(w * 0.8, 0.1, 0.9, P.roof, 0, y0 + 1.45, w * 0.78)); for (const x of [-0.8, 0.8]) g.add(cyl(0.07, 0.07, 1.4, P.wood, x, y0 + 0.7, w * 0.95, 5)); g.add(mesh(new T.SphereGeometry(0.16, 8, 6), P.glow, 0.8, y0 + 1.3, w * 0.98, E(P.glow, 1.1))); }
       if (L >= 5) { g.add(cyl(0.05, 0.05, 1.8, P.wood, w * 0.4, y0 + 3.1, 0, 5)); g.add(box(0.8, 0.45, 0.04, P.acc, w * 0.4 + 0.42, y0 + 3.7, 0)); const an = cyl(0.8, 0.85, 0.9, P.wall, w * 0.95, y0 + 0.45, -0.5, 8); g.add(an); g.add(cone(1.05, 0.8, P.roof, w * 0.95, y0 + 1.3, -0.5, 8)); }
       return g;
@@ -8304,12 +8383,46 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       if (L >= 5) { g.add(mesh(new T.SphereGeometry(0.3, 10, 8), P.glow, 0, 1.4, 0, E(P.glow, 1.3))); for (const x of [-2.6, 2.6]) g.add(cyl(0.3, 0.35, 0.5, P.stone, x, 0.25, 1.8, 8)), g.add(mesh(new T.ConeGeometry(0.22, 0.5, 8), P.glow, x, 0.75, 1.8, E(P.glow, 1.2))); }
       return g;
     },
+    // разводной мост с двумя башнями
+    bridge(L, P) {
+      const g = new T.Group(); g.add(box(6.4, 0.06, 2.0, P.water, 0, 0.05, 0)); const tw = (x) => { const t = new T.Group(); t.position.x = x; const h = 2.2 + L * 0.45; t.add(box(1.1, h, 1.1, P.wall, 0, h / 2, 0)); for (const sx of [-0.45, 0.45]) for (const sz of [-0.45, 0.45]) { t.add(cyl(0.16, 0.16, h + 0.4, P.wall, sx, (h + 0.4) / 2, sz, 8)); t.add(cone(0.2, 0.5, P.roof, sx, h + 0.65, sz, 8)); } t.add(cone(0.75, 1.0, P.roof, 0, h + 0.5, 0, 4)); t.children[t.children.length - 1].rotation.y = Math.PI / 4; win(t, P, 0, h * 0.6, 0.56, 0, 0.3, 0.5); return t; };
+      g.add(tw(-1.7), tw(1.7)); const deckY = 0.8; g.add(box(1.4, 0.2, 1.3, P.stone, -2.8, deckY, 0), box(1.4, 0.2, 1.3, P.stone, 2.8, deckY, 0));
+      const open = L < 5 ? 0.25 : 0; for (const s of [-1, 1]) { const lf = box(1.15, 0.18, 1.2, P.acc, s * 0.58, deckY, 0); lf.rotation.z = -s * open; g.add(lf); }
+      if (L >= 2) { const hh = 2.2 + L * 0.45 - 0.5; g.add(box(3.4, 0.3, 0.3, P.acc, 0, hh, 0.4), box(3.4, 0.3, 0.3, P.acc, 0, hh, -0.4)); }
+      if (L >= 3) for (const s of [-1, 1]) { const c = cyl(0.05, 0.05, 2.0, P.acc, s * 2.6, 1.6, 0.5, 4); c.rotation.z = s * 0.9; g.add(c); const c2 = c.clone(); c2.position.z = -0.5; g.add(c2); }
+      if (L >= 4) for (const x of [-2.9, 2.9]) g.add(mesh(new T.SphereGeometry(0.14, 8, 6), P.glow, x, 1.3, 0.6, E(P.glow, 1.2)));
+      if (L >= 5) for (const x of [-1.7, 1.7]) { g.add(cyl(0.03, 0.03, 0.8, P.wood, x, 2.2 + L * 0.45 + 1.3, 0, 4)); g.add(box(0.45, 0.28, 0.02, P.acc, x + 0.24, 2.2 + L * 0.45 + 1.55, 0)); }
+      return g;
+    },
+    // башня с часами
+    clock(L, P) {
+      const g = new T.Group(), h = 2.4 + L * 0.7; g.add(box(1.5, 0.4, 1.5, P.stone, 0, 0.2, 0)); g.add(box(1.2, h, 1.2, P.wall, 0, 0.4 + h / 2, 0));
+      for (let k = 0; k < Math.floor(h / 0.7); k++) for (const x of [-0.3, 0.3]) g.add(box(0.14, 0.4, 0.03, 0x5a6a7a, x, 0.8 + k * 0.7, 0.62));
+      const cy = 0.4 + h + 0.55; g.add(box(1.45, 1.1, 1.45, P.wall, 0, cy, 0));
+      for (let k = 0; k < 4; k++) { const f = new T.Group(); f.rotation.y = k * Math.PI / 2; f.add(mesh(new T.CircleGeometry(0.45, 24), 0xfff8e0, 0, cy, 0.74, E(0xfff0c0, L >= 3 ? 0.6 : 0.1))); const hm = box(0.05, 0.3, 0.02, 0x1a1a1a, 0, cy + 0.12, 0.76), mm = box(0.04, 0.38, 0.02, 0x1a1a1a, 0.1, cy + 0.1, 0.77); hm.userData.hand = 1; mm.userData.hand = 2; mm.rotation.z = -0.8; f.add(hm, mm); g.add(f); }
+      if (L >= 2) g.add(cone(1.0, 1.6 + L * 0.2, P.roof, 0, cy + 1.3 + L * 0.1, 0, 4)), g.children[g.children.length - 1].rotation.y = Math.PI / 4;
+      if (L >= 4) for (const sx of [-0.62, 0.62]) for (const sz of [-0.62, 0.62]) g.add(cone(0.1, 0.6, P.roof, sx, cy + 0.85, sz, 4));
+      if (L >= 5) g.add(mesh(new T.SphereGeometry(0.16, 8, 6), 0xffd04a, 0, cy + 2.4 + L * 0.2, 0, E(0xffc030, 1.0)));
+      return g;
+    },
+    // стеклянный дворец
+    glasshouse(L, P) {
+      const g = new T.Group(), n = 1 + Math.min(4, L), glass = M(0xbfe6f4, { transparent: true, opacity: 0.55, emissive: 0x2a5a6a, emissiveIntensity: 0.3 });
+      g.add(box(1.8 * n * 0.6 + 1.4, 0.25, 2.6, P.stone, 0, 0.12, 0)); const W = 1.8 * n * 0.6 + 1.0;
+      const body = new T.Mesh(new T.BoxGeometry(W, 1.3, 2.0), glass); body.position.y = 0.9; g.add(body);
+      const vault = new T.Mesh(new T.CylinderGeometry(1.0, 1.0, W, 16, 1, true, 0, Math.PI), glass); vault.rotation.z = Math.PI / 2; vault.rotation.y = 0; vault.position.y = 1.55; g.add(vault);
+      for (let k = 0; k <= n * 2; k++) { const x = -W / 2 + k * W / (n * 2); g.add(box(0.05, 1.3, 2.04, 0xf6f6f6, x, 0.9, 0)); const rib = new T.Mesh(new T.TorusGeometry(1.0, 0.035, 4, 12, Math.PI), M(0xf6f6f6)); rib.rotation.y = Math.PI / 2; rib.position.set(x, 1.55, 0); g.add(rib); }
+      if (L >= 3) { const tr = new T.Mesh(new T.CylinderGeometry(1.1, 1.1, 2.2, 16, 1, true, 0, Math.PI), glass); tr.rotation.x = Math.PI / 2; tr.rotation.z = Math.PI / 2; tr.position.set(0, 1.55, 0); tr.rotation.set(0, 0, 0); tr.position.y = 1.55; g.add(sph(0.9, 0xbfe6f4, 0, 2.4, 0, 0.6)); g.children[g.children.length - 1].material = glass; }
+      if (L >= 2) for (let k = 0; k < 4; k++) g.add(sph(0.28, 0x4a9a44, -W / 2 + 0.5 + k * (W - 1) / 3, 0.55, 0, 0.9));
+      if (L >= 5) { g.add(cyl(0.03, 0.03, 1.2, P.wood, 0, 3.4, 0, 4)); g.add(box(0.5, 0.3, 0.02, P.acc, 0.26, 3.8, 0)); }
+      return g;
+    },
     // дом с двускатной крышей и балками (фахверк, изба)
     house(L, P, o) {
       const g = new T.Group(), fl = L >= 3 ? 2 : 1, w = 2.6, d = 2.2, h = 1.3 * fl; o = o || {};
       g.add(box(w, h, d, P.wall, 0, h / 2, 0)); const rf = cone(Math.hypot(w, d) * 0.62, 1.4, P.roof, 0, h + 0.7, 0, 4); rf.rotation.y = Math.PI / 4; rf.scale.set(1, 1, 0.82); g.add(rf);
-      for (let f = 0; f < fl; f++) { g.add(box(w + 0.02, 0.1, 0.06, P.wood, 0, f * 1.3 + 1.25, d / 2)); for (const x of [-1.25, 0, 1.25]) g.add(box(0.1, 1.3, 0.06, P.wood, x, f * 1.3 + 0.65, d / 2 + 0.01)); for (const x of [-0.62, 0.62]) g.add(mesh(new T.BoxGeometry(0.38, 0.4, 0.06), P.glow, x, f * 1.3 + 0.75, d / 2 + 0.03, E(P.glow, 0.85))); }
-      g.add(box(0.55, 0.9, 0.08, P.wood, 0, 0.45, d / 2 + 0.05));
+      for (let f = 0; f < fl; f++) { g.add(box(w + 0.02, 0.1, 0.06, P.wood, 0, f * 1.3 + 1.25, d / 2)); for (const x of [-1.25, 0, 1.25]) g.add(box(0.1, 1.3, 0.06, P.wood, x, f * 1.3 + 0.65, d / 2 + 0.01)); for (const x of [-0.62, 0.62]) if (f || x > 0) win(g, P, f ? x : 0.78, f * 1.3 + 0.75, d / 2 + 0.02, 0, 0.36, 0.42, true); }
+      door(g, P, -0.55, 0, d / 2 + 0.02, 0, 0.5, 0.92);
       g.add(box(0.35, 1.0, 0.35, P.stone, 0.8, h + 1.0, -0.3));
       if (L >= 2) { g.add(box(1.2, 0.08, 0.7, P.wood, 0, 0.9, d / 2 + 0.4)); for (const x of [-0.5, 0.5]) g.add(cyl(0.04, 0.04, 0.9, P.wood, x, 0.45, d / 2 + 0.7, 4)); }
       if (L >= 4) { g.add(box(1.4, 1.0, 1.4, P.wall, -2.1, 0.5, -0.5)); const r2 = cone(1.2, 0.8, P.roof, -2.1, 1.4, -0.5, 4); r2.rotation.y = Math.PI / 4; g.add(r2); }
@@ -8321,19 +8434,20 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
   /* ---------- биомы: 1 убежище + 3 пристройки ---------- */
   const DEF = {
     swamp: [['hut', 'Хижина Грязимира', {}], ['dock', 'Мостки над тиной'], ['ring', 'Круг древних камней'], ['tower', 'Сторожевая башня']],
-    greece: [['temple', 'Храм Афины'], ['ring', 'Колоннада', { columns: 1 }], ['arena', 'Амфитеатр'], ['tower', 'Маяк на скале']],
+    greece: [['temple', 'Храм Афины', {}, 'parthenon'], ['ring', 'Колоннада', { columns: 1 }], ['arena', 'Амфитеатр', {}, 'epidaurus'], ['tower', 'Маяк на скале']],
     rocks: [['cave', 'Пещера Ворчуна'], ['quarry', 'Каменоломня'], ['ring', 'Дольмены'], ['tower', 'Каменная сторожка']],
-    egypt: [['pyramid', 'Великая пирамида'], ['temple', 'Храм у Нила'], ['market', 'Песчаный базар'], ['ring', 'Аллея обелисков', { columns: 1 }]],
+    egypt: [['pyramid', 'Великая пирамида', {}, 'pyramid'], ['temple', 'Храм у Нила'], ['market', 'Песчаный базар'], ['ring', 'Аллея обелисков', { columns: 1 }]],
     savanna: [['rondavel', 'Шатёр Златника'], ['market', 'Обменный круг'], ['garden', 'Поле проса'], ['totem', 'Золотой тотем']],
-    italy: [['arena', 'Колизей'], ['temple', 'Пантеон'], ['dock', 'Мост-акведук'], ['tower', 'Падающая башня', { tilt: 1 }]],
+    italy: [['arena', 'Колизей', {}, 'colosseum'], ['temple', 'Пантеон', {}, 'pantheon'], ['dock', 'Мост-акведук', {}, 'aqueduct'], ['tower', 'Падающая башня', { tilt: 1 }, 'pisa']],
     delta: [['hut', 'Дом Лурены на сваях', { stilts: 1 }], ['dock', 'Лодочная пристань'], ['mill', 'Водяная мельница'], ['tower', 'Маяк в тумане']],
-    mexico: [['pyramid', 'Ступенчатый храм'], ['market', 'Рынок какао'], ['ring', 'Поле для мяча'], ['garden', 'Кактусовая ферма']],
+    mexico: [['pyramid', 'Ступенчатый храм', {}, 'chichen'], ['market', 'Рынок какао'], ['ring', 'Поле для мяча'], ['garden', 'Кактусовая ферма']],
     ash: [['workshop', 'Кузня Пепельника'], ['volcano', 'Огненный горн'], ['ring', 'Обсидиановый круг'], ['tower', 'Дымовая башня']],
-    germany: [['tower', 'Замковая башня'], ['house', 'Фахверковый дом'], ['workshop', 'Кузница'], ['market', 'Рождественский рынок']],
+    germany: [['tower', 'Замковая башня', {}, 'castle'], ['house', 'Фахверковый дом'], ['workshop', 'Кузница'], ['market', 'Рождественский рынок']],
     roots: [['treehouse', 'Дом в корнях'], ['garden', 'Грибная поляна'], ['workshop', 'Корневая мастерская'], ['totem', 'Дерево-страж']],
-    cambodia: [['pyramid', 'Храм в джунглях'], ['hut', 'Дом на сваях', { stilts: 1 }], ['dock', 'Плавучий рынок'], ['garden', 'Сад лотосов']],
+    cambodia: [['pyramid', 'Храм в джунглях', {}, 'angkor'], ['hut', 'Дом на сваях', { stilts: 1 }], ['dock', 'Плавучий рынок'], ['garden', 'Сад лотосов']],
     bloom: [['hut', 'Шалаш Лианны', { stilts: 1 }], ['garden', 'Сад гигантских цветов'], ['dock', 'Лиановый мост'], ['totem', 'Цветочный идол']],
-    russia: [['tower', 'Собор с куполами', { dome: 1 }], ['house', 'Изба'], ['workshop', 'Печь-кузня'], ['market', 'Зимняя ярмарка']],
+    russia: [['tower', 'Собор с куполами', { dome: 1 }, 'basil'], ['house', 'Изба'], ['workshop', 'Печь-кузня'], ['market', 'Зимняя ярмарка']],
+    england: [['ring', 'Стоунхендж', {}, 'stonehenge'], ['bridge', 'Тауэрский мост', {}, 'towerbridge'], ['clock', 'Биг-Бен', {}, 'bigben'], ['glasshouse', 'Хрустальный дворец', {}, 'crystalpalace']],
     tundra: [['igloo', 'Иглу Студенца'], ['ring', 'Ледяные столбы'], ['market', 'Рыбный лёд'], ['tower', 'Ледяной маяк']]
   };
   const SPOTS = [[0, -1.5], [-7.2, 3.2], [7.2, 3.0], [0.4, 8.2]];
@@ -8379,8 +8493,8 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       const gen = K.PROPS[bid] || K.PROPS.greece; let seed = 11 + bid.length * 7; const rr = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
       for (let i = 0; i < 46; i++) { const a = rr() * Math.PI * 2, d = 11.5 + rr() * 3.6, pr = gen[(rr() * gen.length) | 0](); pr.position.set(Math.cos(a) * d, 0, Math.sin(a) * d); if ([0, 1, 2, 3].some((k) => segD(pr.position.x, pr.position.z, k) < 3.4)) continue; pr.rotation.y = rr() * 6; pr.scale.setScalar(0.7 + rr() * 0.6); pr.traverse((m) => { if (m.isMesh) m.castShadow = true; }); sc.add(pr); }
       // частицы погоды
-      const N = 160, pg = new T.BufferGeometry(); this.wp = new Float32Array(N * 3); this.wv = new Float32Array(N * 3); for (let i = 0; i < N; i++) { this.wp[i * 3] = rnd(-16, 16); this.wp[i * 3 + 1] = rnd(0, 10); this.wp[i * 3 + 2] = rnd(-16, 16); this.wv[i * 3] = rnd(-0.3, 0.3); this.wv[i * 3 + 1] = bid === 'russia' || bid === 'tundra' ? -rnd(0.8, 1.6) : bid === 'mexico' || bid === 'ash' ? rnd(0.5, 1.2) : bid === 'bloom' ? -rnd(0.2, 0.5) : rnd(-0.15, 0.25); this.wv[i * 3 + 2] = rnd(-0.3, 0.3); }
-      pg.setAttribute('position', new T.BufferAttribute(this.wp, 3)); const wc = { swamp: 0xe8ff90, russia: 0xffffff, mexico: 0xff9a50, cambodia: 0xffb0d0, germany: 0xc9a84a, egypt: 0xf0d890, greece: 0xffffff, italy: 0xffe0b0, rocks: 0xd8ccb0, savanna: 0xffe080, delta: 0xeaf6ff, ash: 0xff7a20, roots: 0xd8ff8a, bloom: 0xff9ad0, tundra: 0xd8fff4 }[bid] || 0xffffff;
+      const N = 160, pg = new T.BufferGeometry(); this.wp = new Float32Array(N * 3); this.wv = new Float32Array(N * 3); for (let i = 0; i < N; i++) { this.wp[i * 3] = rnd(-16, 16); this.wp[i * 3 + 1] = rnd(0, 10); this.wp[i * 3 + 2] = rnd(-16, 16); this.wv[i * 3] = rnd(-0.3, 0.3); this.wv[i * 3 + 1] = bid === 'england' ? -rnd(7, 10) : bid === 'russia' || bid === 'tundra' ? -rnd(0.8, 1.6) : bid === 'mexico' || bid === 'ash' ? rnd(0.5, 1.2) : bid === 'bloom' ? -rnd(0.2, 0.5) : rnd(-0.15, 0.25); this.wv[i * 3 + 2] = rnd(-0.3, 0.3); }
+      pg.setAttribute('position', new T.BufferAttribute(this.wp, 3)); const wc = { swamp: 0xe8ff90, russia: 0xffffff, mexico: 0xff9a50, cambodia: 0xffb0d0, germany: 0xc9a84a, egypt: 0xf0d890, greece: 0xffffff, italy: 0xffe0b0, rocks: 0xd8ccb0, savanna: 0xffe080, delta: 0xeaf6ff, ash: 0xff7a20, roots: 0xd8ff8a, bloom: 0xff9ad0, tundra: 0xd8fff4, england: 0xc8d8f0 }[bid] || 0xffffff;
       this.weather = new T.Points(pg, new T.PointsMaterial({ color: wc, size: bid === 'russia' || bid === 'tundra' ? 0.22 : bid === 'delta' ? 0.3 : 0.16, transparent: true, opacity: 0.85, depthWrite: false })); this.weather.frustumCulled = false; sc.add(this.weather);
       // постройки
       this.groups = []; this.holders = []; DEF[bid].forEach((d, i) => { const h = new T.Group(); h.position.set(SPOTS[i][0], 0, SPOTS[i][1]); h.rotation.y = FACE[i]; sc.add(h); this.holders.push(h); this.groups.push(h); this.rebuild(i); });
@@ -8393,7 +8507,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       const h = this.holders[i]; while (h.children.length) { const c = h.children[0]; h.remove(c); }
       const L = this.lv[i], d = DEF[this.bid][i], P = this.P;
       const slab = cyl(3.3, 3.45, 0.16, P.stone, 0, 0.04, 0, 24); slab.receiveShadow = true; h.add(slab);
-      let b; if (L >= 1) { b = ARCH[d[0]](L, P, d[2]); b.position.y = 0.12; h.add(b); b.traverse((m) => { if (m.isMesh) { m.castShadow = true; m.receiveShadow = true; } }); this.body = b; }
+      let b; if (L >= 1) { b = skin(ARCH[d[0]](L, P, d[2]), P); b.position.y = 0.12; h.add(b); this.yard(h, L, P); b.traverse((m) => { if (m.isMesh) { m.castShadow = true; m.receiveShadow = true; } }); try { if (K.ink) K.ink(b, 0.035); } catch (e) { /* без обводки */ } this.body = b; }
       else { // пустой участок: колышки и ящики
         for (const [x, z] of [[-1.6, -1.6], [1.6, -1.6], [-1.6, 1.6], [1.6, 1.6]]) h.add(cyl(0.07, 0.09, 1.1, P.wood, x, 0.6, z, 5));
         h.add(box(0.7, 0.55, 0.7, P.wood, -0.8, 0.4, 0.5)); h.add(box(0.5, 0.4, 0.5, P.wood, 0.2, 0.3, 1.0)); h.add(mesh(new T.ConeGeometry(0.7, 0.9, 6), 0xb9b2a4, 0.8, 0.55, -0.3));
@@ -8403,12 +8517,23 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       if (this.busy === i) { const sc = new T.Group(); for (const [x, z] of [[-2, -2], [2, -2], [-2, 2], [2, 2]]) sc.add(cyl(0.06, 0.06, 3.0 + L * 0.5, P.wood, x, 1.5 + L * 0.25, z, 4)); for (const y of [1.0, 2.0, 3.0]) { sc.add(box(4.1, 0.07, 0.07, P.wood, 0, y, -2)); sc.add(box(4.1, 0.07, 0.07, P.wood, 0, y, 2)); sc.add(box(0.07, 0.07, 4.1, P.wood, -2, y, 0)); sc.add(box(0.07, 0.07, 4.1, P.wood, 2, y, 0)); } sc.userData.scaf = 1; h.add(sc); }
       h.userData.pop = 0; if (this.cb) this.cb;
     },
-    setLevel(i, L, pop) { this.lv[i] = L; this.rebuild(i); if (pop) this.holders[i].userData.pop = 1; },
+    // двор вокруг постройки: дорожка, кусты, забор, фонари, флажки — по уровню
+    yard(h, L, P) {
+      const y = new T.Group(); h.add(y); const R = 3.05;
+      for (let k = 0; k < 4; k++) { const s = cyl(0.26, 0.28, 0.06, P.stone, (k % 2 ? 0.12 : -0.12), 0.1, 2.0 + k * 0.42, 7); y.add(s); }
+      if (L >= 2) for (const a of [0.9, -0.9, 2.3, -2.3]) { y.add(sph(0.36, 0x4f9a42, Math.sin(a) * R, 0.3, Math.cos(a) * R, 0.75)); y.add(sph(0.08, P.acc, Math.sin(a) * R + 0.15, 0.55, Math.cos(a) * R + 0.2, 1)); }
+      if (L >= 3) { for (let k = 0; k < 22; k++) { const a = 0.42 + k * (Math.PI * 2 - 0.84) / 21, x = Math.sin(a) * (R + 0.15), z = Math.cos(a) * (R + 0.15); const pk = box(0.08, 0.5, 0.05, 0xf6efe0, x, 0.35, z); pk.rotation.y = a; y.add(pk); }
+        for (let k = 0; k < 2; k++) { const r2 = new T.Mesh(new T.TorusGeometry(R + 0.15, 0.025, 4, 48, Math.PI * 2 - 0.84), M(0xf6efe0)); r2.rotation.x = Math.PI / 2; r2.rotation.z = -Math.PI / 2 + 0.42 + 0.0; r2.rotation.z = Math.PI / 2 + 0.42; r2.position.y = 0.25 + k * 0.2; y.add(r2); } }
+      if (L >= 4) for (const s of [-1, 1]) { y.add(cyl(0.05, 0.07, 1.4, 0x3a3a42, s * 0.75, 0.75, R + 0.05, 6)); y.add(mesh(new T.SphereGeometry(0.16, 8, 6), P.glow, s * 0.75, 1.5, R + 0.05, E(P.glow, 1.2))); y.add(box(0.5, 0.25, 0.28, P.wood, s * 1.5, 0.22, 2.3)); for (let j = 0; j < 3; j++) y.add(sph(0.09, [0xff5a7a, 0xffd04a, 0xffffff][j], s * 1.5 - 0.15 + j * 0.15, 0.42, 2.3, 1)); }
+      if (L >= 5) { for (let k = 0; k < 9; k++) { const a = -0.9 + k * 0.225; const fl = cone(0.09, 0.16, [0xff5a5a, 0xffd04a, 0x4ab0ff][k % 3], Math.sin(a + Math.PI) * 2.6, 2.4 + Math.sin(k * 0.7) * 0.1, Math.cos(a + Math.PI) * 2.6, 3); fl.rotation.x = Math.PI; y.add(fl); } y.add(cyl(0.04, 0.04, 2.6, P.wood, 2.4, 1.3, -1.6, 5)); const fg = box(0.7, 0.42, 0.03, P.acc, 2.75, 2.35, -1.6); fg.userData.flag = 1; y.add(fg); }
+    },
+    setLevel(i, L, pop) { this.lv[i] = L; this.rebuild(i); if (i === this.sel && !this.cele) { const ft = this.fit(i); this.distGoal = ft.d; this.tgtGoal.y = ft.y; } if (pop) this.holders[i].userData.pop = 1; },
     setBusy(i) { const o = this.busy; this.busy = i; if (o >= 0 && o !== i) this.rebuild(o); if (i >= 0) this.rebuild(i); },
-    setSel(i, snap) { this.sel = i; const sp = SPOTS[i]; this.tgtGoal.set(sp[0], 2.1, sp[1]); this.distGoal = CAMD; this.azGoal = FACE[i]; if (snap) { this.tgt.copy(this.tgtGoal); this.dist = CAMD; this.az = FACE[i]; this.el = 0.4; } this.auto = false; this._idle = 0; },
+    fit(i) { let hgt = 3, wid = 6; try { const h = this.holders[i]; h.updateMatrixWorld(true); const bb = new T.Box3().setFromObject(h.children[1] || h), sz = bb.getSize(new T.Vector3()); hgt = Math.max(2.5, bb.max.y); wid = Math.max(sz.x, sz.z); } catch (e) { /* ок */ } return { y: Math.max(1.8, hgt * 0.42), d: Math.max(CAMD, hgt * 1.9 + 4, wid * 1.7) }; },
+    setSel(i, snap) { this.sel = i; const sp = SPOTS[i], ft = this.fit(i); this.tgtGoal.set(sp[0], ft.y, sp[1]); this.distGoal = ft.d; this.azGoal = FACE[i]; if (snap) { this.tgt.copy(this.tgtGoal); this.dist = ft.d; this.az = FACE[i]; this.el = 0.4; } this.auto = false; this._idle = 0; },
     // существо биома стоит у убежища
     setWho(w) { if (this.who) { this.scene.remove(this.who.root); this.who = null; } if (!w) return; try { w.state = 'idle'; w.time = 0; w._pose(0); w.root.updateMatrixWorld(true); const bb = new T.Box3().setFromObject(w.root), k = 2.3 / Math.max(0.01, bb.max.y - bb.min.y); w.root.scale.multiplyScalar(k); w.root.updateMatrixWorld(true); const b2 = new T.Box3().setFromObject(w.root); w.baseY = -b2.min.y; w.root.position.set(-2.8, w.baseY, 1.8); w.root.rotation.y = 0.5; w.root.traverse((m) => { if (m.isMesh) m.castShadow = true; }); this.scene.add(w.root); this.who = w; } catch (e) { /* без существа */ } },
-    celebrate(i) { this.setSel(i); this.cele = 3.2; this._cfT = 0; this.distGoal = CAMD + 4; this.tgtGoal.y = 4.0; clearTimeout(this._cz); this._cz = setTimeout(() => { this.distGoal = CAMD; this.tgtGoal.y = 2.1; }, 3300); },
+    celebrate(i) { this.setSel(i); this.cele = 3.2; this._cfT = 0; { const ft = this.fit(i); this.distGoal = ft.d + 4; this.tgtGoal.y = ft.y + 1.8; } clearTimeout(this._cz); this._cz = setTimeout(() => { const ft = this.fit(i); this.distGoal = ft.d; this.tgtGoal.y = ft.y; }, 3300); },
     confetti(x, y, z) {
       if ((this._cfT = (this._cfT || 0) - 1) > 0) return; this._cfT = 6;
       if (!this.cf || this.cf.parent !== this.scene) { const N = 240, g = new T.BufferGeometry(), c = new Float32Array(N * 3), pal = [0xffd04a, 0xff5a7a, 0x4ad0ff, 0x8aff6a, 0xffffff]; for (let k = 0; k < N; k++) { const q = new T.Color(pal[k % pal.length]); c[k * 3] = q.r; c[k * 3 + 1] = q.g; c[k * 3 + 2] = q.b; }
@@ -8434,7 +8559,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       if (this.auto && this.azGoal != null) { let da = (this.azGoal + Math.sin(this.tm * 0.35) * 0.16) - this.az; da = Math.atan2(Math.sin(da), Math.cos(da)); this.az += da * Math.min(1, dt * 2.2); this.el += (0.4 - this.el) * Math.min(1, dt * 2); }
       this.tgt.lerp(this.tgtGoal, Math.min(1, dt * 3.5)); this.dist += (this.distGoal - this.dist) * Math.min(1, dt * 3);
       cam.position.set(this.tgt.x + Math.sin(this.az) * Math.cos(this.el) * this.dist, this.tgt.y + Math.sin(this.el) * this.dist, this.tgt.z + Math.cos(this.az) * Math.cos(this.el) * this.dist); cam.lookAt(this.tgt);
-      this.holders.forEach((h, i) => { const u = h.userData; if (u.pop > 0) { u.pop = Math.max(0, u.pop - dt * 1.6); const k = 1 + Math.sin((1 - u.pop) * Math.PI) * 0.18 * (u.pop > 0 ? 1 : 0); h.scale.set(k, 1 + (k - 1) * 1.6, k); } else h.scale.set(1, 1, 1); h.traverse((c) => { if (c.userData.spin) c.rotation.x += dt * 1.2; }); h.children.forEach((c) => { if (c.userData.q) { c.position.y = 2.3 + Math.sin(this.tm * 3 + i) * 0.15; c.rotation.y += dt * 2; } }); });
+      this.holders.forEach((h, i) => { const u = h.userData; if (u.pop > 0) { u.pop = Math.max(0, u.pop - dt * 1.6); const k = 1 + Math.sin((1 - u.pop) * Math.PI) * 0.18 * (u.pop > 0 ? 1 : 0); h.scale.set(k, 1 + (k - 1) * 1.6, k); } else h.scale.set(1, 1, 1); h.traverse((c) => { if (c.userData.spin) c.rotation.x += dt * 1.2; else if (c.userData.smoke) c.children.forEach((q, k) => { const t = (this.tm * 0.5 + k / 3) % 1; q.position.y = t * 1.2; q.position.x = Math.sin(t * 3) * 0.15; q.scale.setScalar(0.5 + t); q.visible = t < 0.95; }); else if (c.userData.flag) c.rotation.y = Math.sin(this.tm * 3) * 0.25; else if (c.userData.hand) c.rotation.z = -this.tm * (c.userData.hand === 2 ? 0.6 : 0.05); }); h.children.forEach((c) => { if (c.userData.q) { c.position.y = 2.3 + Math.sin(this.tm * 3 + i) * 0.15; c.rotation.y += dt * 2; } }); });
       const sp = SPOTS[this.sel]; this.ring.position.x = sp[0]; this.ring.position.z = sp[1]; const sc = 1 + Math.sin(this.tm * 3) * 0.03; this.ring.scale.set(sc, sc, sc);
       if (this.who) { const w = this.who, i = this.sel, sp = SPOTS[i], f = FACE[i], cel = (this.cele || 0) > 0; w.time += dt; w.anim = (w.anim || 0) + dt;
         if (cel) { this.cele -= dt; w.state = 'party'; const h = this.holders[i]; let top = 3; try { h.updateMatrixWorld(true); top = new T.Box3().setFromObject(h).max.y; } catch (e) { /* ок */ }
@@ -8473,7 +8598,8 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     { id: 'cambodia', n: 'Камбоджа', ico: '🛕', who: '', intro: ['Камбоджа: храмы, которые заросли лианами.', 'Где лианы — там и цветы. Где цветы — там кто-то очень терпеливый.'] },
     { id: 'bloom', n: 'Цветочные джунгли', ico: '🌺', who: 'Лианна', home: 1, intro: ['Цветочные джунгли. Каждый цветок размером с мою хижину.', 'Лианна живёт тут. Резьбу делает лучше всех на свете и плетёт мосты из лиан.'] },
     { id: 'russia', n: 'Россия', ico: '❄️', who: '', intro: ['Снежная Россия. Купола, метель и тёплые печи.', 'Дальше на север — только лёд. И кто-то, кто всегда мёрзнет.'] },
-    { id: 'tundra', n: 'Ледяная тундра', ico: '🧊', who: 'Студенец', home: 1, intro: ['Ледяная тундра. Небо светится зелёным, а снег скрипит, как дверь.', 'Студенец — дитя метелей. Мёрзнет всегда, но таскает без остановки. Построим ему иглу потеплее.'] }
+    { id: 'tundra', n: 'Ледяная тундра', ico: '🧊', who: 'Студенец', home: 1, intro: ['Ледяная тундра. Небо светится зелёным, а снег скрипит, как дверь.', 'Студенец — дитя метелей. Мёрзнет всегда, но таскает без остановки. Построим ему иглу потеплее.'] },
+    { id: 'england', n: 'Англия', ico: '💂', who: '', intro: ['Лёд кончился, а за морем — Англия. Туман, дождь и чай в пять.', 'Говорят, тут камни поставили кругом ещё до пирамид. Значит, мы с ними родня.', 'Хапуга сбежал сюда с мешком. Ничего, у нас есть мост, часы и терпение.'] }
   ];
   BIOMES.forEach((x) => { x.b = [0, 1, 2, 3].map((i) => x.id + ':' + i); });
   const REP = { greece: 'parthenon', egypt: 'pyramid', italy: 'colosseum', mexico: 'chichen', germany: 'castle', cambodia: 'angkor', russia: 'basil', rocks: 'parthenon', savanna: 'pyramid', delta: 'colosseum', ash: 'chichen', roots: 'castle', bloom: 'angkor', tundra: 'basil' };
@@ -8537,11 +8663,12 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     },
 
     /* ---------- улучшения с таймером ---------- */
+    vkey(id) { const a = id.split(':'), d = BOA.Dio.DEF[a[0]][+a[1]]; return d && d[3] && BOA.GRYAZ_ST && BOA.GRYAZ_ST[d[3]] ? d[3] : null; },
     start(id) {
       const m = this.meta(), g = this.g, L = this.lv(id); if (L >= MAXL || m.up) return; const c = this.cost(id, L);
       if (!this.can(c)) { g.ui.toast('Не хватает материалов или монет. Бегите!'); return; }
       g.economy.spend(c.coins); ['stone', 'wood', 'bronze'].forEach((k) => { m.mat[k] -= c[k]; });
-      m.up = { id, to: L + 1, end: Date.now() + MINS[L] * 60000, dur: MINS[L] * 60000, ad: 0 };
+      m.up = { id, to: L + 1, end: Date.now() + MINS[L] * 60000, dur: MINS[L] * 60000, ad: 0 }; { const k = this.vkey(id); if (k && L === 0 && !m.seen['vi_' + k] && BOA.lang === 'ru') { m.seen['vi_' + k] = 1; setTimeout(() => this.slides('Грязимир', [BOA.GRYAZ_ST[k][0]], () => g.save(), null, 's_' + k + '_i'), 400); } }
       try { BOA.Audio.buy(); } catch (e) { /* без звука */ } this.syncSites(); this.render(); g.save();
     },
     speedCost() { const u = this.meta().up; return u ? Math.max(1, Math.ceil((u.end - Date.now()) / 300000)) : 0; },
@@ -8552,7 +8679,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       if (!this.g || !this.g.hubOn) return; const m = this.meta(), u = m.up;
       if (u && Date.now() >= u.end) {
         m.lv[u.id] = u.to; m.up = null; const g = this.g; const rb = REP[u.id.split(':')[0]]; if (rb) g.built[rb] = 1; try { g.recalcBonus && g.recalcBonus(); } catch (e) { /* ок */ }
-        try { BOA.Audio.fanfare(); } catch (e) { /* без звука */ } this.syncSites(true); { const B = BIOMES[this.bi()], k = B.b.indexOf(u.id); if (k >= 0 && this.on) { m.sel = u.id; BOA.Dio.celebrate(k); this.cele(H.name(u.id), u.to); } }
+        try { BOA.Audio.fanfare(); } catch (e) { /* без звука */ } this.syncSites(true); { const B = BIOMES[this.bi()], k = B.b.indexOf(u.id); if (k >= 0 && this.on) { m.sel = u.id; BOA.Dio.celebrate(k); this.cele(H.name(u.id), u.to); const vk = this.vkey(u.id); if (vk && u.to === MAXL && !m.seen['vd_' + vk] && BOA.lang === 'ru') { m.seen['vd_' + vk] = 1; setTimeout(() => this.slides('Грязимир', [BOA.GRYAZ_ST[vk][1]], () => g.save(), null, 's_' + vk + '_d'), 3200); } } }
         g.ui.toast(H.name(u.id) + ': уровень ' + u.to + '!'); this.checkJoin(); this.render(); g.save();
       }
       if (this.on) this.paint();

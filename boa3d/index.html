@@ -566,7 +566,7 @@ button,.btn{border-radius:16px}
 // Мультяшный вид: ступенчатое (cel) освещение + повышенная насыщенность для всех материалов.
 // Подмена шейдерных чанков three.js; действует глобально, на геометрию не влияет.
 (function (BOA) {
-  const T = BOA.TOON = { bands: 5, soft: 0.5, sat: 1.42, rim: 0.5 };
+  const T = BOA.TOON = { bands: 3, soft: 0.78, sat: 1.55, rim: 0.35 };
   const SRC = 'gl_FragColor = vec4( outgoingLight, diffuseColor.a );';
   const cel = 'float tl = dot( outgoingLight, vec3( 0.299, 0.587, 0.114 ) );\n' +
     'float tb = floor( tl * ' + T.bands.toFixed(1) + ' + 0.5 ) / ' + T.bands.toFixed(1) + ';\n' +
@@ -7528,10 +7528,10 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     const r = this.r = new T.WebGLRenderer({ canvas: this.cv, antialias: true, powerPreference: 'high-performance' });
     r.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2)); r.setSize(w, h, false);
     const B = BIOMES[this.biome];
-    const sc = this.scene = new T.Scene(); sc.background = new T.Color(B.hor); sc.fog = new T.Fog(B.fog, 26, 92);
+    const sc = this.scene = new T.Scene(); sc.background = new T.Color(B.hor); sc.fog = new T.Fog(B.fog, 38, 130);
     this.cam = new T.PerspectiveCamera(60, w / h, 0.1, 160);
-    sc.add(new T.HemisphereLight(0xfff7e6, new T.Color(B.ground).multiplyScalar(0.55), 0.7));
-    const sun = this.sun = new T.DirectionalLight(0xfff0d0, 0.85); sun.position.set(-5, 11, 6); sc.add(sun);
+    sc.add(new T.HemisphereLight(0xffffff, new T.Color(B.ground).lerp(new T.Color(0xffffff), 0.3), 0.82));
+    const sun = this.sun = new T.DirectionalLight(0xfff4dc, 0.6); sun.position.set(-5, 11, 6); sc.add(sun);
     // небо: градиентный купол
     const sky = new T.Mesh(new T.SphereGeometry(140, 20, 12), new T.ShaderMaterial({
       side: T.BackSide, depthWrite: false, fog: false,
@@ -7548,7 +7548,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     this.world = [];            // всё, что едет навстречу
     this.dash = [];             // полосы разметки
     const roadW = LANE * 3 + 1.4;
-    const cvs = document.createElement('canvas'); cvs.width = 128; cvs.height = 256; const cx = cvs.getContext('2d'), rc = new T.Color(B.road);
+    const cvs = document.createElement('canvas'); cvs.width = 128; cvs.height = 256; const cx = cvs.getContext('2d'), rc = new T.Color(B.road); { const hs = {}; rc.getHSL(hs); if (hs.l > 0.62) rc.setHSL(hs.h, Math.min(1, hs.s * 1.15), 0.6); }
     cx.fillStyle = '#' + rc.getHexString(); cx.fillRect(0, 0, 128, 256);
     for (let i = 0; i < 70; i++) { const l = rnd(-0.025, 0.025), c = rc.clone().offsetHSL(0, 0, l); cx.fillStyle = '#' + c.getHexString(); cx.fillRect(rnd(0, 120), rnd(0, 250), rnd(8, 30), rnd(6, 16)); }
     if (B.pave === 'tiles') { cx.fillStyle = 'rgba(0,0,0,.12)'; cx.fillRect(0, 0, 128, 256); cx.lineWidth = 2.5; cx.strokeStyle = 'rgba(110,90,55,.55)'; for (let y = 0; y < 256; y += 32) for (let x = 0; x < 128; x += 32) cx.strokeRect(x + 1, y + 1, 30, 30); }
@@ -7567,9 +7567,9 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     if (B.dashes) for (const l of [-1, 1]) for (let i = 0; i < 20; i++) { const d = new T.Mesh(new T.PlaneGeometry(0.12, 2.2), M(B.edge, { transparent: true, opacity: 0.8 })); d.rotation.x = -Math.PI / 2; d.position.set(l * LANE * 0.5 * 1, 0.02, -i * 7); sc.add(d); this.dash.push(d); }
     // декорации по бокам
     const gen = PROPS[this.biome]; this.props = [];
-    for (let i = 0; i < 18; i++) for (const s of [-1, 1]) {
-      const p = gen[(Math.random() * gen.length) | 0](); p.position.set(s * (roadW / 2 + 2.5 + Math.random() * 9), 0, -i * 9 - Math.random() * 5); p.rotation.y = rnd(-0.5, 0.5);
-      p.scale.setScalar(rnd(0.85, 1.35)); sc.add(p); this.props.push(p);
+    for (let i = 0; i < 26; i++) for (const s of [-1, 1]) {
+      const p = gen[(Math.random() * gen.length) | 0](); p.position.set(s * (roadW / 2 + 1.4 + Math.random() * 5.5), 0, -i * 6.3 - Math.random() * 3); p.rotation.y = rnd(-0.5, 0.5);
+      p.scale.setScalar(rnd(1.0, 1.5)); ink(p, 0.06); sc.add(p); this.props.push(p);
     }
     if (B.lamps) for (let i = 0; i < 9; i++) for (const s of [-1, 1]) { const lp = grp(cyl(0.06, 0.09, 2.4, 0x5a4028, 0, 1.2, 0, 6), mesh(new T.SphereGeometry(0.22, 8, 6), 0xfff0b0, 0, 2.5, 0, { emissive: 0xffd060, emissiveIntensity: 1.1 })); lp.position.set(s * (roadW / 2 + 0.7), 0, -i * 17 - 4); sc.add(lp); this.props.push(lp); }
     // дальние холмы
@@ -7609,7 +7609,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       const bb2 = new T.Box3().setFromObject(w.root); w.root.position.y = -bb2.min.y; w.baseY = w.root.position.y;
       w.tool.visible = false; w.chisel && (w.chisel.visible = false); w.block && (w.block.visible = false); if (w.clip) w.clip.visible = false;
       const holder = this.heroG = new T.Group(); holder.rotation.y = Math.PI; holder.add(w.root); this.scene.add(holder);
-      this.hero = w;
+      ink(w.root, 0.035); this.hero = w;
       // освещение ног: ровная земля не нужна
     } catch (e) { console.warn('runner hero', e); }
     // портрет в карточке
@@ -7636,6 +7636,28 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
   };
 
 
+
+  /* ---------- стиль комикса: чёрная обводка (инвертированная оболочка), для скелетных сеток — со скелетом ---------- */
+  const INK = 0x17120e;
+  const inkMat = (skin) => { const m = new T.MeshBasicMaterial({ color: INK, side: T.BackSide }); if (skin) m.skinning = true;
+    m.onBeforeCompile = (sh) => { sh.uniforms.inkW = { value: 0.05 }; m.userData.sh = sh; sh.vertexShader = 'uniform float inkW;\n' + sh.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n transformed += normalize(normal) * inkW;'); };
+    return m; };
+  const INKM = { s: null, k: null };
+  function ink(root, w) {
+    root.updateMatrixWorld(true); const list = [];
+    root.traverse((o) => { if (o.isMesh && !o.userData.ink && !o.userData.noInk && o.geometry && o.geometry.attributes.normal && !(o.material && o.material.transparent)) list.push(o); });
+    const sc = new T.Vector3();
+    list.forEach((o) => {
+      o.matrixWorld.decompose(new T.Vector3(), new T.Quaternion(), sc); const ws = Math.max(1e-4, (Math.abs(sc.x) + Math.abs(sc.y) + Math.abs(sc.z)) / 3), thick = (w || 0.045) / ws;
+      let ol;
+      if (o.isSkinnedMesh) { ol = new T.SkinnedMesh(o.geometry, inkMat(true)); ol.bind(o.skeleton, o.bindMatrix); }
+      else ol = new T.Mesh(o.geometry, inkMat(false));
+      const mt = ol.material, base = mt.onBeforeCompile; mt.onBeforeCompile = (sh) => { base(sh); sh.uniforms.inkW.value = thick; };
+      mt.customProgramCacheKey = () => 'ink' + (o.isSkinnedMesh ? 's' : '') + thick.toFixed(3);
+      ol.userData.ink = 1; ol.frustumCulled = false; ol.renderOrder = -1; o.add(ol);
+    });
+    return root;
+  }
   /* ---------- препятствия своей эпохи (поведение то же: crate — прыжок, beam — подкат, wall — обойти, hurdle — прыжок) ---------- */
   const L2 = 2.2;
   function themed(bio, type) {
@@ -7695,6 +7717,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     else if (type === 'swing') { m = grp(cyl(0.2, 0.2, LANE * 2.0, 0x8a5a2c, 0, 0.7, 0, 8), sph(0.3, 0xc9503a, LANE * 1.0, 0.7, 0, 1), sph(0.3, 0xc9503a, -LANE * 1.0, 0.7, 0, 1)); m.children[0].rotation.z = Math.PI / 2; }
     else if (type === 'x2') { m = mesh(new T.OctahedronGeometry(0.46), 0xffd04a, 0, 0, 0, { emissive: 0xc07000, emissiveIntensity: 0.9 }); }
     else if (type === 'arch') { const B = BIOMES[this.biome]; m = grp(box(0.5, 6, 0.5, B.edge, -5.2, 3, 0), box(0.5, 6, 0.5, B.edge, 5.2, 3, 0), box(11.0, 1.5, 0.5, 0xc9683a, 0, 6.4, 0)); const cv = document.createElement('canvas'); cv.width = 256; cv.height = 64; const c2 = cv.getContext('2d'); c2.fillStyle = '#ffe9b0'; c2.font = '900 44px sans-serif'; c2.textAlign = 'center'; c2.textBaseline = 'middle'; c2.fillText(String(y) + ' м', 128, 34); const pl = new T.Mesh(new T.PlaneGeometry(6, 1.5), new T.MeshBasicMaterial({ map: new T.CanvasTexture(cv), transparent: true })); pl.position.set(0, 6.4, 0.28); m.add(pl); y = 0; }
+    if (type !== 'coin' && type !== 'arch') ink(m, type === 'stone' || type === 'wood' || type === 'bronze' ? 0.035 : 0.05);
     m.userData = { type, lane, y0: y || 0 };
     const yy = type === 'x2' ? 1.0 : type === 'coin' || type === 'stone' || type === 'wood' || type === 'bronze' || type === 'shield' || type === 'mag' || type === 'dash' ? (y || 1.0) : 0;
     m.position.set(lane * LANE, yy, z); m.userData.base = yy;

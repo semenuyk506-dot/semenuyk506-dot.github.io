@@ -406,6 +406,8 @@ img { display: block; }
 .run-arr{width:44px;height:44px;border-radius:50%;border:0;background:rgba(0,0,0,.08);font:900 28px/1 inherit;color:inherit;cursor:pointer;box-shadow:0 2px 0 rgba(0,0,0,.15)}
 .run-arr:active{transform:translateY(2px);box-shadow:none}
 .run-arr[hidden]{display:none}
+
+.run-th{position:absolute;left:50%;top:calc(max(8px,env(safe-area-inset-top)) + 52px);transform:translateX(-50%);z-index:3;display:flex;align-items:center;gap:6px;padding:5px 12px 7px;border-radius:999px;background:rgba(27,31,22,.62);color:#fff;font:900 13px var(--font);text-shadow:0 1px 2px #000;overflow:hidden;pointer-events:none}.run-th b{color:#ffd84a}.run-th i{position:absolute;left:0;bottom:0;height:3px;width:0;background:linear-gradient(90deg,#ff8a3a,#ffd84a)}
 </style>
 <style>
 /* мир существ: мшистая земля, тёплое золото, мягкие скругления */
@@ -4745,7 +4747,7 @@ window.BOA=window.BOA||{};BOA.NIKITA_MESH={"v": "NQXabHMFWgjobV8FCwX6bDwEhgT7a0o
 })(window.BOA = window.BOA || {});
 
 </script>
-<script src="creatures_mesh.js"></script><script src="gryaz_mdl.js"></script>
+<script src="creatures_mesh.js"></script><script src="hapuga_mdl.js"></script>
 <script>
 /* Существа вместо обычных рабочих: модели Meshy, упрощены и покрашены по карточкам автора. Скелет и анимации — те же, что у рабочих. */
 (function (BOA) {
@@ -7478,7 +7480,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     tundra:   { sky: 0x3a5a8a, hor: 0xbfe8f0, fog: 0xcfe4f0, ground: 0xe8f4fc, road: 0x86b4d0, edge: 0xf6fbff, pave: 'ice', hills: [0xd8e8f4, 0xc0d8ea], step: 'snow', amb: [0.3, 0xffffff], aurora: true, name: 'Ледяная тундра' }
   };
   const LINES = {
-    start: ['Ноги, не подведите.', 'Побежали. Только без героизма.', 'Я не бегаю. Но ради камней — ладно.'],
+    start: ['Хапуга опять стащил монеты! Держи вора!', 'Вон он, с мешком! Догоним рывком.', 'Ноги, не подведите.', 'Побежали. Только без героизма.', 'Я не бегаю. Но ради камней — ладно.'],
     stone: ['Камень! Хороший, тяжёлый.', 'Ещё камень. Стройка будет рада.', 'Складываю в карман. Карман тоже тяжёлый.'],
     chest: ['Сундук! Кто-то тут богато жил.', 'Ого, полный! Не уроню.'],
     hit: ['Ай. Это был столб. Или я.', 'Споткнулся. Бывает.', 'Мда. Стена победила.'],
@@ -7602,7 +7604,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       '<div class="rp" title="бронза"><i class="rbr"></i><b id="r-bronze">0</b></div>' +
       '<div class="rp dist"><b id="r-dist">0</b> м</div></div>' +
       '<div id="run-buffs" class="run-buffs"></div>' +
-      '<div id="run-say" class="run-say"></div>' +
+      '<div id="run-say" class="run-say"></div><div id="run-th" class="run-th" hidden>💰 Хапуга <b id="run-thd">13</b> м<i id="run-thb"></i></div>' +
       '<div id="run-start" class="run-ov"><div class="run-card"><div class="run-pick"><button id="run-pl" class="run-arr" type="button" aria-label="Предыдущий бегун">‹</button><div class="run-av" id="run-av"></div><button id="run-pr" class="run-arr" type="button" aria-label="Следующий бегун">›</button></div><h2 id="run-nm">Забег</h2><p id="run-sub"></p>' +
       '<p class="run-help">↔ — дорожка · ↑ — прыжок · ↓ — подкат<br>Монеты, камень, дерево и бронза идут на стройку. Из сундуков выпадают алмазы.</p>' +
       '<button id="run-go" class="btn primary big" type="button">Бежать</button></div></div>' +
@@ -7613,7 +7615,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     app.appendChild(root);
     this.cv = $('run-cv');
     this.biome = this.chooseBiome();
-    this.initGL(); this.buildWorld(); this.makeHero(); this.bind(); this.reset();
+    this.initGL(); this.buildWorld(); this.makeHero(); this.makeThief(); this.bind(); this.reset();
     this.last = performance.now(); this.raf = requestAnimationFrame((t) => this.frame(t));
   }
   const P = Run.prototype;
@@ -7706,16 +7708,6 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     try { $('run-nm').textContent = (rec && rec.name) || 'Забег'; const many = (g.crew.list || []).length > 1; $('run-pl').hidden = $('run-pr').hidden = !many; } catch (e) { /* ок */ }
     const look = rec ? BOA.Look.of(rec) : null;
     this.hero = null;
-    // своя модель из Meshy (пока только Грязимир)
-    try {
-      const nik = g.crew.nikita && g.crew.nikita();
-      if (BOA.MdlHero && BOA.MDL && BOA.MDL.gryaz && rec && nik && rec.id === nik.id) {
-        const w = BOA.MdlHero('gryaz', HERO_H); const holder = this.heroG = new T.Group(); holder.rotation.y = Math.PI; holder.add(w.root); this.scene.add(holder);
-        ink(w.root, 0.03); this.hero = w;
-        try { if (g.ui && g.ui.workerThumb) { const u = g.ui.workerThumb(rec); if (u) $('run-av').style.backgroundImage = 'url(' + u + ')'; } } catch (e) { /* без портрета */ }
-        return;
-      }
-    } catch (e) { console.warn('mdl hero', e); this.hero = null; }
     try {
       const w = new BOA.Worker3D(rec ? rec.id : 0, look, 1.7, g.tools || {}, 'foreman', 0);
       w.state = 'idle'; w._pose(0);
@@ -7732,8 +7724,47 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     try { if (rec && g.ui && g.ui.workerThumb) { const u = g.ui.workerThumb(rec); if (u) $('run-av').style.backgroundImage = 'url(' + u + ')'; } } catch (e) { /* без портрета */ }
   };
 
+
+  /* ---------- Хапуга: убегает впереди с мешком, роняет монеты. Догнать можно рывком ---------- */
+  const SOLID = { crate: 1, beam: 1, wall: 1, hurdle: 1, spike: 1, swing: 1, log: 1, cart: 1 };
+  P.makeThief = function () {
+    this.th = null; if (!BOA.MdlHero || !BOA.MDL || !BOA.MDL.hapuga) return;
+    try {
+      const w = BOA.MdlHero('hapuga', HERO_H * 1.05), hold = new T.Group(); hold.rotation.y = Math.PI; hold.add(w.root); ink(w.root, 0.03); this.scene.add(hold);
+      this.th = { w, hold, gap: 10, lane: 0, x: 0, y: 0, vy: 0, ph: 0, drop: 1, caught: 0, run: 0, S: { ph: 0, y: 0, vy: 0, slide: 0, dying: 0, dashT: 0, x: 0 } };
+      hold.position.set(0, 0, -10); w.pose(this.th.S, 0, 0); $('run-th').hidden = false;
+    } catch (e) { console.warn('thief', e); this.th = null; }
+  };
+  P.thiefStep = function (dt, sp) {
+    const t = this.th; if (!t) return; const S = this.S, z = -t.gap;
+    // от препятствий: сменить дорожку, если свободна, иначе прыгнуть
+    for (const m of this.items) {
+      const u = m.userData; if (!SOLID[u.type]) continue; const mz = m.position.z; if (mz < z - 7 || mz > z + 0.5) continue;
+      if (Math.abs(m.position.x - t.x) > LANE * 0.6 && u.type !== 'beam') continue;
+      if (t.y > 0.05) break;
+      const free = [-1, 0, 1].filter((l) => l !== t.lane && !this.items.some((q) => SOLID[q.userData.type] && Math.abs(q.position.x - l * LANE) < LANE * 0.6 && q.position.z > z - 9 && q.position.z < z + 1));
+      if (free.length && u.type !== 'beam') t.lane = free.reduce((a, b) => (Math.abs(b - t.lane) < Math.abs(a - t.lane) ? b : a));
+      else if (mz > z - 3.2) t.vy = 10.5;
+      break;
+    }
+    if (Math.random() < dt * 0.25) { const l = [-1, 0, 1][(Math.random() * 3) | 0]; if (!this.items.some((q) => SOLID[q.userData.type] && Math.abs(q.position.x - l * LANE) < LANE * 0.6 && q.position.z > z - 9 && q.position.z < z + 1)) t.lane = l; }
+    t.x += (t.lane * LANE - t.x) * Math.min(1, dt * 9); t.vy -= 30 * dt; t.y = Math.max(0, t.y + t.vy * dt); if (!t.y) t.vy = Math.max(0, t.vy);
+    // дистанция: рывок сокращает, удар по герою — увеличивает
+    if (S.dashT > 0) t.gap -= dt * 6.5; else t.gap += (10 - t.gap) * Math.min(1, dt * 0.35);
+    if (t.gap < 2.6) { // поймали
+      t.caught++; t.gap = 16; const c = 40 + t.caught * 20; S.coins += c; S.chests++; $('r-coins').textContent = S.coins;
+      this.spark(t.x, 1.4, -2.6, 30, 0xffd84a); try { BOA.Audio.chest(); } catch (e) { /* ок */ } this.say('Попался, Хапуга! Отдал ' + c + ' монет и сундук 💎', 3000);
+    }
+    // роняет монеты из мешка
+    if ((t.drop -= dt) <= 0) { t.drop = 0.55 + Math.random() * 0.9; try { const m = this.spawn('coin', t.lane, z + 0.8, 0.9); if (m) m.position.x = t.x; } catch (e) { /* ок */ } }
+    t.S.ph += sp * dt; t.S.y = t.y; t.S.vy = t.vy; t.S.x = t.x; t.S.dashT = 0;
+    t.hold.position.set(t.x, t.y, z); t.w.pose(t.S, dt, t.lane * LANE);
+    $('run-thd').textContent = Math.max(0, Math.round(t.gap - 2.6)); $('run-thb').style.width = clamp((16 - t.gap) / 13.4, 0, 1) * 100 + '%';
+  };
+
   /* ---------- состояние забега ---------- */
   P.reset = function () {
+    if (this.th) { const t = this.th; t.gap = 10; t.lane = 0; t.x = 0; t.y = 0; t.vy = 0; t.drop = 1; t.caught = 0; t.run = 0; }
     (this.items || []).forEach((m) => this.scene.remove(m)); this.items = [];
     this.S = { on: false, t: 0, speed: 12, dist: 0, lane: 0, x: 0, y: 0, vy: 0, slide: 0, ph: 0, coins: 0, stone: 0, wood: 0, bronze: 0, chests: 0,
       mag: 0, dashT: 0, shield: 0, nextZ: -30, dying: 0, hit: 0, combo: 0, ended: false, inv: 0, bobT: 0 };
@@ -7981,7 +8012,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
         S.x += (S.lane * LANE - S.x) * Math.min(1, dt * 15); S.vy -= 30 * dt; const wasAir = S.y > 0.05; S.y = Math.max(0, S.y + S.vy * dt); if (S.y === 0 && S.vy < 0) { S.vy = 0; if (wasAir) { S.land = 0.2; try { BOA.Audio.land(); } catch (e) { /* ок */ } this.spark(S.x, 0.1, 0.3, 8, 0xe9dcc0); } }
         S.slide = Math.max(0, S.slide - dt); if (S.slide > 0 && S.y > 0.05) S.slide = 0;
         S.mag = Math.max(0, S.mag - dt); S.x2 = Math.max(0, (S.x2 || 0) - dt); S.dashT = Math.max(0, S.dashT - dt);
-        this.world_move(d, dt);
+        this.world_move(d, dt); this.thiefStep(dt, sp);
         if (S.dist >= (S.mile || 100)) { this.spawn('arch', 0, -64, S.mile || 100); S.mile = (S.mile || 100) + 100; }
         S.nextZ += d; if (S.nextZ > -34) { this.pattern(-66); S.nextZ -= 12 + Math.random() * 5 - Math.min(4, S.dist / 400); }
         this.collide(dt);
@@ -8037,7 +8068,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       else if (u.type === 'dash' && dx < 1.0) take(() => { S.dashT = 4; this.spark(m.position.x, 1, z, 12, 0x9affb0); this.say('Рывок! Через всё!'); try { BOA.Audio.dash(); } catch (e) { /* ок */ } });
       else if ((u.type === 'crate' && dx < 0.95 && S.y < 1.0) || (u.type === 'beam' && dx < 0.95 && S.slide <= 0 && S.y < 1.7) || (u.type === 'wall' && dx < 1.0 && S.y < 2.4) || (u.type === 'spike' && dx < 1.0 && S.y < 0.55) || (u.type === 'hurdle' && dx < 0.95 && S.y < 0.78) || (u.type === 'pit' && dx < 0.9 && S.y < 0.25 && Math.abs(z) < 0.9) || (u.type === 'barrel' && dx < 0.95 && S.y < 0.9) || (u.type === 'swing' && dx < 0.55 && S.y < 1.1) || (u.type === 'swing' && Math.abs(m.children[1].position.x + m.position.x - S.x) < 0.6 && S.y < 1.1) || (u.type === 'swing' && Math.abs(m.children[2].position.x + m.position.x - S.x) < 0.6 && S.y < 1.1)) {
         if (S.dashT > 0) { this.scene.remove(m); items.splice(i, 1); this.spark(m.position.x, 1, z, 14, 0xe8dcc0); }
-        else if (S.shield) { S.shield = 0; S.inv = 1; S.hit = 0.25; this.scene.remove(m); items.splice(i, 1); this.spark(m.position.x, 1, z, 16, 0x7ab8ff); this.say(pick(LINES.shield)); try { BOA.Audio.hit(); } catch (e) { /* ок */ } }
+        else if (S.shield) { S.shield = 0; S.inv = 1; S.hit = 0.25; if (this.th) this.th.gap += 4; this.scene.remove(m); items.splice(i, 1); this.spark(m.position.x, 1, z, 16, 0x7ab8ff); this.say(pick(LINES.shield)); try { BOA.Audio.hit(); } catch (e) { /* ок */ } }
         else if (S.inv <= 0) { S.dying = 0.9; S.hit = 0.4; try { BOA.Audio.hit(); } catch (e) { /* ок */ } this.spark(S.x, 1, 0, 18, 0xffffff); this.say(pick(LINES.hit)); S.on = false; return; }
       }
     }

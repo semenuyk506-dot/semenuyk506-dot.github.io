@@ -7403,8 +7403,8 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
 })(window.BOA);
 
 </script>
-<script>/* Герой забега из модели Meshy (assets/<имя>_mdl.js). В модели нет скелета, поэтому кости
-   ставим сами: тело, передняя и задняя нога, свободная рука. Бег, прыжок, подкат и падение — процедурно. */
+<script>/* Персонаж из модели Meshy (assets/<имя>_mdl.js). В модели нет скелета — кости ставит tools/glb_biped.py:
+   таз, бёдра, голени, руки и мешок за спиной. Бег, прыжок, подкат, падение и стойка — процедурно. */
 (function (BOA) {
   'use strict';
   const T = window.THREE, clamp = (v, a, b) => Math.max(a, Math.min(b, v));
@@ -7417,39 +7417,41 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     const p = b64(d.p, Float32Array), n8 = b64(d.n, Int8Array), n = new Float32Array(n8.length); for (let i = 0; i < n8.length; i++) n[i] = n8[i] / 127;
     g.setAttribute('position', new T.BufferAttribute(p, 3)); g.setAttribute('normal', new T.BufferAttribute(n, 3));
     g.setAttribute('uv', new T.BufferAttribute(b64(d.uv, Float32Array), 2)); g.setIndex(new T.BufferAttribute(b64(d.i, Uint16Array), 1));
-    const bo = b64(d.b, Uint8Array), wt = b64(d.w, Uint8Array), cnt = bo.length, si = new Uint16Array(cnt * 4), sw = new Float32Array(cnt * 4);
-    for (let i = 0; i < cnt; i++) { const w = wt[i] / 255; si[i * 4] = bo[i]; si[i * 4 + 1] = 0; sw[i * 4] = w; sw[i * 4 + 1] = 1 - w; }
-    g.setAttribute('skinIndex', new T.BufferAttribute(si, 4)); g.setAttribute('skinWeight', new T.BufferAttribute(sw, 4));
+    const si = b64(d.si, Uint8Array), sw8 = b64(d.sw, Uint8Array), sw = new Float32Array(sw8.length); for (let i = 0; i < sw8.length; i++) sw[i] = sw8[i] / 255;
+    g.setAttribute('skinIndex', new T.BufferAttribute(new Uint16Array(si), 4)); g.setAttribute('skinWeight', new T.BufferAttribute(sw, 4));
     const tex = new T.TextureLoader().load(d.tex); tex.flipY = false;
-    return (cache[name] = { g, tex, piv: d.piv });
+    return (cache[name] = { g, tex, d });
   }
 
   BOA.MdlHero = function (name, height) {
-    const { g, tex, piv } = geo(name);
-    const body = new T.Bone(), legF = new T.Bone(), legB = new T.Bone(), arm = new T.Bone();
-    legF.position.set(...piv.hipF); legB.position.set(...piv.hipB); arm.position.set(...piv.sh); body.add(legF, legB, arm);
+    const { g, tex, d } = geo(name), B = {}, list = [];
+    d.bones.forEach((b) => { const o = new T.Bone(); o.name = b.n; const par = b.p >= 0 ? d.bones[b.p].at : [0, 0, 0]; o.position.set(b.at[0] - par[0], b.at[1] - par[1], b.at[2] - par[2]); if (b.p >= 0) list[b.p].add(o); B[b.n] = o; list.push(o); });
     const mat = new T.MeshLambertMaterial({ map: tex, skinning: true, side: T.DoubleSide });
-    const mesh = new T.SkinnedMesh(g, mat); mesh.add(body); mesh.bind(new T.Skeleton([body, legF, legB, arm]));
+    const mesh = new T.SkinnedMesh(g, mat); mesh.add(list[0]); mesh.updateMatrixWorld(true); mesh.bind(new T.Skeleton(list));
     mesh.castShadow = true; mesh.frustumCulled = false;
-    // body вращается вокруг паха: смещаем меш так, чтобы ось была в тазу
-    const pivot = new T.Group(), root = new T.Group(), k = height / piv.h; pivot.add(mesh); root.add(pivot); root.scale.setScalar(k);
-    const hy = piv.hipF[1]; pivot.position.y = hy; mesh.position.y = -hy;
+    const root = new T.Group(); root.add(mesh); root.scale.setScalar(height / d.h);
+    const P = B.pelvis, hy = P.position.y, rest = {}; list.forEach((o) => { rest[o.name] = o.position.clone(); });
+    const set = (o, x, y, z) => o.rotation.set(x || 0, y || 0, z || 0);
     return {
-      glb: true, root, mesh, baseY: 0,
+      glb: true, root, mesh, baseY: 0, B,
+      // S: { ph, y, vy, slide, dying, dashT, x }, lane — целевая x дорожки
       pose(S, dt, lane) {
-        const ph = S.ph * 0.5, s = Math.sin(ph), c = Math.cos(ph), air = S.y > 0.05, sl = S.slide > 0, dying = S.dying > 0;
-        let f, bk, a, lean, yo = 0, roll = 0;
-        if (dying) { const t = clamp(1 - S.dying / 0.9, 0, 1); f = 0.6; bk = -0.4; a = -1.6 * t; lean = -1.25 * t; yo = -0.15 * t; }
-        else if (sl) { f = -0.9; bk = -0.2; a = -0.6; lean = -1.05; yo = -0.42; }
-        else if (air) { const up = S.vy > 0; f = up ? -0.55 : -0.2; bk = up ? 0.55 : 0.25; a = -1.4; lean = 0.12; }
+        const ph = S.ph * 0.5, s = Math.sin(ph), c = Math.cos(ph), air = S.y > 0.05, sl = S.slide > 0, dying = S.dying > 0, idle = S.idle;
+        let lean = 0.16, roll = 0, yo = 0, tL, sL, tR, sR, aL, aR, aLz = 0.08, aRz = -0.08, sk = 0;
+        if (dying) { const t = clamp(1 - S.dying / 0.9, 0, 1); lean = -1.2 * t; tL = -0.6 * t; sL = 0.3; tR = -0.2 * t; sR = 0.5; aL = -2.4 * t; aR = -2.2 * t; aLz = 0.5 * t; aRz = -0.5 * t; yo = -0.12 * t; sk = 0.4 * t; }
+        else if (sl) { lean = -0.95; tL = -1.35; sL = 0.25; tR = -1.2; sR = 0.4; aL = -0.5; aR = -0.5; aLz = 0.35; aRz = -0.35; yo = -0.42; sk = 0.5; }
+        else if (air) { const up = S.vy > 0; lean = 0.08; tL = up ? -1.0 : -0.5; sL = up ? 1.5 : 0.8; tR = up ? 0.35 : 0.1; sR = up ? 1.1 : 0.6; aL = -1.2; aR = -1.0; aLz = 0.55; aRz = -0.55; sk = up ? -0.35 : 0.3; }
+        else if (idle) { const t = S.t || 0; lean = 0.02 + Math.sin(t * 1.6) * 0.02; tL = tR = 0; sL = sR = 0.02; aL = Math.sin(t * 1.6) * 0.05; aR = -aL; sk = Math.sin(t * 1.6) * 0.04; }
         else {
-          // ноги в модели уже в широком шаге: «ножницы» туда-обратно + отскок на каждый шаг
-          f = 0.42 + 0.48 * s; bk = -0.42 - 0.48 * s; a = 0.5 * s - 0.15; lean = 0.12 + (S.dashT > 0 ? 0.2 : 0);
-          yo = Math.abs(c) * 0.11 - 0.03; roll = s * 0.06;
+          // бег: бёдра качаются навстречу друг другу, колено сгибается на заносе ноги назад, руки — противоходом
+          const A = 0.95; tL = -A * s; tR = A * s; sL = 0.2 + Math.max(0, c) * 1.55; sR = 0.2 + Math.max(0, -c) * 1.55;
+          aL = 0.55 * s; aR = -0.55 * s; lean = 0.22 + (S.dashT > 0 ? 0.18 : 0); yo = Math.abs(c) * 0.09 - 0.02; roll = s * 0.07; sk = -Math.cos(ph * 2) * 0.22;
         }
-        legF.rotation.x = f; legB.rotation.x = bk; arm.rotation.x = a;
-        pivot.rotation.set(lean, -roll * 0.8, roll + clamp(((lane || 0) - S.x) * -0.05, -0.25, 0.25));
-        pivot.position.y = hy + yo / root.scale.y * 1.0;
+        // углы бёдер заданы относительно мира: вычитаем наклон таза
+        set(B.thighL, tL - lean); set(B.shinL, sL); set(B.thighR, tR - lean); set(B.shinR, sR);
+        set(B.armL, aL, 0, aLz); set(B.armR, aR, 0, aRz); set(B.sack, sk, 0, roll * 1.5);
+        set(P, lean, -roll * 0.8, roll + clamp(((lane || 0) - (S.x || 0)) * -0.06, -0.25, 0.25));
+        P.position.y = rest.pelvis.y + yo / root.scale.y;
       }
     };
   };

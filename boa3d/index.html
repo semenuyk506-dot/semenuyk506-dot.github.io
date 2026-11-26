@@ -4745,7 +4745,7 @@ window.BOA=window.BOA||{};BOA.NIKITA_MESH={"v": "NQXabHMFWgjobV8FCwX6bDwEhgT7a0o
 })(window.BOA = window.BOA || {});
 
 </script>
-<script src="creatures_mesh.js"></script>
+<script src="creatures_mesh.js"></script><script src="gryaz_mdl.js"></script>
 <script>
 /* Существа вместо обычных рабочих: модели Meshy, упрощены и покрашены по карточкам автора. Скелет и анимации — те же, что у рабочих. */
 (function (BOA) {
@@ -7400,7 +7400,58 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
 })(window.BOA);
 
 </script>
-<script>
+<script>/* Герой забега из модели Meshy (assets/<имя>_mdl.js). В модели нет скелета, поэтому кости
+   ставим сами: тело, передняя и задняя нога, свободная рука. Бег, прыжок, подкат и падение — процедурно. */
+(function (BOA) {
+  'use strict';
+  const T = window.THREE, clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const b64 = (s, C) => { const bin = atob(s), u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return new C(u.buffer); };
+  const cache = {};
+
+  function geo(name) {
+    if (cache[name]) return cache[name];
+    const d = BOA.MDL[name], g = new T.BufferGeometry();
+    const p = b64(d.p, Float32Array), n8 = b64(d.n, Int8Array), n = new Float32Array(n8.length); for (let i = 0; i < n8.length; i++) n[i] = n8[i] / 127;
+    g.setAttribute('position', new T.BufferAttribute(p, 3)); g.setAttribute('normal', new T.BufferAttribute(n, 3));
+    g.setAttribute('uv', new T.BufferAttribute(b64(d.uv, Float32Array), 2)); g.setIndex(new T.BufferAttribute(b64(d.i, Uint16Array), 1));
+    const bo = b64(d.b, Uint8Array), wt = b64(d.w, Uint8Array), cnt = bo.length, si = new Uint16Array(cnt * 4), sw = new Float32Array(cnt * 4);
+    for (let i = 0; i < cnt; i++) { const w = wt[i] / 255; si[i * 4] = bo[i]; si[i * 4 + 1] = 0; sw[i * 4] = w; sw[i * 4 + 1] = 1 - w; }
+    g.setAttribute('skinIndex', new T.BufferAttribute(si, 4)); g.setAttribute('skinWeight', new T.BufferAttribute(sw, 4));
+    const tex = new T.TextureLoader().load(d.tex); tex.flipY = false;
+    return (cache[name] = { g, tex, piv: d.piv });
+  }
+
+  BOA.MdlHero = function (name, height) {
+    const { g, tex, piv } = geo(name);
+    const body = new T.Bone(), legF = new T.Bone(), legB = new T.Bone(), arm = new T.Bone();
+    legF.position.set(...piv.hipF); legB.position.set(...piv.hipB); arm.position.set(...piv.sh); body.add(legF, legB, arm);
+    const mat = new T.MeshLambertMaterial({ map: tex, skinning: true, side: T.DoubleSide });
+    const mesh = new T.SkinnedMesh(g, mat); mesh.add(body); mesh.bind(new T.Skeleton([body, legF, legB, arm]));
+    mesh.castShadow = true; mesh.frustumCulled = false;
+    // body вращается вокруг паха: смещаем меш так, чтобы ось была в тазу
+    const pivot = new T.Group(), root = new T.Group(), k = height / piv.h; pivot.add(mesh); root.add(pivot); root.scale.setScalar(k);
+    const hy = piv.hipF[1]; pivot.position.y = hy; mesh.position.y = -hy;
+    return {
+      glb: true, root, mesh, baseY: 0,
+      pose(S, dt, lane) {
+        const ph = S.ph * 0.5, s = Math.sin(ph), c = Math.cos(ph), air = S.y > 0.05, sl = S.slide > 0, dying = S.dying > 0;
+        let f, bk, a, lean, yo = 0, roll = 0;
+        if (dying) { const t = clamp(1 - S.dying / 0.9, 0, 1); f = 0.6; bk = -0.4; a = -1.6 * t; lean = -1.25 * t; yo = -0.15 * t; }
+        else if (sl) { f = -0.9; bk = -0.2; a = -0.6; lean = -1.05; yo = -0.42; }
+        else if (air) { const up = S.vy > 0; f = up ? -0.55 : -0.2; bk = up ? 0.55 : 0.25; a = -1.4; lean = 0.12; }
+        else {
+          // ноги в модели уже в широком шаге: «ножницы» туда-обратно + отскок на каждый шаг
+          f = 0.42 + 0.48 * s; bk = -0.42 - 0.48 * s; a = 0.5 * s - 0.15; lean = 0.12 + (S.dashT > 0 ? 0.2 : 0);
+          yo = Math.abs(c) * 0.11 - 0.03; roll = s * 0.06;
+        }
+        legF.rotation.x = f; legB.rotation.x = bk; arm.rotation.x = a;
+        pivot.rotation.set(lean, -roll * 0.8, roll + clamp(((lane || 0) - S.x) * -0.05, -0.25, 0.25));
+        pivot.position.y = hy + yo / root.scale.y * 1.0;
+      }
+    };
+  };
+})(window.BOA = window.BOA || {});
+</script><script>
 /* Забег: бегущий Грязимир (скелет и модель из игры), монеты, материалы, сундуки. Всё собранное идёт в стройку. */
 (function (BOA) {
   'use strict';
@@ -7655,6 +7706,16 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     try { $('run-nm').textContent = (rec && rec.name) || 'Забег'; const many = (g.crew.list || []).length > 1; $('run-pl').hidden = $('run-pr').hidden = !many; } catch (e) { /* ок */ }
     const look = rec ? BOA.Look.of(rec) : null;
     this.hero = null;
+    // своя модель из Meshy (пока только Грязимир)
+    try {
+      const nik = g.crew.nikita && g.crew.nikita();
+      if (BOA.MdlHero && BOA.MDL && BOA.MDL.gryaz && rec && nik && rec.id === nik.id) {
+        const w = BOA.MdlHero('gryaz', HERO_H); const holder = this.heroG = new T.Group(); holder.rotation.y = Math.PI; holder.add(w.root); this.scene.add(holder);
+        ink(w.root, 0.03); this.hero = w;
+        try { if (g.ui && g.ui.workerThumb) { const u = g.ui.workerThumb(rec); if (u) $('run-av').style.backgroundImage = 'url(' + u + ')'; } } catch (e) { /* без портрета */ }
+        return;
+      }
+    } catch (e) { console.warn('mdl hero', e); this.hero = null; }
     try {
       const w = new BOA.Worker3D(rec ? rec.id : 0, look, 1.7, g.tools || {}, 'foreman', 0);
       w.state = 'idle'; w._pose(0);
@@ -7893,7 +7954,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
 
   /* ---------- анимация героя по скелету ---------- */
   P.poseHero = function (dt) {
-    const w = this.hero; if (!w) return; const S = this.S, ph = S.ph, sw = Math.sin(ph), cw = Math.cos(ph), air = S.y > 0.05, sl = S.slide > 0, dying = S.dying > 0;
+    const w = this.hero; if (!w) return; if (w.glb) { w.pose(this.S, dt, this.S.lane * LANE); return; } const S = this.S, ph = S.ph, sw = Math.sin(ph), cw = Math.cos(ph), air = S.y > 0.05, sl = S.slide > 0, dying = S.dying > 0;
     const A = air ? 0 : 1.05, lean = S.dashT > 0 ? 0.42 : 0.24;
     let l0, k0, l1, k1, a0x, a1x, e0, e1, bx = lean, bz = 0, hx = -0.1, by = 0, yoff = 0;
     if (dying) { const k = clamp(1 - S.dying / 0.9, 0, 1); bx = -1.3 * k; l0 = 0.5; k0 = 0.4; l1 = -0.2; k1 = 0.2; a0x = -2.3 * k; a1x = -2.1 * k; e0 = -0.3; e1 = -0.3; yoff = -0.25 * k; hx = -0.5 * k; }

@@ -11789,7 +11789,8 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
   };
 
   /* ---------- поведение мира ---------- */
-  function Run(g, bid) {
+  function Run(g, bid, opts) {
+    this.boss = !!(opts && opts.boss);
     this.g = g; this.bid = bid; this.dead = false; this.running = false;
     const app = $('app'); this.app = app;
     const root = this.root = document.createElement('div'); root.id = 'run'; root.className = 'run';
@@ -11803,7 +11804,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       '<div class="rp" title="бронза"><i class="rbr"></i><b id="r-bronze">0</b></div>' +
       '<div class="rp dist"><b id="r-dist">0</b> м</div></div>' +
       '<div id="run-buffs" class="run-buffs"></div>' +
-      '<div id="run-tip" class="run-tip" hidden><b id="run-tipi">👆</b><span id="run-tipt"></span></div><div id="run-say" class="run-say"></div><div id="run-th" class="run-th" hidden>💰 Хапуга <b id="run-thd">13</b> м<i id="run-thb"></i></div>' +
+      '<div id="run-tip" class="run-tip" hidden><b id="run-tipi">👆</b><span id="run-tipt"></span></div><div id="run-say" class="run-say"></div><div id="run-th" class="run-th" hidden>😈 Хапуга <span id="run-thh">❤️❤️❤️</span> · <b id="run-thd">11</b> м<i id="run-thb"></i></div>' +
       '<div id="run-start" class="run-ov"><div class="run-card"><div class="run-pick"><button id="run-pl" class="run-arr" type="button" aria-label="Предыдущий бегун">‹</button><div class="run-av" id="run-av"></div><button id="run-pr" class="run-arr" type="button" aria-label="Следующий бегун">›</button></div><h2 id="run-nm">Забег</h2><div id="run-team" class="run-team"></div><p id="run-sub"></p>' +
       '<p class="run-help">↔ — дорожка · ↑ — прыжок · ↓ — подкат<br>Монеты, камень, дерево и бронза идут на стройку. Из сундуков выпадают алмазы.</p>' +
       '<button id="run-go" class="ro-go" type="button">БЕЖАТЬ!</button></div></div>' +
@@ -11941,7 +11942,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     try {
       const w = A && A.ready('hapuga') ? A.make('hapuga', HERO_H * 1.05) : BOA.MdlHero('hapuga', HERO_H * 1.05), hold = new T.Group(); hold.rotation.y = Math.PI; hold.add(w.root); ink(w.root, 0.03); this.scene.add(hold);
       this.th = { w, hold, gap: 10, lane: 0, x: 0, y: 0, vy: 0, ph: 0, drop: 1, caught: 0, run: 0, S: { ph: 0, y: 0, vy: 0, slide: 0, dying: 0, dashT: 0, x: 0 } };
-      hold.position.set(0, 0, -10); w.pose(this.th.S, 0, 0); $('run-th').hidden = false;
+      this.th.gap = this.boss ? 11 : 6; this.th.hp = 3; hold.position.set(0, 0, -this.th.gap); this.th.S.idle = true; w.pose(this.th.S, 0.016, 0); this.th.S.idle = false; $('run-th').hidden = !this.boss; this.thHud();
     } catch (e) { console.warn('thief', e); this.th = null; }
   };
   P.thiefStep = function (dt, sp) {
@@ -11958,18 +11959,36 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     }
     if (Math.random() < dt * 0.25) { const l = [-1, 0, 1][(Math.random() * 3) | 0]; if (!this.items.some((q) => SOLID[q.userData.type] && Math.abs(q.position.x - l * LANE) < LANE * 0.6 && q.position.z > z - 9 && q.position.z < z + 1)) t.lane = l; }
     t.x += (t.lane * LANE - t.x) * Math.min(1, dt * 9); t.vy -= 30 * dt; t.y = Math.max(0, t.y + t.vy * dt); if (!t.y) t.vy = Math.max(0, t.vy);
-    // дистанция: рывок сокращает, удар по герою — увеличивает
-    if (S.dashT > 0) t.gap -= dt * 6.5; else t.gap += (10 - t.gap) * Math.min(1, dt * 0.35);
-    if (t.gap < 2.6) { // поймали
-      t.caught++; t.gap = 16; const c = 40 + t.caught * 20; S.coins += c; S.chests++; $('r-coins').textContent = S.coins;
-      this.spark(t.x, 1.4, -2.6, 30, 0xffd84a); try { BOA.Audio.chest(); } catch (e) { /* ок */ } this.say('Попался, Хапуга! Отдал ' + c + ' монет и сундук 💎', 3000);
+    if (!this.boss) {
+      // обычный забег: Хапуга дразнит в начале и убегает вперёд, дальше его не видно
+      if (t.gone) return; t.gap += dt * (3 + t.gap * 0.9);
+      if ((t.drop -= dt) <= 0 && t.gap < 30) { t.drop = 0.35; try { const m = this.spawn('coin', t.lane, z + 0.8, 0.9); if (m) m.position.x = t.x; } catch (e) { /* ок */ } }
+      if (t.gap > 70) { t.gone = 1; t.hold.visible = false; return; }
+    } else {
+      // финальная погоня: с молотом героя не остановить — догоняет и бьёт
+      if (t.fall > 0) { t.fall += dt; t.hold.rotation.x = -Math.min(1.45, t.fall * 2.6); t.hold.position.set(t.x, 0, z); return; }
+      if (S.hammer > 0) t.gap -= dt * 9; else if (S.dashT > 0) t.gap = Math.max(4.5, t.gap - dt * 5); else t.gap += (11 - t.gap) * Math.min(1, dt * 0.5);
+      t.stun = Math.max(0, t.stun - dt); t.hold.rotation.x = t.stun > 0 ? Math.sin(t.stun * 18) * 0.35 : 0;
+      if (S.hammer > 0 && t.gap < 2.8) this.bossHit();
+      if ((t.throwT -= dt) <= 0) { t.throwT = 1.5 - (3 - t.hp) * 0.25 + Math.random() * 0.6; const ty = ['barrel', 'crate', 'hurdle', 'crate'][(Math.random() * 4) | 0], l = [-1, 0, 1].filter((q) => q !== t.lane)[(Math.random() * 2) | 0];
+        try { const m = this.spawn(ty, l, z + 1.2); if (ty === 'barrel') m.userData.vz = 5; this.spark(l * LANE, 1.2, z + 1, 6, 0xc9a06a); } catch (e) { /* ок */ } }
+      if ((t.hamT -= dt) <= 0 && !(S.hammer > 0)) { t.hamT = 8 + Math.random() * 3; if (!this.items.some((q) => q.userData.type === 'hammer')) try { this.spawn('hammer', [-1, 0, 1][(Math.random() * 3) | 0], -44); } catch (e) { /* ок */ } }
     }
-    // роняет монеты из мешка
-    if ((t.drop -= dt) <= 0) { t.drop = 0.55 + Math.random() * 0.9; try { const m = this.spawn('coin', t.lane, z + 0.8, 0.9); if (m) m.position.x = t.x; } catch (e) { /* ок */ } }
     t.S.ph += sp * dt; t.S.speed = sp; t.S.y = t.y; t.S.vy = t.vy; t.S.x = t.x; t.S.dashT = 0;
     t.hold.position.set(t.x, t.y, z); t.w.pose(t.S, dt, t.lane * LANE);
-    $('run-thd').textContent = Math.max(0, Math.round(t.gap - 2.6)); $('run-thb').style.width = clamp((16 - t.gap) / 13.4, 0, 1) * 100 + '%';
+    if (this.boss) $('run-thd').textContent = Math.max(0, Math.round(t.gap - 2.6));
   };
+  P.thHud = function () { const t = this.th; if (!t) return; $('run-thh').textContent = '❤️'.repeat(t.hp) + '🖤'.repeat(3 - t.hp); $('run-thb').style.width = (t.hp / 3 * 100) + '%'; };
+  const BOSS_HIT = ['Бац! Это за мои камни!', 'Бум! Это за брёвна!', 'И за бронзу! Всё, Хапуга, приехали!'];
+  P.bossHit = function () {
+    const t = this.th, S = this.S; t.hp--; S.hammer = 0; S.dashT = 0; t.stun = 0.9; t.gap = 15; this.thHud();
+    this.spark(t.x, 2.0, -2.8, 40, 0xffe27a); this.spark(t.x, 2.2, -2.8, 20, 0xffffff); try { BOA.Audio.hit(); BOA.Audio.chest(); } catch (e) { /* ок */ }
+    this.shake = 0.35; S.coins += 100; $('r-coins').textContent = S.coins; this.say(BOSS_HIT[2 - t.hp] || BOSS_HIT[0], 2600);
+    if (t.hp <= 0) { this.won = 1; t.fall = 0.01; S.inv = 99; this.items.slice().forEach((m) => { if (m.userData.type !== 'coin') { this.scene.remove(m); this.items.splice(this.items.indexOf(m), 1); } });
+      for (let k = 0; k < 30; k++) { const c = this.spawn('coin', [-1, 0, 1][k % 3], -6 - k * 1.2, 1.0); }
+      S.chests += 5; setTimeout(() => { if (!this.dead && !S.ended) this.finish('ПОБЕДА'); }, 2600); }
+  };
+
 
   /* ---------- обучение первого забега: подсказка, замедление перед препятствием, пока не сделаешь движение ---------- */
   const TIPS = [['↔️', 'Смахни влево или вправо — смени дорожку'], ['⬆️', 'Смахни вверх — прыжок!'], ['⬇️', 'Смахни вниз — подкат!'], ['⚡', 'Хватай зелёную стрелку — рывком догонишь Хапугу!'], ['💪', 'Отлично! Дальше сам']];
@@ -11994,7 +12013,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
 
   /* ---------- состояние забега ---------- */
   P.reset = function () {
-    if (this.th) { $('run-th').hidden = false; const t = this.th; t.gap = 10; t.lane = 0; t.x = 0; t.y = 0; t.vy = 0; t.drop = 1; t.caught = 0; t.run = 0; }
+    if (this.th) { $('run-th').hidden = !this.boss; const t = this.th; t.hold.visible = true; t.gone = 0; t.hp = 3; t.stun = 0; t.fall = 0; t.throwT = 2.5; t.hamT = 5; t.hold.rotation.x = 0; t.gap = this.boss ? 11 : 6; t.lane = 0; t.x = 0; t.y = 0; t.vy = 0; t.drop = 1; t.caught = 0; t.run = 0; }
     (this.items || []).forEach((m) => this.scene.remove(m)); this.items = [];
     this.S = { on: false, t: 0, speed: 12, dist: 0, lane: 0, x: 0, y: 0, vy: 0, slide: 0, ph: 0, coins: 0, stone: 0, wood: 0, bronze: 0, chests: 0,
       mag: 0, dashT: 0, shield: 0, nextZ: -30, dying: 0, hit: 0, combo: 0, ended: false, inv: 0, bobT: 0 };
@@ -12141,6 +12160,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     else if (type === 'cart') { const B = BIOMES[this.biome]; m = grp(box(1.3, 0.9, 1.7, 0x7a5a3a, 0, 0.75, 0), box(1.36, 0.1, 1.76, 0x4a3a2a, 0, 1.22, 0), box(1.36, 0.1, 1.76, 0x4a3a2a, 0, 0.36, 0), sph(0.35, 0xb9b2a4, -0.25, 1.35, 0.3, 0.8), sph(0.3, 0xd88a44, 0.3, 1.32, -0.3, 0.8), sph(0.28, B.edge, 0.05, 1.42, 0, 0.8));
       for (const x of [-0.6, 0.6]) for (const z of [-0.55, 0.55]) { const w = cyl(0.26, 0.26, 0.14, 0x2a2a2a, x, 0.28, z, 10); w.rotation.z = Math.PI / 2; m.add(w); } m.add(box(0.1, 0.1, 0.5, 0x2a2a2a, 0, 0.5, 1.05)); }
     else if (type === 'mover') { m = themed(this.biome, 'crate') || grp(box(1.3, 1.1, 1.3, 0xa9784a, 0, 0.55, 0), box(1.36, 0.12, 1.36, 0x7e5430, 0, 1.1, 0)); m.add(cone(0.18, 0.4, 0xffd04a, -0.85, 0.7, 0, 3), cone(0.18, 0.4, 0xffd04a, 0.85, 0.7, 0, 3)); m.children[m.children.length - 2].rotation.z = Math.PI / 2; m.children[m.children.length - 1].rotation.z = -Math.PI / 2; }
+    else if (type === 'hammer') { m = grp(cyl(0.07, 0.07, 1.0, 0x8a5a2c, 0, 0, 0, 8), cyl(0.32, 0.32, 0.7, 0xb9b2a4, 0, 0.55, 0, 12), cyl(0.34, 0.34, 0.08, 0xffd04a, 0.0, 0.55, 0.3, 12)); m.children[1].rotation.z = Math.PI / 2; m.children[2].rotation.z = Math.PI / 2; m.children[2].position.set(0.33, 0.55, 0); m.add(mesh(new T.SphereGeometry(0.75, 12, 10), 0xffd04a, 0, 0.3, 0, { transparent: true, opacity: 0.22, emissive: 0xffa000, emissiveIntensity: 0.8 })); }
     else if (type === 'x2') { m = mesh(new T.OctahedronGeometry(0.46), 0xffd04a, 0, 0, 0, { emissive: 0xc07000, emissiveIntensity: 0.9 }); }
     else if (type === 'arch') { const B = BIOMES[this.biome]; m = grp(box(0.5, 6, 0.5, B.edge, -5.2, 3, 0), box(0.5, 6, 0.5, B.edge, 5.2, 3, 0), box(11.0, 1.5, 0.5, 0xc9683a, 0, 6.4, 0)); const cv = document.createElement('canvas'); cv.width = 256; cv.height = 64; const c2 = cv.getContext('2d'); c2.fillStyle = '#ffe9b0'; c2.font = '900 44px sans-serif'; c2.textAlign = 'center'; c2.textBaseline = 'middle'; c2.fillText(String(y) + ' м', 128, 34); const pl = new T.Mesh(new T.PlaneGeometry(6, 1.5), new T.MeshBasicMaterial({ map: new T.CanvasTexture(cv), transparent: true })); pl.position.set(0, 6.4, 0.28); m.add(pl); y = 0; }
     if (type !== 'coin' && type !== 'arch') ink(m, type === 'stone' || type === 'wood' || type === 'bronze' ? 0.035 : 0.05);
@@ -12205,7 +12225,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     this.cv.addEventListener('pointerup', (e) => { if (mx === null || e.pointerType === 'touch') return; const dx = e.clientX - mx, dy = e.clientY - my; if (Math.abs(dx) > 24 || Math.abs(dy) > 24) { if (Math.abs(dx) > Math.abs(dy)) this.act(dx < 0 ? 'l' : 'r'); else this.act(dy < 0 ? 'u' : 'd'); } mx = null; });
     this._kd = (e) => { const k = e.key; if (k === 'ArrowLeft' || k === 'a') this.act('l'); else if (k === 'ArrowRight' || k === 'd') this.act('r'); else if (k === 'ArrowUp' || k === 'w' || k === ' ') this.act('u'); else if (k === 'ArrowDown' || k === 's') this.act('d'); else if (k === 'Escape') this.close(); };
     window.addEventListener('keydown', this._kd);
-    $('run-go').addEventListener('click', () => { try { BOA.Audio.init(); } catch (e) { /* без звука */ } $('run-start').hidden = true; this.reset(); this.S.on = true; try { if (!BOA.Hub.meta().seen.rtut) this.tut = { step: -1, did: {}, t: 0 }; } catch (e) { /* ок */ } try { BOA.Audio.mode('run'); BOA.Audio.surface = BIOMES[this.biome].step || ({ swamp: 'wood', egypt: 'sand', russia: 'snow' })[this.biome] || 'stone'; } catch (e) { /* ок */ } this.say(pick(LINES.start)); });
+    $('run-go').addEventListener('click', () => { try { BOA.Audio.init(); } catch (e) { /* без звука */ } $('run-start').hidden = true; this.reset(); this.S.on = true; try { if (!BOA.Hub.meta().seen.rtut) this.tut = { step: -1, did: {}, t: 0 }; } catch (e) { /* ок */ } try { BOA.Audio.mode('run'); BOA.Audio.surface = BIOMES[this.biome].step || ({ swamp: 'wood', egypt: 'sand', russia: 'snow' })[this.biome] || 'stone'; } catch (e) { /* ок */ } if (this.boss) this.say('Финал! Хватай молот 🔨 — и три удара по Хапуге!', 3200); else if (this.th) this.say('Хапуга: «Хе-хе! Догони, если сможешь!»', 2600); else this.say(pick(LINES.start)); });
     { const crew = () => { try { const n = g.crew.nikita(), L = g.crew.list.slice(); return n ? [n].concat(L.filter((w) => w !== n)) : L; } catch (e) { return []; } };
       const swap = (d) => { const L = crew(); if (L.length < 2 || this.S.on) return; let i = L.indexOf(this.pickRec || L[0]); if (i < 0) i = 0; i = (i + d + L.length) % L.length; this.pickRec = L[i];
         if (this.heroG) this.scene.remove(this.heroG); this.makeHero(); try { localStorage.setItem('boa.runner', L[i].id); } catch (e) { /* ок */ } };
@@ -12238,7 +12258,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     const R = BOA.Hub.reward(S); let note = 'Бонус построек: +' + Math.round((R.bonus - 1) * 100) + '% к наградам.';
     S.coins = R.coins; S.stone = R.stone; S.wood = R.wood; S.bronze = R.bronze;
     $('ro-dia').textContent = R.dia;
-    $('ro-t').textContent = rec ? 'НОВЫЙ РЕКОРД!' : title.toUpperCase(); $('ro-t').classList.toggle('rec', rec); $('ro-d').textContent = d.toLocaleString('ru-RU') + ' м'; $('ro-best').textContent = rec ? '' : 'Рекорд: ' + rs.best.toLocaleString('ru-RU') + ' м'; try { $('ro-av').style.backgroundImage = $('run-av').style.backgroundImage; } catch (e) { /* ок */ } if (this.th && this.th.caught) note = 'Хапуга пойман: ' + this.th.caught + ' × · ' + note; try { BOA.Audio.fanfare(); } catch (e) { /* ок */ } $('ro-c').textContent = S.coins; $('ro-ch').textContent = S.chests;
+    $('ro-t').textContent = this.won ? 'ПОБЕДА!' : rec ? 'НОВЫЙ РЕКОРД!' : title.toUpperCase(); if (this.won) { note = 'Хапуга повержен, мешок вернулся к хозяевам! ' + note; try { const mm = BOA.Hub.meta(); mm.seen.final = (mm.seen.final || 0) + 1; } catch (e) { /* ок */ } } $('ro-t').classList.toggle('rec', rec); $('ro-d').textContent = d.toLocaleString('ru-RU') + ' м'; $('ro-best').textContent = rec ? '' : 'Рекорд: ' + rs.best.toLocaleString('ru-RU') + ' м'; try { $('ro-av').style.backgroundImage = $('run-av').style.backgroundImage; } catch (e) { /* ок */ } if (this.th && this.th.caught) note = 'Хапуга пойман: ' + this.th.caught + ' × · ' + note; try { BOA.Audio.fanfare(); } catch (e) { /* ок */ } $('ro-c').textContent = S.coins; $('ro-ch').textContent = S.chests;
     $('ro-s').textContent = S.stone; $('ro-w').textContent = S.wood; $('ro-b').textContent = S.bronze; $('ro-p').textContent = note;
     $('ro-q').innerHTML = QD.map((x) => '<span>✅ ' + x.t.replace('{n}', x.need) + '</span>').join(''); $('ro-q').hidden = !QD.length;
     $('run-over').hidden = false; if (this.th) $('run-th').hidden = true; clearTimeout(this._st); $('run-say').classList.remove('on');
@@ -12247,7 +12267,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     if (this.dead) return; this.dead = true; cancelAnimationFrame(this.raf);
     window.removeEventListener('resize', this.onResize); window.removeEventListener('keydown', this._kd);
     try { this.scene.traverse((o) => { if (o.geometry) o.geometry.dispose(); }); this.r.dispose(); const ext = this.r.getContext().getExtension('WEBGL_lose_context'); if (ext) ext.loseContext(); } catch (e) { /* ок */ }
-    try { BOA.Audio.mode('hub'); BOA.Audio.intensity = 0; } catch (e) { /* ок */ } setTimeout(() => { try { BOA.Quests.check(); } catch (e) { /* ок */ } }, 300); this.root.remove(); this.g.screen = this.prevScreen || 'menu'; this.g.ui.refresh && this.g.ui.refresh(); BOA.Runner._cur = null; try { BOA.Hub.render(); } catch (e) { /* ок */ }
+    try { BOA.Audio.mode('hub'); BOA.Audio.intensity = 0; } catch (e) { /* ок */ } const won = this.won; setTimeout(() => { try { if (won) BOA.Hub.ending(); else BOA.Quests.check(); } catch (e) { /* ок */ } }, 300); this.root.remove(); this.g.screen = this.prevScreen || 'menu'; this.g.ui.refresh && this.g.ui.refresh(); BOA.Runner._cur = null; try { BOA.Hub.render(); } catch (e) { /* ок */ }
   };
 
   /* ---------- анимация героя по скелету ---------- */
@@ -12278,7 +12298,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
         S.dist += d * 0.55; S.ph += sp * dt * 1.0; { const st = Math.floor(S.ph / Math.PI); if (st !== S._stp) { S._stp = st; if (S.y < 0.05 && S.slide <= 0) try { BOA.Audio.stepSfx(); } catch (e) { /* без звука */ } } } try { BOA.Audio.intensity = clamp((S.speed - 12) / 12, 0, 1); } catch (e) { /* ок */ } S.inv = Math.max(0, S.inv - dt);
         S.x += (S.lane * LANE - S.x) * Math.min(1, dt * 15); S.vy -= 30 * dt; const wasAir = S.y > 0.05; S.y = Math.max(0, S.y + S.vy * dt); if (S.y === 0 && S.vy < 0) { S.vy = 0; if (wasAir) { S.land = 0.2; try { BOA.Audio.land(); } catch (e) { /* ок */ } this.spark(S.x, 0.1, 0.3, 8, 0xe9dcc0); } }
         S.slide = Math.max(0, S.slide - dt); if (S.slide > 0 && S.y > 0.05) S.slide = 0;
-        S.mag = Math.max(0, S.mag - dt); S.x2 = Math.max(0, (S.x2 || 0) - dt); S.dashT = Math.max(0, S.dashT - dt);
+        S.mag = Math.max(0, S.mag - dt); S.x2 = Math.max(0, (S.x2 || 0) - dt); S.dashT = Math.max(0, S.dashT - dt); S.hammer = Math.max(0, (S.hammer || 0) - dt); if (S.hammer > 0 && Math.random() < 0.6) this.spark(S.x + rnd(-0.4, 0.4), rnd(0.5, 2.2), 0.3, 1, 0xffd04a);
         this.world_move(d, dt); this.thiefStep(dt, sp); if (this.tut) this.tutStep(dt);
         if (S.dist >= (S.mile || 100)) { this.spawn('arch', 0, -64, S.mile || 100); S.mile = (S.mile || 100) + 100; }
         S.nextZ += d; if (S.nextZ > -34) { this.pattern(-66); S.nextZ -= 12 + Math.random() * 5 - Math.min(4, S.dist / 400); }
@@ -12297,6 +12317,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     this.cam.position.x += (cx - this.cam.position.x) * Math.min(1, dt * 7); this.cam.position.y += (cy - this.cam.position.y) * Math.min(1, dt * 7); this.cam.position.z = 6.3 - (S.dashT > 0 ? 0.8 : 0);
     this.cam.lookAt(S.x * 0.42, tgt, -7); this.cam.rotation.z = clamp((S.x - S.lane * LANE) * 0.03, -0.08, 0.08);
     const fovT = (this.app.clientWidth / this.app.clientHeight < 0.7 ? 68 : 60) + (S.dashT > 0 ? 10 : clamp((S.speed - 12) * 0.5, 0, 5)); this.cam.fov += (fovT - this.cam.fov) * Math.min(1, dt * 4); this.cam.updateProjectionMatrix();
+    if (this.shake > 0) { this.shake -= dt; this.cam.position.x += rnd(-0.2, 0.2) * this.shake * 3; this.cam.position.y += rnd(-0.15, 0.15) * this.shake * 3; }
     if (S.hit > 0) { S.hit -= dt; this.cam.position.x += rnd(-0.15, 0.15) * S.hit * 4; this.cam.position.y += rnd(-0.1, 0.1) * S.hit * 4; }
     // частицы
     const pp = this.pp, pv = this.pv, pl = this.pl; for (let i = 0; i < this.pn; i++) { if (pl[i] > 0) { pl[i] -= dt; pv[i * 3 + 1] -= 9 * dt; pp[i * 3] += pv[i * 3] * dt; pp[i * 3 + 1] += pv[i * 3 + 1] * dt; pp[i * 3 + 2] += pv[i * 3 + 2] * dt - (S.on ? S.speed * dt * 0.9 : 0) * 0; if (pl[i] <= 0) pp[i * 3 + 1] = -99; } }
@@ -12311,6 +12332,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       const m = items[i], u = m.userData; m.position.z += d;
       if (m.position.z > back) { this.scene.remove(m); items.splice(i, 1); continue; }
       if (u.vz) m.position.z += u.vz * dt; if (u.spin) m.rotation.x -= dt * 7; if (u.type === 'swing') m.position.x = Math.sin(S.t * 2.4 + u.ph) * LANE * 1.15; else if (u.type === 'mover') m.position.x = Math.sin(S.t * 1.5 + u.ph) * LANE; else if (u.type === 'cart') m.position.y = Math.abs(Math.sin(S.t * 14)) * 0.05;
+      if (u.type === 'hammer') { m.rotation.y += dt * 3; m.position.y = 1.1 + Math.sin(S.t * 4) * 0.15; }
       if (u.type === 'x2') { m.rotation.y += dt * 3; m.position.y = 1.0 + Math.sin(S.t * 3 + i) * 0.12; }
       if (u.type === 'coin') { m.rotation.z += dt * 4; } else if (u.type === 'stone' || u.type === 'wood' || u.type === 'bronze') { m.rotation.y += dt * 2.2; m.position.y = u.base + Math.sin(S.t * 3 + i) * 0.08; }
       else if (u.type === 'shield' || u.type === 'mag' || u.type === 'dash') { m.rotation.y += dt * 2.5; m.position.y = u.base + Math.sin(S.t * 3 + i) * 0.1; }
@@ -12333,6 +12355,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       else if (u.type === 'shield' && dx < 1.0) take(() => { S.shield = 1; this.spark(m.position.x, 1, z, 12, 0x7ab8ff); this.say('Щит на один удар.'); try { BOA.Audio.power(); } catch (e) { /* ок */ } });
       else if (u.type === 'mag' && dx < 1.0) take(() => { S.mag = 9; this.spark(m.position.x, 1, z, 12, 0xff8080); this.say('Магнит: всё само летит.'); try { BOA.Audio.power(); } catch (e) { /* ок */ } });
       else if (u.type === 'x2' && dx < 1.0) take(() => { S.x2 = 10; this.spark(m.position.x, 1, z, 14, 0xffd84a); this.say('Монеты ×2!'); try { BOA.Audio.power(); } catch (e) { /* ок */ } });
+      else if (u.type === 'hammer' && dx < 1.1) take(() => { S.hammer = 7; S.dashT = 7; this.spark(m.position.x, 1.2, z, 24, 0xffe27a); this.say('МОЛОТ! Догоняй Хапугу!', 2400); try { BOA.Audio.power(); } catch (e) { /* ок */ } });
       else if (u.type === 'dash' && dx < 1.0) take(() => { S.dashT = 4; this.spark(m.position.x, 1, z, 12, 0x9affb0); this.say('Рывок! Через всё!'); try { BOA.Audio.dash(); } catch (e) { /* ок */ } });
       else if ((u.type === 'crate' && dx < 0.95 && S.y < 1.0) || (u.type === 'beam' && dx < 0.95 && S.slide <= 0 && S.y < 1.7) || (u.type === 'wall' && dx < 1.0 && S.y < 2.4) || (u.type === 'spike' && dx < 1.0 && S.y < 0.55) || (u.type === 'hurdle' && dx < 0.95 && S.y < 0.78) || (u.type === 'pit' && dx < 0.9 && S.y < 0.25 && Math.abs(z) < 0.9) || (u.type === 'barrel' && dx < 0.95 && S.y < 0.9) || (u.type === 'cart' && dx < 1.0 && S.y < 1.6) || (u.type === 'mover' && dx < 0.95 && S.y < 1.0) || (u.type === 'swing' && dx < 0.55 && S.y < 1.1) || (u.type === 'swing' && Math.abs(m.children[1].position.x + m.position.x - S.x) < 0.6 && S.y < 1.1) || (u.type === 'swing' && Math.abs(m.children[2].position.x + m.position.x - S.x) < 0.6 && S.y < 1.1)) {
         if (S.dashT > 0) { this.scene.remove(m); items.splice(i, 1); this.spark(m.position.x, 1, z, 14, 0xe8dcc0); }
@@ -12372,8 +12395,8 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
   BOA.Kit = { M, mesh, box, cyl, cone, sph, grp, PROPS, BIOMES, rnd, clamp, ink };
   BOA.Runner = {
     _cur: null,
-    open(g, bid) {
-      if (this._cur) return; const r = new Run(g, bid); r.prevScreen = g.screen; g.screen = 'run'; this._cur = r; return r;
+    open(g, bid, opts) {
+      if (this._cur) return; const r = new Run(g, bid, opts); r.prevScreen = g.screen; g.screen = 'run'; this._cur = r; return r;
     }
   };
 })(window.BOA = window.BOA || {});
@@ -12812,7 +12835,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
   const KIND = { temple: ['stone', 'bronze'], statue: ['stone', 'bronze'], pyramid: ['stone', 'wood'], arena: ['stone', 'wood'], monument: ['stone', 'wood'], castle: ['stone', 'wood'], cathedral: ['stone', 'bronze'], fortress: ['stone', 'wood'], rocktomb: ['stone', 'bronze'], tower: ['bronze', 'stone'], theatre: ['stone', 'wood'], mausoleum: ['stone', 'bronze'], pagoda: ['wood', 'bronze'] };
 
   const BIOMES = [
-    { id: 'swamp', n: 'Болото', ico: '🐸', who: 'Грязимир', home: 1, intro: ['Это моё болото. Тут тихо, сыро и никто не лезет.', 'Но в тине я нашёл старые камни. Их кто-то ставил кругами — ради чего-то большого.', 'Для большого нужны камень, дерево и бронза. Их раскидали по дорогам. Бегать я не люблю, но ради камней — ладно.'] },
+    { id: 'swamp', n: 'Болото', ico: '🐸', who: 'Грязимир', home: 1, intro: ['Это моё болото. Тут тихо, сыро и никто не лезет.', 'Но в тине я нашёл старые камни. Их кто-то ставил кругами — ради чего-то большого.', 'Для большого нужны камень, дерево и бронза. Я их собрал… а потом прибежал Хапуга — тощий, в кепке, с мешком — и всё утащил!', 'Бегать я не люблю. Но Хапугу догоню. А по дороге подберу всё, что он растерял.'] },
     { id: 'greece', n: 'Греция', ico: '🏛️', who: '', intro: ['За болотом начинается Греция. Белый камень, синее небо и ветер в колоннах.', 'Тут строили храмы на века. Посмотрим, как у них получалось. Говорят, за холмами живёт кто-то очень сильный и очень недовольный.'] },
     { id: 'rocks', n: 'Каменные холмы', ico: '⛰️', who: 'Ворчун', home: 1, intro: ['Каменные холмы. Тут даже трава растёт из щебня.', 'Это дом Ворчуна. Он живёт в пещере и ворчит на эхо, потому что эхо ворчит в ответ.', 'Построим ему нормальный дом — и он потащит с нами блоки дальше.'] },
     { id: 'egypt', n: 'Египет', ico: '🔺', who: '', intro: ['Дальше — пески Египта. Тут всё огромное и очень давнее.', 'Пирамиды складывали по камешку. Как я. Только у меня камешков меньше.'] },
@@ -12827,7 +12850,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     { id: 'bloom', n: 'Цветочные джунгли', ico: '🌺', who: 'Лианна', home: 1, intro: ['Цветочные джунгли. Каждый цветок размером с мою хижину.', 'Лианна живёт тут. Резьбу делает лучше всех на свете и плетёт мосты из лиан.'] },
     { id: 'russia', n: 'Россия', ico: '❄️', who: '', intro: ['Снежная Россия. Купола, метель и тёплые печи.', 'Дальше на север — только лёд. И кто-то, кто всегда мёрзнет.'] },
     { id: 'tundra', n: 'Ледяная тундра', ico: '🧊', who: 'Студенец', home: 1, intro: ['Ледяная тундра. Небо светится зелёным, а снег скрипит, как дверь.', 'Студенец — дитя метелей. Мёрзнет всегда, но таскает без остановки. Построим ему иглу потеплее.'] },
-    { id: 'england', n: 'Англия', ico: '💂', who: '', intro: ['Лёд кончился, а за морем — Англия. Туман, дождь и чай в пять.', 'Говорят, тут камни поставили кругом ещё до пирамид. Значит, мы с ними родня.', 'Хапуга сбежал сюда с мешком. Ничего, у нас есть мост, часы и терпение.'] }
+    { id: 'england', n: 'Англия', ico: '💂', who: '', intro: ['Лёд кончился, а за морем — Англия. Туман, дождь и чай в пять.', 'Говорят, тут камни поставили кругом ещё до пирамид. Значит, мы с ними родня.', 'Хапуга сбежал сюда с мешком. Здесь его логово.', 'Отстроим Англию — и устроим ему финальную погоню. С молотом.'] }
   ];
   BIOMES.forEach((x) => { x.b = [0, 1, 2, 3].map((i) => x.id + ':' + i); });
   const REP = { greece: 'parthenon', egypt: 'pyramid', italy: 'colosseum', mexico: 'chichen', germany: 'castle', cambodia: 'angkor', russia: 'basil', rocks: 'parthenon', savanna: 'pyramid', delta: 'colosseum', ash: 'chichen', roots: 'castle', bloom: 'angkor', tundra: 'basil' };
@@ -12856,11 +12879,12 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       root.innerHTML = '<div class="hb-top"><button id="hb-menu" class="chip" type="button">☰</button><button id="hb-q" class="chip hb-q" type="button" aria-label="Задания">📋<i id="hb-qb" hidden></i></button><div class="rp"><i class="rcoin"></i><b id="hb-coins">0</b></div><div class="rp">💎<b id="hb-dia">0</b></div>' +
         '<div class="rp"><i class="rst"></i><b id="hb-stone">0</b></div><div class="rp"><i class="rwd"></i><b id="hb-wood">0</b></div><div class="rp"><i class="rbr"></i><b id="hb-bronze">0</b></div></div>' +
         '<div id="hb-bio" class="hb-bio"></div><div id="hb-story" class="hb-story"></div>' +
-        '<div class="hb-bot"><div id="hb-rows" class="hb-rows"></div><button id="hb-run" class="hb-go" type="button">БЕЖАТЬ!<small>за материалами</small></button></div><div id="hb-cele" class="hb-cele" hidden></div>' +
+        '<div class="hb-bot"><div id="hb-rows" class="hb-rows"></div><button id="hb-boss" class="hb-boss" type="button" hidden>⚔️ ФИНАЛ: поймать Хапугу</button><button id="hb-run" class="hb-go" type="button">БЕЖАТЬ!<small>за материалами</small></button></div><div id="hb-cele" class="hb-cele" hidden></div>' +
         '<div id="hb-sl" class="hb-sl" hidden><div class="hb-slc"><div id="hb-av" class="run-av"></div><b id="hb-slw">Грязимир</b><p id="hb-slt"></p><button id="hb-sln" class="btn primary" type="button">Дальше</button></div></div>';
       app.appendChild(root);
       $('hb-menu').addEventListener('click', () => g.openMenu()); $('hb-q').addEventListener('click', () => { try { BOA.Quests.open(); } catch (e) { /* ок */ } });
       $('hb-run').addEventListener('click', () => { if (!this.meta().seen.run) { this.meta().seen.run = 1; } BOA.Runner.open(g, BIOMES[this.bi()].id); });
+      $('hb-boss').addEventListener('click', () => { const m = this.meta(); if (m.seen.final) { BOA.Runner.open(g, 'england', { boss: true }); return; } this.slides('Грязимир', ['Вот он, Хапуга. Сидит на мешке у моста и хихикает.', 'Молот у меня. Три хороших удара — и мешок наш.', 'Бежим!'], () => BOA.Runner.open(g, 'england', { boss: true })); });
       setInterval(() => this.tick(), 500);
     },
 
@@ -12945,6 +12969,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
       const bio = $('hb-bio'); bio.textContent = '';
       BIOMES.forEach((x, i) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'hb-bc' + (i === bi ? ' on' : '') + (this.unlocked(i) ? '' : ' lock') + (x.home ? ' home' : ''); b.innerHTML = '<span>' + (this.unlocked(i) ? x.ico : '🔒') + '</span>' + x.n; b.onclick = () => this.setBiome(i); bio.appendChild(b); });
       { const on = bio.children[bi]; if (on && on.scrollIntoView) try { on.scrollIntoView({ block: 'nearest', inline: 'center' }); } catch (e) { /* ок */ } }
+      { const bb = $('hb-boss'), ei = BIOMES.findIndex((x) => x.id === 'england'), ok = B.id === 'england' && this.total(ei) >= 8; bb.hidden = !ok; bb.textContent = m.seen.final ? '⚔️ Реванш с Хапугой' : '⚔️ ФИНАЛ: поймать Хапугу'; }
       $('hb-story').textContent = B.n + ' · ' + (B.who ? 'дом: ' + B.who : 'эпоха · Грязимир и бригада') + (this.total(bi) ? ' · бонус наград +' + Math.round((this.bonus() - 1) * 100) + '%' : '');
       const rows = $('hb-rows'); rows.textContent = ''; this._rk = {};
       B.b.forEach((id, i) => { const r = document.createElement('div'); r.className = 'hr'; r.dataset.id = id; r.onclick = (e) => { if (!e.target.closest('button')) this.select(id); }; rows.appendChild(r); });
@@ -12968,6 +12993,10 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
         r.innerHTML = '<div class="hr-n">' + H.name(id) + '<small> · ' + L + '/' + MAXL + (L < MAXL && !mine ? ' · ' + MINS[L] + ' мин' : '') + '</small></div><div class="hr-l"><div class="hr-st">' + st + '</div>' + bt + '</div>';
         r.querySelectorAll('[data-a]').forEach((b) => { b.onclick = () => { const a = b.dataset.a; if (a === 'go') { if (!ok) { g.ui.toast('Не хватает материалов или монет. Бегите за Хапугой!'); return; } m.sel = id; this.start(id); } else if (a === 'dia') this.speedDia(); else this.speedAd(); this._rk = {}; this.paint(); }; });
       });
+    },
+    ending() {
+      const m = this.meta(), first = m.seen.final === 1 && !m.seen.endShown; if (!first) { try { BOA.Quests.check(); } catch (e) { /* ок */ } return; } m.seen.endShown = 1;
+      this.slides('Грязимир', ['Всё. Хапуга лежит, мешок у меня. Камни, брёвна, бронза — всё вернулось.', 'Знаешь, Хапуга… оставайся. Таскать умеешь, бегаешь быстро. Будешь в бригаде.', 'От болота до Англии — всё построили. Я, правда, устал. Но красиво же.', 'КОНЕЦ. Спасибо, что бегал со мной! Стройки и забеги никуда не делись — можно продолжать.'], () => this.g.save());
     },
     cele(name, L) { const e = $('hb-cele'); e.innerHTML = '<b>ПОСТРОЕНО!</b><span>' + name + ' · уровень ' + L + '</span>'; e.hidden = false; e.classList.remove('in'); void e.offsetWidth; e.classList.add('in'); clearTimeout(this._ct); this._ct = setTimeout(() => { e.hidden = true; }, 3000); }
   };
@@ -12995,7 +13024,7 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     '.hr-ad{flex:none;border:0;border-radius:12px;padding:8px;font-size:18px;background:var(--card-2);box-shadow:0 3px 0 rgba(0,0,0,.25)}' +
     '.hb-go{display:grid;justify-items:center;padding:12px;border:0;border-radius:22px;font:900 28px/1 var(--font);letter-spacing:.04em;color:#fff;background:linear-gradient(180deg,#ffb84a,#ff7a1a 60%,#e85a10);box-shadow:0 6px 0 #a83a00,0 10px 18px rgba(0,0,0,.3);text-shadow:0 3px 0 #a83a00,0 0 2px #7a2a00;pointer-events:auto}.hb-go small{font:900 12px var(--font);letter-spacing:0;opacity:.9;text-shadow:0 1px 0 #a83a00}.hb-go:active{transform:translateY(4px);box-shadow:0 2px 0 #a83a00}' +
     '.hb-cele{position:absolute;left:50%;top:24%;transform:translateX(-50%);z-index:4;display:grid;justify-items:center;gap:2px;pointer-events:none;text-align:center}.hb-cele[hidden]{display:none}.hb-cele b{font:900 44px/1 var(--font);color:#ffe27a;-webkit-text-stroke:3px #5a2a00;paint-order:stroke;text-shadow:0 5px 0 #5a2a00,0 10px 20px rgba(0,0,0,.35)}.hb-cele span{font:900 16px var(--font);color:#fff;text-shadow:0 2px 3px rgba(0,0,0,.7)}' +
-    '.hb-cele.in{animation:hbpop .5s cubic-bezier(.2,1.7,.4,1)}@keyframes hbpop{from{transform:translateX(-50%) scale(.3);opacity:0}}.hb-bc.home span{filter:drop-shadow(0 0 4px #ffd04a)}.hr-b.pulse{animation:qzp 0.9s ease-in-out infinite}.hr-b.pulse::after{content:"👆";position:absolute;right:-4px;bottom:-6px;font-size:22px;animation:hbtap .9s infinite}@keyframes hbtap{50%{transform:translate(-4px,-4px)}}.hb-bot{gap:8px}';
+    '.hb-cele.in{animation:hbpop .5s cubic-bezier(.2,1.7,.4,1)}@keyframes hbpop{from{transform:translateX(-50%) scale(.3);opacity:0}}.hb-bc.home span{filter:drop-shadow(0 0 4px #ffd04a)}.hb-boss{padding:11px;border:0;border-radius:18px;font:900 18px var(--font);color:#fff;background:linear-gradient(180deg,#b04ae0,#6a1ab0);box-shadow:0 5px 0 #3a0a6a,0 8px 16px rgba(0,0,0,.3);text-shadow:0 2px 0 #3a0a6a;pointer-events:auto;animation:qzp 1.2s ease-in-out infinite}.hb-boss[hidden]{display:none}.hr-b.pulse{animation:qzp 0.9s ease-in-out infinite}.hr-b.pulse::after{content:"👆";position:absolute;right:-4px;bottom:-6px;font-size:22px;animation:hbtap .9s infinite}@keyframes hbtap{50%{transform:translate(-4px,-4px)}}.hb-bot{gap:8px}';
   document.head.appendChild(css);
 })(window.BOA = window.BOA || {});
 
@@ -13013,7 +13042,6 @@ window.BOA=window.BOA||{};BOA.GRYAZ_MESH={"v":"iNjiQ9/3iNi5Q/n3hdgnROz3gtgORCP4g
     { id: 'stone', k: 'stone', t: 'Собери {n} камня', n: 20, s: 4, r: { coins: 50, stone: 10 } },
     { id: 'wood', k: 'wood', t: 'Собери {n} дерева', n: 20, s: 4, r: { coins: 50, wood: 10 } },
     { id: 'bronze', k: 'bronze', t: 'Собери {n} бронзы', n: 15, s: 3, r: { coins: 50, bronze: 8 } },
-    { id: 'catch', k: 'caught', t: 'Поймай Хапугу {n} раз', n: 1, s: 0.3, r: { dia: 1, coins: 60 } },
     { id: 'jump', k: 'jumps', t: 'Прыгни {n} раз', n: 25, s: 4, r: { coins: 60 } },
     { id: 'slide', k: 'slides', t: 'Подкатись {n} раз', n: 15, s: 3, r: { coins: 60 } },
     { id: 'chest', k: 'chests', t: 'Найди {n} сундука', n: 2, s: 0.4, r: { dia: 1 } },
